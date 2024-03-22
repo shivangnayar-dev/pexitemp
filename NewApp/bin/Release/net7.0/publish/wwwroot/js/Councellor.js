@@ -26,44 +26,18 @@
 // Flag to track left container visibility
 function handleDashboard() {
     // Get the right-container element
-    const rightContainer = document.querySelector('.right-container');
+    var baseUrl = '';
 
-    // Replace the HTML content with the desired content
-    rightContainer.innerHTML = `
-      
-            <div class="main-blogs">
-    <div class="container-01">
-        <div class="neumorphic-card">
-           
-            <h2>Test</h2>
-            <div class="contentBox">
-                <p>Unlock your potential with AI-enabled psychometric and aptitude tests.</p>
-                <p>Gain insights into your strengths, weaknesses, and career preferences for informed decisions and personalized growth.</p>
-                <a href="https://careertests.in/Test"><span>Give Test</span></a>
-            </div>
-        </div>
-        <div class="neumorphic-card">
-          
-            <h2>Report</h2>
-            <div class="contentBox">
-                <p>Download the report for self-understanding and counseling.</p>
-                <p>Gain insights into your strengths and career paths. Empower your decision-making process today.</p>
-                <a href="#"><span>Learn More</span></a>
-            </div>
-        </div>
-        <div class="neumorphic-card">
-           
-            <h2>Mentorship</h2>
-            <div class="contentBox">
-                <p>Speak with our experienced counselors to explore study streams (for classes 8 to 12 / PU) or job roles (graduates, postgraduates, professionals).</p>
-                <p>Gain valuable insights today!</p>
-                <a href="https://careertests.in/Councellor"><span>Enquire Now</span></a>
-            </div>
-        </div>
-    </div>
-</div>
+    // Check if running on localhost
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        baseUrl = 'https://localhost:7252'; // Replace PORT with your local port number
+    } else {
+        // Set the base URL for production
+        baseUrl = 'https://careertests.in';
+    }
 
-    `;
+    // Open a new tab and navigate to the specified URL
+    window.open(baseUrl + '/Dashboard', '_blank');
 }
 
 var acc = document.getElementsByClassName("accordion");
@@ -360,39 +334,12 @@ function startTimer(timerContainer) {
 
 
 
-function checkOrientation() {
-    if (window.innerWidth < window.innerHeight && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        alert("Please rotate your device to landscape mode for the best experience.");
-    }
-}
 
-// Run the checkOrientation function on page load
-checkOrientation();
-
-// Listen for orientation change events
-window.addEventListener("orientationchange", function () {
-    checkOrientation();
-});
 let coreStreamId;
 
 let testInProgress = false;
 // Write your JavaScript code.
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: '', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
-}
 
-// Make sure to include the correct source URL for the Google Translate script
-var script = document.createElement('script');
-script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-document.head.appendChild(script);
-
-function handleGetMoreInfoClick() {
-    // Open the Google Form in a new tab or window
-    window.open('https://docs.google.com/forms/d/e/1FAIpQLSeqW3FXr6PaYY_9Bcxqe-FzeSy411-3-3GtYMYGfgv-oSD24g/viewform?usp=sf_link', '_blank');
-
-    // You can also continue the conversation or perform other actions as needed
-
-}
 
 let storedReportId;
 function askConsent() {
@@ -413,6 +360,15 @@ function askConsent() {
         // Optionally, you can reset the form or take other actions
     }
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const openBtn = document.getElementById('openbtn');
+    const leftContainer = document.getElementById('left-container');
+
+    openBtn.addEventListener('click', function () {
+        const isActive = openBtn.classList.toggle('active');
+        leftContainer.style.left = isActive ? '0' : '-100%';
+    });
+});
 function askTransactionId() {
     const genderSelect = document.getElementById("genderSelect");
     if (genderSelect) {
@@ -1446,10 +1402,7 @@ function submitQualification() {
                         // Submit data to the server or handle the completion of the form
                         // You can call the next function or submit the entire form here
                     }
-                } else {
-                    // Handle the case where the ID is not found for the selected qualification
-                    alert('Error: ID not found for the selected qualification.');
-                }
+                } 
             })
             .catch(error => {
                 console.error('Error fetching qualification ID:', error);

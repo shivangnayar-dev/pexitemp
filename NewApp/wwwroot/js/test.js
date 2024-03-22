@@ -1,5 +1,4 @@
 
-
 // Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
@@ -24,117 +23,7 @@
 // Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 // Flag to track left container visibility
-function handleDashboard() {
-    // Get the right-container element
-    var baseUrl = '';
 
-    // Check if running on localhost
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        baseUrl = 'https://localhost:7252'; // Replace PORT with your local port number
-    } else {
-        // Set the base URL for production
-        baseUrl = 'https://careertests.in';
-    }
-
-    // Open a new tab and navigate to the specified URL
-    window.open(baseUrl + '/Dashboard', '_blank');
-}
-
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function () {
-        this.classList.toggle("active");
-        var panel = this.nextElementSibling;
-        if (panel.style.maxHeight) {
-            panel.style.maxHeight = null;
-        } else {
-            panel.style.maxHeight = panel.scrollHeight + "px";
-        }
-    });
-}
-
-
-
-
-
-window.onscroll = function () { scrollFunction() };
-function scrollFunction() {
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        document.getElementById("navbar").style.top = "0";
-        document.getElementById("scroll-up").style.display = "block";
-    } else {
-        document.getElementById("navbar").style.top = "-60px";
-        document.getElementById("scroll-up").style.display = "none";
-    }
-}
-
-
-
-
-
-
-function myFunction() {
-    var x = document.getElementById("myTopnav");
-    if (x.className === "topnav") {
-        x.className += " responsive";
-    } else {
-        x.className = "topnav";
-    }
-}
-
-
-
-
-//SCROLL ANIMATE
-var scroll = window.requestAnimationFrame ||
-    function (callback) { window.setTimeout(callback, 1000 / 60) };
-var elementsToShow = document.querySelectorAll('.show-on-scroll');
-function loop() {
-
-    Array.prototype.forEach.call(elementsToShow, function (element) {
-        if (isElementInViewport(element)) {
-            element.classList.add('is-visible');
-        } else {
-            element.classList.remove('is-visible');
-        }
-    });
-
-    scroll(loop);
-}
-loop();
-
-function isElementInViewport(el) {
-    // special bonus for those using jQuery
-    if (typeof jQuery === "function" && el instanceof jQuery) {
-        el = el[0];
-    }
-    var rect = el.getBoundingClientRect();
-    return (
-        (rect.top <= 0
-            && rect.bottom >= 0)
-        ||
-        (rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight))
-        ||
-        (rect.top >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight))
-    );
-}
-
-
-
-
-var myVar;
-function myLoader() {
-    myVar = setTimeout(showPage, 3000);
-}
-
-function showPage() {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("myDiv").style.display = "block";
-}
 let userDataSelected = {};
 let onNext = false;
 function highlightBasicInfoChatBox() {
@@ -182,7 +71,121 @@ function clearChatList() {
         chatListContainer.remove();
     }
 }
+function appendChatList() {
+    // Create a container div for the chat list
+    var chatListContainer = document.createElement('div');
+    chatListContainer.className = 'chat-list';
 
+    // Sample chat data (you can replace this with your actual data)
+    var chats = [
+        {
+            title: 'Sign-Up',
+            message: 'Welcome!',
+            estimatedTime: '~2 min'
+        },
+        {
+            title: 'Basic Info',
+            message: 'Please provide your details',
+            onClick: 'handleCareerInfoClick()',
+            estimatedTime: '~2 min'
+        },
+        {
+            title: 'Begin Test',
+            message: 'All the best!',
+            onClick: 'handleTestClick()',
+            estimatedTime: ''
+        },
+        // Add more chat objects as needed
+    ];
+
+    // Loop through each chat and create corresponding HTML elements
+    for (var i = 0; i < chats.length; i++) {
+        var chat = chats[i];
+
+        var chatBox = document.createElement('div');
+        chatBox.className = 'chat-box';
+        chatBox.setAttribute('onclick', chat.onClick);
+
+        var chatDetails = document.createElement('div');
+        chatDetails.className = 'chat-details';
+
+        var textHead = document.createElement('div');
+        textHead.className = 'text-head';
+
+        var h4 = document.createElement('h4');
+        h4.textContent = chat.title;
+
+        var estimatedTimeSpan = document.createElement('span');
+        estimatedTimeSpan.style.fontSize = '10px';
+        estimatedTimeSpan.textContent = `(${chat.estimatedTime})`;
+
+        textHead.appendChild(h4);
+        textHead.appendChild(estimatedTimeSpan);
+
+        var textMessage = document.createElement('div');
+        textMessage.className = 'text-message';
+        textMessage.innerHTML = chat.message;
+
+        // Append the elements in the hierarchy
+        chatDetails.appendChild(textHead);
+        chatDetails.appendChild(textMessage);
+
+        chatBox.appendChild(chatDetails);
+
+        // Append the chat box to the chat list container
+        chatListContainer.appendChild(chatBox);
+    }
+
+    // Append the chat list container to the left container
+    document.querySelector('.left-container').appendChild(chatListContainer);
+}
+
+// Call the function to append the chat list when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+    appendChatList();
+});;
+function measureUploadSpeed() {
+    return new Promise((resolve, reject) => {
+        const fileSizeInMB = 1; // 1 MB file size for testing
+        const file = new Blob(['0'.repeat(fileSizeInMB * 1024 * 1024)], { type: 'application/octet-stream' });
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', (event) => {
+            const elapsedTime = new Date().getTime() - startTime;
+            const speed = (event.loaded / elapsedTime) * 1000; // Upload speed in bytes per second
+            const speedInMbps = (speed / (1024 * 1024)).toFixed(2); // Convert to Mbps
+
+            resolve(speedInMbps);
+        });
+
+        const startTime = new Date().getTime();
+        xhr.open('POST', '/upload', true);
+        xhr.send(formData);
+    });
+}
+
+// Function to update the indicator
+async function updateIndicator() {
+    try {
+        const uploadSpeed = await measureUploadSpeed();
+        const indicator = document.getElementById("internet-speed-indicator");
+
+        if (uploadSpeed < 2) {
+            indicator.textContent = "Upload speed is low: " + uploadSpeed + " Mbps";
+            indicator.classList.add("slow-speed");
+        } else {
+            indicator.textContent = "Upload speed is good: " + uploadSpeed + " Mbps";
+            indicator.classList.remove("slow-speed");
+        }
+    } catch (error) {
+        console.error("Error measuring upload speed:", error);
+    }
+}
+
+// Call the function to update the indicator
+updateIndicator();
 function showQR() {
     // Create the modal structure if it doesn't exist
     if (!document.getElementById("myModal")) {
@@ -224,7 +227,6 @@ function closeModal() {
 }
 let timerInterval; // Declare timer interval variable globally
 let totalSecondsRemaining; // Declare total seconds remaining globally
-
 function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId) {
     // Define the maximum number of questions per section
     const maxQuestionsPerSection = 20;
@@ -244,21 +246,27 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
     // Clear previous question boxes
     questionGridContainer.innerHTML = '';
 
-    // Create and manage sections
-    let startQuestionIndex = currentSectionIndex * maxQuestionsPerSection;
-    let endQuestionIndex = Math.min(startQuestionIndex + maxQuestionsPerSection, totalQuestions);
-
+    // Create section container for the current section only
     const sectionContainer = document.createElement('div');
     sectionContainer.className = 'section-container';
-    sectionContainer.style.display = 'flex';
-    sectionContainer.style.flexWrap = 'wrap';
-    sectionContainer.style.marginLeft = '10px';
-    sectionContainer.style.gap = '8px';
-    sectionContainer.style.marginTop = '60%';
-    sectionContainer.style.overflow = 'auto';
-    sectionContainer.style.maxHeight = '300px';
+    sectionContainer.style.marginBottom = '20px'; // Add margin to separate sections
 
-    // Create question boxes for this section
+    // Create section heading
+    const sectionHeading = document.createElement('h3');
+    sectionHeading.textContent = `Section ${String.fromCharCode(65 + currentSectionIndex)}`;
+    sectionContainer.appendChild(sectionHeading);
+
+    // Calculate the range of questions for the current section
+    const startQuestionIndex = currentSectionIndex * maxQuestionsPerSection;
+    const endQuestionIndex = Math.min(startQuestionIndex + maxQuestionsPerSection, totalQuestions);
+
+    // Create question box container for the current section
+    const questionBoxContainer = document.createElement('div');
+    questionBoxContainer.className = 'question-box-container';
+    questionBoxContainer.style.display = 'flex';
+    questionBoxContainer.style.flexWrap = 'wrap';
+
+    // Create question boxes for the current section
     for (let questionIndex = startQuestionIndex; questionIndex < endQuestionIndex; questionIndex++) {
         const questionBox = document.createElement('div');
         questionBox.className = 'question-box';
@@ -266,19 +274,26 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
         // Check if the question has been submitted
         if (submittedQuestions.includes(questionIndex)) {
             questionBox.style.backgroundColor = 'green';
-        } else {
-            // Add blue background to the current question box
-            if (questionIndex === currentQuestionIndex) {
-                questionBox.style.backgroundColor = 'blue';
-            }
+        }
+
+        // Add blue background to the current question box
+        if (questionIndex === currentQuestionIndex) {
+            questionBox.style.backgroundColor = 'blue';
         }
 
         questionBox.textContent = questionIndex + 1; // Display question number
-        sectionContainer.appendChild(questionBox);
+        questionBoxContainer.appendChild(questionBox);
     }
+
+    // Append the question box container to the section container
+    sectionContainer.appendChild(questionBoxContainer);
 
     // Append the section to the question grid container
     questionGridContainer.appendChild(sectionContainer);
+
+    // Display total number of questions and current section
+    console.log(`Total questions: ${totalQuestions}`);
+    console.log(`Current section: ${currentSectionIndex + 1}`);
 
     // Create and initialize timer elements if not already created
     let timerContainer = document.querySelector('.timer-container');
@@ -293,6 +308,7 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
         startTimer(timerContainer); // Start the timer
     }
 }
+
 
 function startTimer(timerContainer) {
     // Add timer elements
@@ -330,10 +346,23 @@ function startTimer(timerContainer) {
         }
     }, 1000); // Update every second
 }
+function checkOrientation() {
+    if (window.innerWidth < window.innerHeight && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        alert("Please rotate your device to landscape mode for the best experience.");
+    }
+}
 
+// Run the checkOrientation function on page load
+checkOrientation();
 
+// Listen for orientation change events
+window.addEventListener("orientationchange", function () {
+    checkOrientation();
+});
 
+// Run the checkOrientation function on page load
 
+// Listen for orientation change events
 
 let coreStreamId;
 
@@ -341,7 +370,7 @@ let testInProgress = false;
 // Write your JavaScript code.
 
 
-let storedReportId;
+let storedReportId = "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
 function askConsent() {
 
     // Ask the user for consent using a confirm dialog
@@ -393,19 +422,16 @@ function askTransactionId() {
     // Append the container to the chat container
     const chatContainer = document.querySelector(".chat-container");
     chatContainer.appendChild(messageButtonContainer);
+
     // Prompt the user to enter the transaction ID
     document.getElementById("dobInput").placeholder = "Enter your transaction ID";
     createMessageBox("Please enter your transaction ID:");
-
-
 
     // Attach the event listener for submitting the transaction ID
     document.getElementById("dobInput").addEventListener("change", submitTransactionId);
 }
 
 function submitTransactionId() {
-
-
     const transactionId = document.getElementById("dobInput").value;
 
     if (transactionId && transactionId.length >= 3) {
@@ -413,13 +439,11 @@ function submitTransactionId() {
         userData.transactionId = transactionId;
         displaySubmittedInput("Transaction ID", transactionId, true);
 
-        // Submit data to the server or handle the completion of the form
+        // Remove the event listener for transaction ID submission
         document.getElementById("dobInput").removeEventListener("change", submitTransactionId);
-        // Move to the next step after processing the transaction ID
-        // You can call the next function here or put the relevant code directly.
-        // For example:
-        // askNextStep();
-        asktesttt();
+
+        // Move to the next step: ask for UPI phone number used for payment
+        askUPIPhoneNumber();
     } else {
         // Handle the case where the transaction ID is not entered or doesn't meet the criteria
         if (!transactionId) {
@@ -430,6 +454,56 @@ function submitTransactionId() {
     }
 }
 
+function askUPIPhoneNumber() {
+    // Prompt the user to enter the UPI phone number used for payment
+    document.getElementById("dobInput").placeholder = "Enter your UPI phone number";
+    createMessageBox("Please enter your UPI phone number:");
+
+    // Attach the event listener for submitting the UPI phone number
+    document.getElementById("dobInput").addEventListener("change", submitUPIPhoneNumber);
+}
+
+function submitUPIPhoneNumber() {
+    const upiPhoneNumber = document.getElementById("dobInput").value;
+
+    // Process the submitted UPI phone number
+    userData.upiPhoneNumber = upiPhoneNumber;
+    displaySubmittedInput("UPI Phone Number", upiPhoneNumber, true);
+
+    // Remove the event listener for UPI phone number submission
+    document.getElementById("dobInput").removeEventListener("change", submitUPIPhoneNumber);
+
+    // Move to the next step: ask for the amount paid
+    askAmountPaid();
+}
+
+function askAmountPaid() {
+    // Prompt the user to enter the amount paid
+    document.getElementById("dobInput").placeholder = "Enter the amount paid";
+    createMessageBox("Please enter the amount paid:");
+
+    // Attach the event listener for submitting the amount paid
+    document.getElementById("dobInput").addEventListener("change", submitAmountPaid);
+}
+
+function submitAmountPaid() {
+    const amountPaid = document.getElementById("dobInput").value;
+
+    // Process the submitted amount paid
+    userData.amountPaid = amountPaid;
+    displaySubmittedInput("Amount Paid", amountPaid, true);
+
+    // Remove the event listener for amount paid submission
+    document.getElementById("dobInput").removeEventListener("change", submitAmountPaid);
+    submitUserDataToDatabase(userData);
+    asktesttt();
+
+    // Now you can proceed with the final steps or next actions
+    // For example, submitting all data to the server or handling form completion
+    // You can call another function here or put the relevant code directly.
+    // For example:
+    // submitDataToServer();
+}
 
 function asktesttt() {
     clearMessageBoxes();
@@ -511,13 +585,17 @@ function submitDobAfterGender() {
         clearMessageBoxes();
 
         submitUserDataToDatabase(userData);
-        if (storedTestCode === "PEXCGRVIT2312O1009") {
+        if (storedTestCode === "PEXCGRD2312O1009" || storedTestCode === "PEXCGJD2312O1011" || storedTestCode === "PEXCGSD2312O1013") {
             // If true, call askGender() instead of askCoreStream()
             askTransactionId();
             console.log(userData);
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
-        } else {
+        }
+        else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId === "E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
+            askCoreStream();
+        }
+        else {
             // If false, call askCoreStream()
             asktesttt();
             console.log(userData);
@@ -535,10 +613,7 @@ function submitDobAfterGender() {
         alert('Please select your date of birth.');
     }
 }
-function handleCareer() {
-    // Redirect to the desired page
-    window.location.href = "https://careertests.in/";
-}
+
 function calculateAge(birthDate) {
     const currentDate = new Date();
     const birthDateObj = new Date(birthDate);
@@ -607,7 +682,6 @@ function optionselect(optionsData, onNextQuestion, questionId) {
 
     // Append the new message box to the chat container
     document.querySelector(".chat-container").appendChild(newMessageBox);
-
     newMessageBox.addEventListener('change', function () {
         const selectedOption = newMessageBox.querySelector(`input[name="option_${questionId}"]:checked`);
 
@@ -643,8 +717,8 @@ function optionselect(optionsData, onNextQuestion, questionId) {
             console.log(userData);
         }
     });
-
 }
+
 
 function giveTest(questionId, question, optionsData, onNextQuestion, currentQuestionIndex, totalQuestions) {
     clearChatList();
@@ -728,8 +802,7 @@ function callApiToStartTest(reportId) {
         },
     });
 }
-// Function to update rating and show as a pop-up with HTML and CSS
-// Function to update rating and show as a pop-up with HTML and CSS
+
 function gfg(n) {
     // Create the rating card HTML
     let html = `
@@ -811,6 +884,11 @@ function submitRating(rating) {
     userData.rating = rating;
     console.log(userData);
     submitUserDataToDatabase(userData);
+
+    // Remove the modal from the DOM
+    let modal = document.querySelector('.custom-modal');
+    modal.parentNode.removeChild(modal);
+
     // You can remove this line if not needed
     // You can add code here to further process the submitted rating
 }
@@ -879,7 +957,7 @@ function submitName() {
 
         // Submit data to the server or handle the completion of the form
         document.getElementById("dobInput").removeEventListener("change", submitName);
-        askCountry();
+        askLocation();
         document.getElementById("dobInput").value = "";
         console.log(userData);
     } else {
@@ -981,11 +1059,13 @@ function askOrganization() {
     specialization = false;
 
     const messageBox = document.getElementById("messageBox");
-    const interestSelect = document.getElementById("interestSelect");
+
+    const nextStepSelect = document.getElementById("nextStepSelect");
+
 
     // Remove the existing interest select if it exists
-    if (interestSelect) {
-        interestSelect.parentNode.removeChild(interestSelect);
+    if (nextStepSelect) {
+        nextStepSelect.parentNode.removeChild(nextStepSelect);
     }
 
     // Remove the existing qualification select if it exists
@@ -1054,7 +1134,6 @@ function askOrganization() {
     console.log(userData);
 }
 
-
 function submitOrganization() {
     const organizationSelect = document.getElementById("organizationSelect");
     const organization = organizationSelect.value;
@@ -1112,7 +1191,112 @@ function submitOtherOrganization() {
     }
 }
 
+function askLocation() {
+    const messageBox = document.getElementById("messageBox");
+    const dobInput = document.getElementById("dobInput");
+
+
+    // Remove existing elements if they exist
+
+
+    // Check if location is already provided
+
+
+    // Update placeholder and message
+    dobInput.placeholder = "Select your location";
+    createMessageBox("Please select your Location:");
+
+    // Create select element for location
+    const locationSelect = document.createElement("select");
+    locationSelect.id = "locationSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select your Country";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    locationSelect.appendChild(placeholderOption);
+
+    // Add location options
+    const locationOptions = ["India", "Other"];
+    for (const location of locationOptions) {
+        const option = document.createElement("option");
+        option.value = location.toLowerCase();
+        option.text = location;
+        locationSelect.appendChild(option);
+    }
+
+    // Replace existing input with the new select element
+    dobInput.parentNode.insertBefore(locationSelect, dobInput.nextSibling);
+
+    // Attach event listener for submitLocation
+    locationSelect.addEventListener("change", submitLocation);
+    console.log(userData);
+}
+
+function submitLocation() {
+    const locationSelect = document.getElementById("locationSelect");
+    const location = locationSelect.value;
+
+    if (location.toLowerCase() === "other") {
+        // If "Other" is selected, ask for free text input
+        askOtherLocation();
+    } else {
+        // Process submitted location and proceed to the next step
+        userData.country = location;
+        displaySubmittedInput("Location", location, true);
+        locationSelect.removeEventListener("change", submitLocation);
+        console.log(userData);
+
+        // Clear dropdown menu
+        locationSelect.value = "";
+
+        // Proceed to next step
+        askCountry();
+    }
+}
+
+function askOtherLocation() {
+    const locationInput = document.getElementById("dobInput");
+
+    locationInput.placeholder = "Enter another location";
+    createMessageBox("Great! Please enter another Location:");
+
+    // Remove the event listener for the previous function if it exists
+
+    locationInput.removeEventListener("change", submitOtherLocation);
+    // Attach the event listener for submitOtherLocation
+    locationInput.addEventListener("change", submitOtherLocation);
+}
+
+function submitOtherLocation() {
+    const otherLocation = document.getElementById("dobInput").value;
+    if (otherLocation) {
+        // Process the submitted other location and proceed to the next step
+        userData.country = otherLocation;
+
+        displaySubmittedInput("Other Location", otherLocation, true);
+        document.getElementById("dobInput").removeEventListener("change", submitOtherLocation);
+        console.log(userData);
+        askQualification();
+        // Clear the text input
+        document.getElementById("dobInput").value = "";
+
+        // Submit data to the server or handle the completion of the form
+        // You can call the next function or submit the entire form here
+        // or whatever is the next step
+    } else {
+        // Handle the case where the other location is not entered
+        alert('Please enter another location.');
+    }
+}
+
 function askCountry() {
+    const locationSelect = document.getElementById("locationSelect");
+    if (locationSelect) {
+        locationSelect.parentNode.removeChild(locationSelect);
+    }
     // Create a select element
     const countrySelect = document.createElement("select");
     countrySelect.id = "countrySelect";
@@ -1301,21 +1485,17 @@ function submitCountry() {
 function askQualification() {
 
     const countrySelect = document.getElementById("countrySelect");
+    const locationSelect = document.getElementById("locationSelect");
+    if (locationSelect) {
+        locationSelect.parentNode.removeChild(locationSelect);
+    }
+    else if (countrySelect) {
+        countrySelect.parentNode.removeChild(countrySelect);
+    }
+
     const messageBox = document.getElementById("messageBox");
 
     // Remove the existing country select if it exists
-    if (countrySelect) {
-        countrySelect.parentNode.removeChild(countrySelect);
-    }
-    if (userData.qualification !== undefined && userData.qualification !== null) {
-        // Skip asking for input, directly move to the next step
-        displaySubmittedInput("Qualification", userData.qualification, false);
-        askCoreStream(); // Move on to the next step
-        const dobInput = document.getElementById("dobInput");
-        dobInput.parentNode.removeChild(document.getElementById("qualificationSelect")); // Remove the select element
-        console.log(userData);
-        return;
-    }
 
     // Update placeholder and message
     const dobInput = document.getElementById("dobInput");
@@ -1364,6 +1544,7 @@ function askQualification() {
         },
     });
 }
+let below10th = "";
 function submitQualification() {
     const qualificationSelect = document.getElementById("qualificationSelect");
     const qualification = qualificationSelect.value;
@@ -1373,7 +1554,8 @@ function submitQualification() {
 
         // Add the user's choice to userData
         userData.pursuing = confirmed ? "Yes" : "No";
-
+        const studiedMathScience = window.confirm("Have you studied Math and Science as part of this qualification? Click 'OK' if you have studied and 'Cancel' if you haven't.");
+        userData.mathScience = studiedMathScience ? "Yes" : "No";
         // Fetch the ID corresponding to the selected qualification
         fetch(`/api/QualificationTyp/GetIdByName?name=${encodeURIComponent(qualification)}`)
             .then(response => response.json())
@@ -1381,15 +1563,19 @@ function submitQualification() {
                 if (data) {
                     // Process the submitted qualification and ID, and proceed to the next step
                     userData.qualification = qualification;
+                    if (userData.qualification === "below 10th") {
+                        below10th = "1234"
+                    }
+                    console.log(below10th);
                     displaySubmittedInput("Qualification", qualification, true);
                     qualificationSelect.removeEventListener("change", submitQualification);
                     console.log(userData);
 
                     // Clear the dropdown menu
                     qualificationSelect.value = "";
-
+                    console.log(istextcodeInvalid);
                     // Check if storedTestCode is equal to "PEXCGR2312O1009"
-                    if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743") {
+                    if (!istextcodeInvalid) {
                         // If true, call askGender() instead of askCoreStream()
                         askOrganization();
                         console.log(userData);
@@ -1397,12 +1583,15 @@ function submitQualification() {
                         // You can call the next function or submit the entire form here
                     } else {
                         // If false, call askCoreStream()
-                        askOrganization();
+                        askNextStep();
                         console.log(userData);
                         // Submit data to the server or handle the completion of the form
                         // You can call the next function or submit the entire form here
                     }
-                } 
+                } else {
+                    // Handle the case where the ID is not found for the selected qualification
+                    alert('Error: ID not found for the selected qualification.');
+                }
             })
             .catch(error => {
                 console.error('Error fetching qualification ID:', error);
@@ -1413,7 +1602,98 @@ function submitQualification() {
         alert('Please select your qualification.');
     }
 }
+function askNextStep() {
+    const messageBox = document.getElementById("messageBox");
 
+    const qualificationSelect = document.getElementById("qualificationSelect");
+
+    // Remove the existing interest select if it exists
+
+    if (qualificationSelect) {
+        qualificationSelect.parentNode.removeChild(qualificationSelect);
+    }
+
+    // Update placeholder and message
+    const dobInput = document.getElementById("dobInput");
+    dobInput.placeholder = "Select your next step";
+    createMessageBox("What do you want to do next?");
+
+    // Create a select element for next steps
+    const nextStepSelect = document.createElement("select");
+    nextStepSelect.id = "nextStepSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select what do you want to do next";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    nextStepSelect.appendChild(placeholderOption);
+
+    // List of next step options
+    const nextStepOptions = [
+        "I want a Job",
+        "I want to study",
+        // Add more options as needed
+    ];
+
+    // Add next step options
+    for (const step of nextStepOptions) {
+        const option = document.createElement("option");
+        option.value = step.toLowerCase().replace(/\s+/g, '');
+        option.text = step;
+        nextStepSelect.appendChild(option);
+    }
+
+    // Replace the existing input with the new select element
+    dobInput.parentNode.insertBefore(nextStepSelect, dobInput.nextSibling);
+
+
+    // Attach the event listener for submitNextStep
+    nextStepSelect.addEventListener("change", submitNextStep);
+}
+
+function submitNextStep() {
+
+    const nextStepSelect = document.getElementById("nextStepSelect");
+    const selectedNextStep = nextStepSelect.value;
+
+    if (!selectedNextStep) {
+        // No next step selected, prompt user to select one
+        alert("Please select your next step.");
+        return;
+    }
+
+
+
+    // Clear the dropdown menu
+    nextStepSelect.value = "";
+
+    // Handle the next step based on user's choice
+    if ((below10th === "1234" && selectedNextStep === "iwantajob") ||
+        (userData.qualification.toLowerCase() === "10th/matriculation" && selectedNextStep === "iwantajob") ||
+        (userData.qualification.toLowerCase() === "12th/higher secondary" && selectedNextStep === "iwantajob")) {
+        storedReportId = "F3BC64D6-BFE5-49CC-9D9F-3F9BD5296637";
+        storedTestCode = "PEXCGSD2312O1013";
+        userData.storedTestCode = storedTestCode;
+
+        askOrganization();
+    } else if (selectedNextStep === "iwantajob") {
+        storedTestCode = "PEXCGRD2312O1009";
+        userData.storedTestCode = storedTestCode;
+        // Example: call a function to handle job-related tasks
+        storedReportId = "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
+        askOrganization();
+    } else if (selectedNextStep === "iwanttostudy") {
+        // Example: call a function to handle study-related tasks
+        storedTestCode = "PEXCGJD2312O1011";
+        userData.storedTestCode = storedTestCode;
+        storedReportId = "E198C384-58DC-403D-8D2D-854F9C4E6A7F";
+        askOrganization();
+    }
+
+    console.log(storedReportId);
+}
 function askCoreStream() {
     const qualificationSelect = document.getElementById("qualificationSelect");
     const messageBox = document.getElementById("messageBox");
@@ -1804,7 +2084,7 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
 }
 
 let isAskTestCodeCalled = false;
-
+let istextcodeInvalid = false;
 
 function askTestCode() {
     isAskTestCodeCalled = true;
@@ -1831,8 +2111,9 @@ function askTestCode() {
         // Log the current value of the input
         console.log('askTestCode - Current input value:', input.value);
     } else {
-        // If the user doesn't have a test code, display a message to connect on WhatsApp and email
-        createMessageBox("Connect with Us Please connect with us on WhatsApp and email for assistance.");
+        istextcodeInvalid = true;
+        askConsent();        // If the user doesn't have a test code, display a message to connect on WhatsApp and email
+
     }
 }
 let storedTestCode = "";
@@ -1898,6 +2179,7 @@ function verifyTestCode(testCode) {
 
                 alert('Test code is Invalid');
                 askTestCode();
+
                 // Optionally, you can ask the user to re-enter the test code or take other actions
             }
         },
@@ -2000,7 +2282,7 @@ function handleMultipleSubmit() {
         askInterest();
     }
     if (Indusry && !onNext && !testInProgress) {
-        askOrganization();
+        asktesttt();
     }
     if (onNext && testInProgress) {
         onNextQuestion();
@@ -2977,70 +3259,22 @@ let data = {
         "AreasOfStudy": ["Art", "Psychology", "Music", "Healing", "Oceanography"]
     }
 };
-function HandleAbout() {
+function handleYouTubeChatClick() {
     // Update the right container with the astrology question
-    const rightContainer = document.querySelector('.right-container');
-
-    // Replace the HTML content with the desired content
-    rightContainer.innerHTML = `
-      
-            <div class="main-blogs">
-                <div class="container-01">
-                    <div class="neumorphic-card">
-                        <div class="imgBox">
-                            <i class="fa fa-pencil-ruler" aria-hidden="true"></i>
-                        </div>
-                        <h2>Test</h2>
-                        <div class="contentBox">
-                            <p>Trust CareerGraph to navigate the complexities of modern career choices, propelling you towards success.&ZeroWidthSpace;</p>
-                            <a href="https://careertests.in/Test"><span>Give Test</span></a>
-                        </div>
-                    </div>
-                    <div class="neumorphic-card">
-                        <div class="imgBox">
-                            <i class="fa fa-pencil-ruler" aria-hidden="true"></i>
-                        </div>
-                        <h2>CareerGraph</h2>
-                        <div class="contentBox">
-                            <p>Trust CareerGraph to navigate the complexities of modern career choices, propelling you towards success.&ZeroWidthSpace;</p>
-                            <a href="#"><span>Learn More</span></a>
-                        </div>
-                    </div>
-                    <div class="neumorphic-card">
-                        <div class="imgBox">
-                            <i class="fa fa-pencil-ruler" aria-hidden="true"></i>
-                        </div>
-                        <h2>Mentorship</h2>
-                        <div class="contentBox">
-                            <p>Trust CareerGraph to navigate the complexities of modern career choices, propelling you towards success.&ZeroWidthSpace;</p>
-                            <a href="https://careertests.in/Councellor"><span>Enquire Now</span></a>
-                        </div>
-                    </div>
-                </div>
-               
-                        
-                    </div>
-                </div>
-            </div>
+    document.querySelector(".right-container .chat-container").innerHTML = `
+        <div class="message-box my-message">
+            <p>Check out the YouTube videos:</p>
+            <p><a href="https://youtube.com/playlist?list=PLFhNcXkdLYt-fFQYRTbIKYD77WabWVnSP&si=j6Y20kYy6h7qsWzx" target="_blank">Career Playlist</a></p>
+            <span>08:00</span>
+        </div>
+        <div class="message-box my-message">
+            <p>Feel free to explore the playlist and let me know if you have any questions!</p>
+            <span>08:01</span>
         </div>
     `;
 }
 document.querySelector(".chat-box.Talk to Career").addEventListener("click", handleCreerChatClick);
-function handlAboutUs() {
-    var baseUrl = '';
 
-    // Check if running on localhost
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        baseUrl = 'https://localhost:7252'; // Replace PORT with your local port number
-    } else {
-        // Set the base URL for production
-        baseUrl = 'https://careertests.in';
-    }
-
-    // Open a new tab and navigate to the specified URL
-    window.open(baseUrl + '/AboutUs', '_blank');
-
-}
 function handleCareerExpertClick() {
     // Update the right container with the contact information
     var baseUrl = '';
@@ -3088,6 +3322,7 @@ function handleAstroChatClick() {
     // Open a new tab and navigate to the specified URL
     window.open(baseUrl + '/Astro', '_blank');
 }
+
 
 function googleTranslateElementInit() {
     new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: '', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
@@ -3146,14 +3381,6 @@ function toggleAboutUsDropdown() {
     // Additional logic for About Us content
     AboutUsClick();
 }
-function toggleSidebar() {
-    const sidebar = document.querySelector('.chat-list');
-    const toggleIcon = document.querySelector('.toggle');
-
-    sidebar.classList.toggle('close');
-    toggleIcon.classList.toggle('bx-chevron-right');
-}
-
 function AboutUsClick() {
     // Reset the right container to its original state
     // Change the background color of the chat container

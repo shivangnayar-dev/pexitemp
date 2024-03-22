@@ -9,13 +9,12 @@
     <style>
 
 
-	.timer-container {
+        .timer-container {
             text-align: center;
             display: flex;
             align-items: center;
             margin-top: 20%;
             margin-left: 10px;
-           
         }
 
             .timer-container > * {
@@ -42,6 +41,7 @@
             color: #333;
             margin: 0 10px;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -79,6 +79,7 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+
         .question-container {
             margin-right: 10px; /* Adjust the value according to your preference */
         }
@@ -92,6 +93,7 @@
             overflow: auto;
             max-height: 300px;
         }
+
         .question-box {
             width: 30px;
             height: 30px;
@@ -151,11 +153,13 @@
                 width: 100%; /* Allow the input area to take the full width on mobile */
             }
 
+
                 .chatbox-input input {
                     width: 100%;
                     margin-right: 0;
                     / Remove margin for better spacing on mobile */
                 }
+
             .chat-list {
                 height: auto; /* Allow the chat list to take the necessary height */
                 overflow-y: auto; /* Add vertical scrolling if content exceeds max-height */
@@ -175,9 +179,9 @@
                     width: 100%; /* Make buttons take full width in mobile view */
                     margin-bottom: 10px; /* Add margin between buttons in mobile view */
                 }
-                    /* Additional styles as needed for other elements */
-                    /* ... existing styles ... */
-                }
+            /* Additional styles as needed for other elements */
+            /* ... existing styles ... */
+        }
 
         importUrl = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap";
         body {
@@ -213,6 +217,7 @@
                 }
 
         .header {
+            margin-top: 20%;
             position: relative;
             display: flex;
             align-items: center;
@@ -221,6 +226,31 @@
             background: #ededed;
             padding: 0 15px;
         }
+
+        .header1 {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 60px;
+            background: #ededed;
+            padding: 0 15px;
+        }
+
+        #internet-speed-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: green;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+            /* Additional styling for slow-speed indicator */
+            #internet-speed-indicator.slow-speed {
+                background-color: red; /* Change color to indicate slow speed */
+            }
 
         .user-img {
             position: relative;
@@ -331,7 +361,7 @@
                 color: #bbb;
                 font-size: 0.8em;
             }
-           
+
         .chat-list {
             position: relative;
             height: 80%;
@@ -377,7 +407,6 @@
                         }
 
                     .chat-list .chat-box .chat-details .text-message {
-                       
                         justify-content: space-between;
                         align-items: center;
                     }
@@ -473,7 +502,7 @@
         }
 
             .message-box p {
-                text-align:left;
+                text-align: left;
                 max-width: 65%;
                 padding: 12px;
                 background: #dcf8c6;
@@ -591,6 +620,7 @@
             cursor: pointer;
             border-radius: 15px;
         }
+
         .message-button-container {
             display: flex;
             flex-direction: column;
@@ -659,9 +689,10 @@
         }
 
 
-        .left-container{
-            width:20%;
+        .left-container {
+            width: 20%;
         }
+
         .left-container-closed {
             margin-left: -60%;
             width: 0;
@@ -679,18 +710,105 @@
         .slide-button-closed {
             left: 0;
         }
+
+        .openbtn {
+            margin-right: 10px;
+            margin-top: 10px;
+            background: #8a2be2;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-left: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .openbtn .openbtn-area {
+                transition: all .4s;
+            }
+
+            .openbtn span {
+                position: absolute;
+                background: #fff;
+                display: inline-block;
+                border-radius: 3px;
+                left: 13px;
+                height: 3px;
+                transition: all .4s;
+                width: 50%;
+            }
+
+                .openbtn span:nth-of-type(1) {
+                    top: 16px;
+                }
+
+                .openbtn span:nth-of-type(2) {
+                    top: 24px;
+                }
+
+                .openbtn span:nth-of-type(3) {
+                    top: 32px;
+                }
+
+            .openbtn.active .openbtn-area {
+                transform: rotate(45deg);
+            }
+
+            .openbtn.active span:nth-of-type(1) {
+                width: 45%;
+                top: 18px;
+                left: 14px;
+                transform: translateY(6px) rotate(-135deg);
+            }
+
+            .openbtn.active span:nth-of-type(2) {
+                opacity: 0;
+            }
+
+            .openbtn.active span:nth-of-type(3) {
+                width: 45%;
+                top: 30px;
+                left: 14px;
+                transform: translateY(-6px) rotate(135deg);
+            }
+
+            .openbtn.active {
+                z-index: 1000; /* Ensure it's above the left container */
+            }
+
+        .left-container {
+            position: fixed;
+            top: 0;
+            left: -100%; /* Initially hidden */
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            z-index: 999; /* Ensure it's below the hamburger menu */
+            transition: left 0.3s ease;
+        }
     </style>
 }
+
 
 
 <div class="background-green"></div>
 
 <div class="main-container">
-    <div class="left-container">
+    <div class="openbtn" id="openbtn">
+        <div class="openbtn-area">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="left-container" id="left-container">
         <!-- header -->
         <div class="header">
             <div class="user-img">
-                <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                <a href="https://careertests.in/">
+                    <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                </a>
             </div>
             <div class="nav-icons">
                 <div class="linkedin-logo-container">
@@ -699,13 +817,21 @@
                     </a>
                 </div>
                 <div class="linkedin-logo-container">
+                    <a href="https://www.instagram.com/your_careergraph?igsh=NnR3ZjkxaGl1dGY4" target="_blank">
+                        <img src="https://github.com/shivangnayar-dev/img/blob/main/%E2%80%94Pngtree%E2%80%94instagram%20social%20platform%20icon_8704818.png?raw=true
+    " alt="LinkedIn" class="nav-icon linkedin-icon">
+                    </a>
+                </div>
+                <div class="linkedin-logo-container">
                     <a href="https://wa.me/917349662320" target="_blank">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png" alt="WhatsApp" class="nav-icon whatsapp-icon">
+                        <img src="https://github.com/shivangnayar-dev/img/blob/main/logo-whatsapp-png-46041.png?raw=true" alt="WhatsApp" class="nav-icon whatsapp-icon">
                     </a>
                 </div>
                 <div class="linkedin-logo-container">
                     <a href="https://www.youtube.com/playlist?list=PLFhNcXkdLYt-fFQYRTbIKYD77WabWVnSP" target="_blank">
-                        <img src="https://w7.pngwing.com/pngs/679/48/png-transparent-youtube-logo-youtube-play-button-computer-icons-youtube-icon-angle-rectangle-desktop-wallpaper.png" alt="YouTube" class="nav-icon whatsapp-icon">
+
+                        <img src="https://github.com/shivangnayar-dev/img/blob/main/youtube-logo-png-3566.png?raw=true
+    " alt="YouTube" class="nav-icon whatsapp-icon">
                     </a>
                 </div>
             </div>
@@ -724,13 +850,14 @@
 
 
     <div class="right-container">
+
         <!-- header -->
-        <div class="header">
+        <div class="header1">
             <div class="img-text">
                 <div class="user-img">
-                  
+
                 </div>
-               
+
             </div>
             <div id="google_translate_element"></div>
         </div>
@@ -744,7 +871,7 @@
                 <button class="westernn-button" onclick="askemail()">Sign Up with Email</button>
                 <button class="western-button" onclick="askPhone()">Sign Up with Phone</button>
                 <button class="westernnn-button" onclick="askadhar()">Sign Up with AdharNo</button>
-              
+
             </div>
 
         </div>
@@ -760,6 +887,6 @@
     </div>
 </div>
 </div>
-
+<script src="/js/test.js" asp-append-version="true"></script>
 
 

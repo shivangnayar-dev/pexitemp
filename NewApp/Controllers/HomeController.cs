@@ -63,6 +63,14 @@ public class HomeController : Controller
     {
         return View();
     }
-   
+    public IActionResult Dashboard()
+    {
+        return View();
+    }
+    public IActionResult graph()
+    {
+        return View();
+    }
 }
+
 

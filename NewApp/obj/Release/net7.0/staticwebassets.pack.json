@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets/js/Index.js"
     },
     {
+      "Id": "/root/NewApp/NewApp/wwwroot/js/benchmarkChart.js",
+      "PackagePath": "staticwebassets/js/benchmarkChart.js"
+    },
+    {
       "Id": "/root/NewApp/NewApp/wwwroot/js/career.js",
       "PackagePath": "staticwebassets/js/career.js"
     },
@@ -39,6 +43,10 @@
     {
       "Id": "/root/NewApp/NewApp/wwwroot/js/site.js.save.2",
       "PackagePath": "staticwebassets/js/site.js.save.2"
+    },
+    {
+      "Id": "/root/NewApp/NewApp/wwwroot/js/test.js",
+      "PackagePath": "staticwebassets/js/test.js"
     },
     {
       "Id": "/root/NewApp/NewApp/wwwroot/lib/bootstrap/LICENSE",
@@ -267,6 +275,10 @@
     {
       "Id": "/root/NewApp/NewApp/wwwroot/lib/jquery/dist/jquery.min.map",
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.map"
+    },
+    {
+      "Id": "/root/NewApp/NewApp/wwwroot/site.js",
+      "PackagePath": "staticwebassets/site.js"
     },
     {
       "Id": "obj/Release/net7.0/staticwebassets/msbuild.NewApp.Microsoft.AspNetCore.StaticWebAssets.props",

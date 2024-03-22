@@ -25,44 +25,18 @@
  // Flag to track left container visibility
 function handleDashboard() {
     // Get the right-container element
-    const rightContainer = document.querySelector('.right-container');
+    var baseUrl = '';
 
-    // Replace the HTML content with the desired content
- rightContainer.innerHTML = `
-      
-            <div class="main-blogs">
-    <div class="container-01">
-        <div class="neumorphic-card">
-           
-            <h2>Test</h2>
-            <div class="contentBox">
-                <p>Unlock your potential with AI-enabled psychometric and aptitude tests.</p>
-                <p>Gain insights into your strengths, weaknesses, and career preferences for informed decisions and personalized growth.</p>
-                <a href="https://careertests.in/Test"><span>Give Test</span></a>
-            </div>
-        </div>
-        <div class="neumorphic-card">
-          
-            <h2>Report</h2>
-            <div class="contentBox">
-                <p>Download the report for self-understanding and counseling.</p>
-                <p>Gain insights into your strengths and career paths. Empower your decision-making process today.</p>
-                <a href="#"><span>Learn More</span></a>
-            </div>
-        </div>
-        <div class="neumorphic-card">
-           
-            <h2>Mentorship</h2>
-            <div class="contentBox">
-                <p>Speak with our experienced counselors to explore study streams (for classes 8 to 12 / PU) or job roles (graduates, postgraduates, professionals).</p>
-                <p>Gain valuable insights today!</p>
-                <a href="https://careertests.in/Councellor"><span>Enquire Now</span></a>
-            </div>
-        </div>
-    </div>
-</div>
+    // Check if running on localhost
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        baseUrl = 'https://localhost:7252'; // Replace PORT with your local port number
+    } else {
+        // Set the base URL for production
+        baseUrl = 'https://careertests.in';
+    }
 
-    `;
+    // Open a new tab and navigate to the specified URL
+    window.open(baseUrl + '/Dashboard', '_blank');
 }
 var acc = document.getElementsByClassName("accordion");
 var i;
@@ -358,19 +332,6 @@ function startTimer(timerContainer) {
 
 
 
-function checkOrientation() {
-    if (window.innerWidth < window.innerHeight && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        alert("Please rotate your device to landscape mode for the best experience.");
-    }
-}
-
-// Run the checkOrientation function on page load
-checkOrientation();
-
-// Listen for orientation change events
-window.addEventListener("orientationchange", function () {
-    checkOrientation();
-});
 let coreStreamId;
 
 let testInProgress = false;
@@ -2244,8 +2205,32 @@ function submitPassword(existingPassword) {
 }
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    const openBtn = document.getElementById('openbtn');
+    const leftContainer = document.getElementById('left-container');
 
+    openBtn.addEventListener('click', function () {
+        const isActive = openBtn.classList.toggle('active');
+        leftContainer.style.left = isActive ? '0' : '-100%';
+    });
+});
+let counts = document.querySelectorAll(".count");
 
+counts.forEach(function (item) {
+    let startNumber = 486000;
+    let endNumber = parseInt(item.dataset.number); // Parse data-number attribute as an integer
+
+    function counterUp() {
+        startNumber++;
+        item.innerHTML = startNumber;
+
+        if (startNumber === endNumber) {
+            clearInterval(stop);
+        }
+    }
+
+    let stop = setInterval(counterUp,10); // Lowered the interval for smoother animation
+});
 
 function createMessageBox(title) {
     // Create a new message box
@@ -2274,6 +2259,22 @@ function clearMessageBoxes() {
     const chatContainer = document.querySelector(".chat-container");
     chatContainer.innerHTML = "";
 }
+function toggleCheckbox() {
+    var checkbox = document.getElementById('checkbox');
+    checkbox.checked = !checkbox.checked;
+}
+
+// Set interval for toggling every 5 seconds (5000 milliseconds)
+setInterval(toggleCheckbox, 2000);
+function redirectToGoogleSearch() {
+    window.open('https://www.google.co.in/search?source=hp&ei=wA_eXMP7E6OKmgfZ26TwBQ&q=software+engineer+jobs&oq=day&gs_l=psy-ab.1.0.0i67l3j0i10i67j0i67j0i131i67j0i10i67j0l3.823.4871..7805...1.0..0.966.3188.2-1j5-2j2......0....1..gws-wiz.....0..35i39j0i131j0i20i263.hg5-1jVQaJ0&ibp=htl;jobs&sa=X&ved=2ahUKEwikvcvQ__GEAxVmsFYBHXU3AC8QudcGKAF6BAhAEAg&sxsrf=ACQVn0_7WnaTOVHXZ7o6D1SMPRh_xN01Bg:1710358957062#fpstate=tldetail&htivrt=jobs&htidocid=Xw5L1qQLqQQBCPdaAAAAAA%3D%3D');
+}
+function redirectToTest() {
+    window.location.href = "https://careertests.in/Test";
+}
+
+// Add event listener to the "Take a Test" label for click event
+document.getElementById('testLabel').addEventListener('click', redirectToTest);
 
 let rashiData = {
     "Mesha": {

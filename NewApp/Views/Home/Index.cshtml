@@ -315,6 +315,7 @@
         }
 
         @@media screen and (max-width: 600px) {
+
             .topnav {
                 background: #4033ff;
                 width: 100%;
@@ -331,6 +332,13 @@
         }
 
         @@media screen and (max-width: 600px) {
+            .wrapper, .lines, .line, .open:after, .content {
+                position: absolute;
+                width: 10px;
+                top: 84% !important;
+                left: 30% !important;
+                transform: translate(-50%, -50%) !important;
+            }
             .topnav.responsive {
                 position: relative;
             }
@@ -541,12 +549,16 @@
                 justify-content: left;
                 position: relative;
                 overflow-x: auto;
+                flex-direction: row;
                 scrollbar-width: none;
                 scroll-behavior: smooth;
             }
 
                 .section0 .card {
-                    min-width: 79%;
+                    display: flex;
+                    flex-direction: column;
+                    /* flex-direction: row !important; */
+                    min-width: 80%;
                 }
         }
 
@@ -1530,6 +1542,7 @@
         }
 
         @@media only screen and (max-width: 767px) {
+
             body {
                 overflow: auto; /* Enable scrolling for the entire page on mobile */
             }
@@ -1566,7 +1579,7 @@
 
             .header {
                 height: auto; /* Allow the header to take the necessary height */
-                flex-direction: column; /* Stack header items vertically in mobile view */
+                /* Stack header items vertically in mobile view */
                 padding: 10px;
             }
 
@@ -1603,7 +1616,7 @@
             }
 
                 .chat-list .chat-box {
-                    flex-direction: column; /* Stack chat boxes vertically in mobile view */
+                    flex-direction: row; /* Stack chat boxes vertically in mobile view */
                     padding: 15px;
                 }
 
@@ -1628,19 +1641,18 @@
         }
 
         .main-container {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
+         
             overflow: hidden;
         }
 
 
 
             .main-container .right-container {
-                flex: 70%;
                 background: #8a2be2;
                 position: relative;
                 overflow: auto;
+                width: 100%;
+                height: 100vh;
             }
 
                 .main-container .right-container::before {
@@ -1655,6 +1667,7 @@
                 }
 
         .header {
+            margin-top: 20%;
             position: relative;
             display: flex;
             align-items: center;
@@ -1782,6 +1795,7 @@
 
             .chat-list .chat-box {
                 display: flex;
+                flex-direction: row;
                 align-items: center;
                 cursor: pointer;
                 padding: 15px;
@@ -1792,7 +1806,7 @@
                     width: 55px;
                     height: 45px;
                     overflow: hidden;
-                    border-radius: 50%;
+                    border-radius: 0%;
                 }
 
                 .chat-list .chat-box .chat-details {
@@ -2234,6 +2248,358 @@
         .slide-button-closed {
             left: 0;
         }
+        .openbtn {
+            margin-top: -18px;
+            background: #8a2be2;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: -14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .openbtn .openbtn-area {
+                transition: all .4s;
+            }
+
+            .openbtn span {
+                position: absolute;
+                background: #fff;
+                display: inline-block;
+                border-radius: 3px;
+                left: 13px;
+                height: 3px;
+                transition: all .4s;
+                width: 50%;
+            }
+
+                .openbtn span:nth-of-type(1) {
+                    top: 16px;
+                }
+
+                .openbtn span:nth-of-type(2) {
+                    top: 24px;
+                }
+
+                .openbtn span:nth-of-type(3) {
+                    top: 32px;
+                }
+
+            .openbtn.active .openbtn-area {
+                transform: rotate(45deg);
+            }
+
+            .openbtn.active span:nth-of-type(1) {
+                width: 45%;
+                top: 18px;
+                left: 14px;
+                transform: translateY(6px) rotate(-135deg);
+            }
+
+            .openbtn.active span:nth-of-type(2) {
+                opacity: 0;
+            }
+
+            .openbtn.active span:nth-of-type(3) {
+                width: 45%;
+                top: 30px;
+                left: 14px;
+                transform: translateY(-6px) rotate(135deg);
+            }
+            .openbtn.active {
+                z-index: 1000; /* Ensure it's above the left container */
+            }
+
+        .left-container {
+            position: fixed;
+            top: 0;
+            left: -100%; /* Initially hidden */
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            z-index: 999; /* Ensure it's below the hamburger menu */
+            transition: left 0.3s ease;
+        }
+       @@import url(https://fonts.googleapis.com/css?family=Ubuntu);
+
+* {
+	margin: 0;padding: 0;
+}
+
+::selection {
+	background: #FF6277;
+	color: #fff;
+}
+
+
+
+        .wrapper,
+        .lines,
+        .line,
+        .open:after,
+        .content {
+            position: absolute;
+            top: 140%;
+            left: 89%;
+            transform: translate(-50%, -50%);
+        }
+
+input[type="checkbox"] {
+	display: none;
+}
+
+input[type="checkbox"]:checked ~ label .lines .line:first-child {
+	transform: translate(-50%, -50%);
+	transition: transform .4s cubic-bezier(0.64, 0.57, 0.67, 1.53);
+}
+
+input[type="checkbox"]:checked ~ label .lines .line:last-child {
+	transform: translate(-50%, -50%);
+	transition: transform .4s cubic-bezier(0.64, 0.57, 0.67, 1.53);
+}
+
+input[type="checkbox"]:checked ~ label:after {
+	opacity: 0;
+	transform: translate(-50%, -50%) scale3d(1, 1, 1);
+	transition: all .5s cubic-bezier(0.64, 0.57, 0.67, 1.53);
+}
+
+input[type="checkbox"]:checked ~ .content {
+	transform: translate(-50%, -50%) scale3d(1, 1, 1);
+	transition: transform .5s .4s cubic-bezier(0.99, 0.04, 0.57, 1.31), box-shadow .5s .7s;
+	box-shadow: 0 0 2px rgba(0, 0, 0, .3), 0 20px 10px -15px rgba(0, 0, 0, .3);
+}
+
+input[type="checkbox"]:checked ~ .content .close {
+	transform: scale3d(1,1,1);
+	transition: transform .5s .7s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .5s .7s, background .3s, box-shadow .3s;
+	opacity: 1;
+}
+
+input[type="checkbox"]:checked ~ .content h1 {
+	transform: translate(0, 0);
+	transition: transform .5s .6s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .8s;
+	opacity: 1
+}
+
+input[type="checkbox"]:checked ~ .content p {
+	transform: translate(0, 0);
+	transition: transform .5s .62s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .8s;
+	opacity: .5
+}
+
+input[type="checkbox"]:checked ~ .content .logo .logo__line {
+	opacity: 1;
+	transform: translate(-50%, 0);
+	transition: transform .5s .7s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .8s;
+}
+
+input[type="checkbox"]:checked ~ .content .logo .logo__line:first-child {
+	opacity: 1;
+	transform: translate(calc(0% - 50% - 10px), 0);
+	transition: transform .5s .8s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .8s;
+}
+
+input[type="checkbox"]:checked ~ .content .logo .logo__line:last-child {
+	opacity: 1;
+	transform: translate(calc(0% - 50% + 10px), 0);
+	transition: transform .5s .85s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .8s;
+}
+
+.open {
+	display: block;
+	width: 30px;
+	height: 20px;
+/* 	background: rgba(245, 245, 245, .3); */
+	cursor: pointer;
+}
+        .textHappy {
+            text-align:center;
+            font-size: calc(1.3rem + .6vw);
+        }
+
+        .open:after {
+            content: '';
+            width: 200px;
+            height: 200px;
+            background-color: rgba(245, 245, 245, .3);
+            border-radius: 50%;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale3d(0, 0, 0);
+            transition: none;
+        }
+
+.line {
+	width: 4px;
+	height: 30px;
+	background: rgba(245, 245, 245, 1);
+	border-radius: 5px;
+	transition: transform .4s 1s cubic-bezier(0.64, 0.57, 0.67, 1.53);
+}
+
+.line:first-child {
+	transform: translate(-15px, -50%);
+}
+
+.line:last-child {
+	transform: translate(11px, -50%);
+}
+
+.content {
+	width: 200px;
+	height: 300px;
+	background: rgba(255, 255, 255, 1);
+	border-radius: 10px;
+	transform: translate(-50%, -50%) scale3d(0, 0, 0);
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #384055;
+	font: normal 16px/1 'Ubuntu', sans-serif;
+	text-align: center;
+	transition: transform .5s .5s cubic-bezier(0.99, 0.04, 0.57, 1.31), box-shadow .5s .5s;
+}
+
+.content h1 {
+	padding-bottom: 20px;
+	font-size: 20px;
+	transition: transform .5s .02s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .5s;
+}
+
+.content p {
+	line-height: 1.5;
+	opacity: .5;
+	font-size: 13px;
+	padding-bottom: 20px;
+	transition: transform .3s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .5s;
+}
+
+.content h1,
+.content p {
+	transform: translate(0, 60px);
+	opacity: 0;
+}
+        .close {
+            position: absolute;
+            bottom: 30px;
+            background: #8a2be2;
+            border-radius: 6px;
+            color: #fff;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: bolder;
+            opacity: 0;
+            transform: scale3d(0, 0, 0);
+            transition: transform .5s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .5s, box-shadow .3s;
+            box-shadow: 0 5px 10px -5px rgb(134 49 143);
+            /* box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .5); */
+        }
+
+.close:active {
+	box-shadow: 0 0px 10px -5px rgba(255, 98, 119, 1);
+/* 	box-shadow: 0 0px 10px -5px rgba(0, 0, 0, .5); */
+}
+
+.close:hover {
+	animation: bounce .5s
+}
+
+.close span {
+	display: inline-block;
+	position: relative;
+}
+
+.close:hover span {
+	animation: bounce .5s .03s
+}
+
+.logo {
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+        .logo__line {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translate(-50%, -20px);
+            width: 4px;
+            height: 22px;
+            border-radius: 6px;
+            background: #8a2be2;
+            opacity: 0;
+            transition: transform .5s .1s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .1s;
+        }
+        .count {
+            font-size: 24px; /* Adjust as needed */
+            font-weight: bold;
+            color: #8a2be2; /* Example color */
+        }
+
+.logo__line:first-child {
+	transform: translate(calc(0% - 50% - 10px), -20px);
+	transition: transform .5s .2s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .2s;
+}
+        .counter {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e6e6e7;
+            padding: 40px 0px;
+            width: 100%;
+        }
+
+            .counter .item {
+                background: #fff;
+                width: 200px;
+                padding: 35px 40px;
+                margin: 10px;
+                text-align: center;
+                border-radius: 20px;
+                -webkit-box-shadow: 0px 0px 38px -8px rgba(0,0,0,0.34);
+                -moz-box-shadow: 0px 0px 38px -8px rgba(0,0,0,0.34);
+                box-shadow: 0px 0px 38px -8px rgba(0,0,0,0.34);
+            }
+
+                .counter .item .count {
+                    color: #e8b12d;
+                    margin-bottom: 5px;
+                    font-size: 40px;
+                }
+
+                .counter .item h3 {
+                    color: #4f4e28;
+                    text-transform: capitalize;
+                }
+
+.logo__line:last-child {
+	transform: translate(calc(0% - 50% + 10px), -20px);
+	transition: transform .5s .3s cubic-bezier(0.99, 0.04, 0.57, 1.31), opacity .8s .3s;
+}
+
+@@keyframes bounce {
+	0% {
+		transform: translate(0px, 0px);
+	}
+	40% {
+		transform: translate(0px, -12px);
+	}
+	80% {
+		transform: translate(0px, 2px);
+	}
+	100% {
+		transform: translate(0px, 0px);
+	}
+}
+
+
     </style>
 }
 
@@ -2241,11 +2607,14 @@
 <div class="background-green"></div>
 
 <div class="main-container">
-<div class="left-container">
+
+    <div class="left-container" id="left-container">
         <!-- header -->
         <div class="header">
             <div class="user-img">
-                <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                <a href="https://careertests.in/">
+                    <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                </a>
             </div>
             <div class="nav-icons">
                 <div class="linkedin-logo-container">
@@ -2255,17 +2624,20 @@
                 </div>
                 <div class="linkedin-logo-container">
                     <a href="https://www.instagram.com/your_careergraph?igsh=NnR3ZjkxaGl1dGY4" target="_blank">
-                        <img src="https://img.freepik.com/premium-vector/modern-badge-logo-instagram-icon_578229-124.jpg" alt="LinkedIn" class="nav-icon linkedin-icon">
+                        <img src="https://github.com/shivangnayar-dev/img/blob/main/%E2%80%94Pngtree%E2%80%94instagram%20social%20platform%20icon_8704818.png?raw=true
+    " alt="LinkedIn" class="nav-icon linkedin-icon">
                     </a>
                 </div>
                 <div class="linkedin-logo-container">
                     <a href="https://wa.me/917349662320" target="_blank">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png" alt="WhatsApp" class="nav-icon whatsapp-icon">
+                        <img src="https://github.com/shivangnayar-dev/img/blob/main/logo-whatsapp-png-46041.png?raw=true" alt="WhatsApp" class="nav-icon whatsapp-icon">
                     </a>
                 </div>
                 <div class="linkedin-logo-container">
                     <a href="https://www.youtube.com/playlist?list=PLFhNcXkdLYt-fFQYRTbIKYD77WabWVnSP" target="_blank">
-                        <img src="https://w7.pngwing.com/pngs/679/48/png-transparent-youtube-logo-youtube-play-button-computer-icons-youtube-icon-angle-rectangle-desktop-wallpaper.png" alt="YouTube" class="nav-icon whatsapp-icon">
+
+                        <img src="https://github.com/shivangnayar-dev/img/blob/main/youtube-logo-png-3566.png?raw=true
+    " alt="YouTube" class="nav-icon whatsapp-icon">
                     </a>
                 </div>
             </div>
@@ -2305,11 +2677,11 @@
 
             <div class="chat-box" onclick="handleCareerExpertClick()">
                 <div class="img-box">
-                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim%20(1).png?raw=true" alt="">
+                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim%20(3).png?raw=true" alt="">
                 </div>
                 <div class="chat-details">
                     <div class="text-head">
-                        <h4>Talk to Career</h4>
+                        <h4>Talk to Mentor</h4>
                     </div>
                     <div class="text-message">
                         <p>Guidance Counsellor</p>
@@ -2334,9 +2706,9 @@
                     </div>
                 </div>
             </div>
-            <div class="chat-box">
+            <div class="chat-box" onclick="redirectToGoogleSearch()">
                 <div class="img-box">
-                    <img class="img-cover" src="https://cdn1.vectorstock.com/i/1000x1000/72/65/jobs-concept-retro-colorful-word-art-vector-35127265.jpg" alt="">
+                    <img class="img-cover" src="https://cdn-icons-png.flaticon.com/512/7198/7198207.png" alt="">
                 </div>
                 <div class="chat-details">
                     <div class="text-head">
@@ -2350,8 +2722,45 @@
         </div>
     </div>
     <div class="right-container">
+        <div class="openbtn" id="openbtn">
+            <div class="openbtn-area">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
 
         <div class="main">
+            <div class="wrapper">
+                <input type="checkbox" id="checkbox">
+                <label for="checkbox" class="open">
+                    <div class="lines">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                </label>
+
+                <!-- begin content -->
+                <section class="content" id="content">
+                    <label for="checkbox" class="close" id="testLabel"><span>Take a Test</span></label>
+
+                    <div class="logo">
+                        <div class="logo__line"></div>
+                        <div class="logo__line"></div>
+                        <div class="logo__line"></div>
+                    </div>
+
+
+                    <p>
+                        Take a Career Guidance Test Today! Know which jobs will suit you.
+                    </p>
+                </section>
+
+
+                <!-- end content -->
+
+            </div>
             <table>
                 <tbody>
                     <tr>
@@ -2369,10 +2778,24 @@
                 </tbody>
             </table>
         </div>
+     
 
 
         <!--CARDS-->
         <section class="section0" id="sections">
+
+            <div class="card banner">
+                <div id="counter">
+
+
+                    <div class="item">
+                        <h1 class="count" data-number="487728"></h1>
+                        <h3 class="textHappy">happy clients</h3>
+                    </div>
+
+                </div>
+            </div>
+
             <div class="card banner">
                 <h1 class="title">Our Featured Services</h1>
                 <h5 class="sub-title">Trust CareerGraph to navigate the complexities of modern career choices, propelling you towards success.</h5>
@@ -2419,7 +2842,7 @@
                             <h1 class="title">CareerGraph: Your Global Partner in Career Guidance</h1>
                             <p>At CareerGraph, we have empowered over 50,000 youth since 2017. Utilizing cutting-edge employability benchmarks and methodologies endorsed by the World Economic Forum, we steer youth towards rewarding career paths. Our approach, inspired by practices from the US and UK, ensures tailored guidance for every individual.</p>
                             <p>Our mission is to empower individuals with the knowledge and skills needed to thrive in today's competitive job market, leading them towards fulfilling and successful careers.</p>
-			     <a href="https://careertests.in/AboutUs" class="btn2">Discover More</a>
+                            <a href="https://careertests.in/AboutUs" class="btn2">Discover More</a>
                         </td>
                     </tr>
                 </tbody>
@@ -2480,15 +2903,15 @@
                 </tbody>
             </table>
         </section>
- <footer>
-        <div class="footer-links">
-            <a href="https://careertests.in/Privacy" target="_blank">Privacy Policy</a>
-            <span>|</span>
-            <a href="https://careertests.in/RefundPolicy" target="_blank">Refund Policy</a>
-            <span>|</span>
-            <a href="https://pexitics.com/index.php/customers-partners/" target="_blank">Customers</a>
-        </div>
-    </footer>
+        <footer>
+            <div class="footer-links">
+                <a href="https://careertests.in/Privacy" target="_blank">Privacy Policy</a>
+                <span>|</span>
+                <a href="https://careertests.in/RefundPolicy" target="_blank">Refund Policy</a>
+                <span>|</span>
+                <a href="https://pexitics.com/index.php/customers-partners/" target="_blank">Customers</a>
+            </div>
+        </footer>
 
 
 

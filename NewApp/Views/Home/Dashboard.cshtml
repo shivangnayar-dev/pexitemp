@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "About page";
+    ViewData["Title"] = "Dashboard";
 }
 @{
     var importUrl = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap";
@@ -7,748 +7,6 @@
 
 @section Styles{
     <style>
-
-        importUrl = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap";
-        body {
-            position: sticky !important;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .main-container {
-          
-            overflow: hidden;
-        }
-
-            .main-container .left-container {
-                flex: 30%;
-                background: #fff;
-            }
-
-            .main-container .right-container {
-                flex: 70%;
-                background: #e5ddd5;
-                position: relative;
-            }
-
-                .main-container .right-container::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: url(https://camo.githubusercontent.com/854a93c27d64274c4f8f5a0b6ec36ee1d053cfcd934eac6c63bed9eaef9764bd/68747470733a2f2f7765622e77686174736170702e636f6d2f696d672f62672d636861742d74696c652d6461726b5f61346265353132653731393562366237333364393131306234303866303735642e706e67);
-                    opacity: 0.5;
-                }
-
-        .header {
-            margin-top: 20% ;
-            flex-direction: row;
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            height: 60px;
-            background: #ededed;
-            padding: 0 15px;
-        }
-
-        .user-img {
-            position: relative;
-            width: 40px;
-            height: 40px;
-            overflow: hidden;
-            border-radius: 50%;
-        }
-
-        .dp {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            cursor: pointer;
-        }
-
-        .nav-icons {
-            display: flex;
-            justify-content: flex-end;
-            padding-left: 10px;
-        }
-
-            .nav-icons li {
-                background-color: pink;
-                list-style: none;
-                display: flex;
-                cursor: pointer;
-                color: #51585c;
-                margin-left: 22px;
-                font-size: 18px;
-            }
-
-        .notif-box {
-            position: relative;
-            display: flex;
-            width: 100%;
-            height: 70px;
-            background: #cf9fff;
-            align-items: center;
-            font-size: 0.8em;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-            .notif-box i {
-                position: relative;
-                left: 13px;
-                background: #fff;
-                padding: 10px;
-                width: 42px;
-                height: auto;
-                font-size: 20px;
-                border-radius: 55%;
-                cursor: pointer;
-                color: #76daff;
-            }
-
-            .notif-box:hover {
-                background-color: lightgray; /* or any other color you prefer on hover */
-            }
-
-            .notif-box .fa-xmark {
-                position: absolute;
-                left: 260px;
-                text-align: center;
-                background: #76daff;
-                color: #fff;
-            }
-
-        .notif-text {
-            margin: 25px;
-        }
-
-            .notif-text a {
-                text-decoration: none;
-                color: #333;
-                font-size: 0.9em;
-            }
-
-        .search-container {
-            position: relative;
-            width: 100%;
-            height: 40px;
-            background: #f6f6f6;
-            display: flex;
-        }
-
-            .search-container .input input {
-                width: 100%;
-                outline: none;
-                border: none;
-                background: #fff;
-                padding: 5px;
-                height: 30px;
-                border-radius: 10px;
-                font-size: 12px;
-                padding-left: 60px;
-                margin: 10px;
-            }
-
-            .search-container .input i {
-                position: absolute;
-                left: 26px;
-                top: 14px;
-                color: #bbb;
-                font-size: 0.8em;
-            }
-
-        .chat-list {
-            position: relative;
-            height: 80%;
-            overflow-y: auto;
-        }
-
-            .chat-list .chat-box {
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                padding: 15px;
-                border-bottom: 1px solid #eee;
-            }
-
-                .chat-list .chat-box .img-box {
-                    width: 55px;
-                    height: 45px;
-                    overflow: hidden;
-                    border-radius: 50%;
-                }
-
-                .chat-list .chat-box .chat-details {
-                    width: 100%;
-                    margin-left: 10px;
-                }
-
-                    .chat-list .chat-box .chat-details .text-head {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 2px;
-                    }
-
-                        .chat-list .chat-box .chat-details .text-head h4 {
-                            font-size: 1.1em;
-                            font-weight: 600;
-                            color: #8a2be2;
-                        }
-
-                        .chat-list .chat-box .chat-details .text-head .time {
-                            font-size: 0.8em;
-                            color: #aaa;
-                        }
-
-                    .chat-list .chat-box .chat-details .text-message {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
-
-                        .chat-list .chat-box .chat-details .text-message p {
-                            color: #8a2be2;
-                            font-size: 0.9em;
-                            overflow: hidden;
-                        }
-
-        img {
-            width: 100%;
-            object-fit: cover;
-        }
-
-        .chat-list .chat-box .chat-details .text-message b {
-            background: #06e744;
-            color: #fff;
-            min-width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            font-size: 0.8em;
-            font-weight: 400;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .chat-list .active {
-            background: #ebebeb;
-        }
-
-        .chat-list .chat-box:hover {
-            background: #f5f5f5;
-        }
-
-        .chat-list .chat-box .chat-details .text-head .unread {
-            color: #06e744;
-        }
-
-        .right-container .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-            .right-container .header .img-text .user-img .dp {
-                width: 40px;
-                height: auto;
-                overflow: hidden;
-                object-fit: cover;
-            }
-
-            .right-container .header .img-text {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-            }
-
-                .right-container .header .img-text h4 {
-                    font-weight: 500;
-                    line-height: 1.2em;
-                    margin-left: 15px;
-                }
-
-                    .right-container .header .img-text h4 span {
-                        font-size: 0.8em;
-                        color: #555;
-                    }
-
-            .right-container .header .nav-icons {
-                margin-right: 0px;
-            }
-
-                .right-container .header .nav-icons i {
-                    padding: 10px;
-                }
-
-        .chat-container {
-            position: relative;
-            width: 100%;
-            height: calc(100% - 120px);
-            padding: 50px;
-          
-        }
-
-        .message-box {
-            display: flex;
-            width: 100%;
-            margin: 5px 0;
-        }
-
-            .message-box p {
-                text-align: left;
-                max-width: 65%;
-                padding: 12px;
-                background: #dcf8c6;
-                border-radius: 10px;
-                font-size: 0.9em;
-            }
-
-            .message-box.my-message p::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: -12px;
-                width: 20px;
-                height: 20px;
-                background: linear-gradient(135deg, #dcf8c6 0%, #dcf8c6 50%, transparent 50%, transparent);
-            }
-
-            .message-box p span {
-                display: block;
-                margin-top: 5px;
-                font-size: 0.8em;
-                opacity: 0.5;
-            }
-
-        .my-message {
-            justify-content: flex-start;
-        }
-
-        .friend-message p {
-            background: #fff;
-        }
-
-        .friend-message {
-            justify-content: flex-start;
-        }
-
-        .chat-container .my-message i {
-            color: yellow;
-        }
-
-        .message-box.friend-message::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -12px;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(225deg, #fff 0%, #fff 50%, transparent 50%, transparent);
-        }
-
-        .chatbox-input {
-            position: relative;
-            width: 100%;
-            background: #f0f0f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-            .chatbox-input i {
-                cursor: pointer;
-                font-size: 1.8em;
-                color: #515855;
-            }
-
-                .chatbox-input i:nth-child(1) {
-                    margin: 15px;
-                }
-
-                .chatbox-input i:last-child {
-                    margin-right: 25px;
-                }
-
-            .chatbox-input input {
-                width: 90%;
-                margin: 0 20px;
-                padding: 10px 20px;
-                border-radius: 10px;
-                font-size: 1em;
-                border: none;
-                outline: none;
-            }
-
-        .western-button,
-        .vedic-button, .ascendant-button, .ascendantsub-button,
-        #dobSubmitButton, #ascendantInput {
-            background-color: #8a2be2;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 15px;
-        }
-
-            .western-button:hover,
-            .vedic-button:hover,
-            #dobSubmitButton:hover {
-                background-color: #8000ff; /* Darker Purple color on hover */
-            }
-
-        .nav-icon {
-            width: 30px;
-            height: 24px;
-        }
-
-        .linkedin-logo-container {
-            margin-left: 22px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .linkedin-icon {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            margin-left: 10px;
-            position: relative;
-            z-index: 3;
-        }
-
-        .left-container {
-            transition: margin-left 0.5s;
-            margin-left: 0;
-        }
-
-        .left-container-closed {
-            margin-left: -60%;
-            width: 0;
-        }
-
-        .slide-button {
-            position: fixed;
-            top: 50%;
-            left: 29.4%;
-            transform: translateY(-50%);
-            z-index: 1000;
-            font-size: 24px;
-        }
-
-        .slide-button-closed {
-            left: 0;
-        }
-        .openbtn {
-            margin-top: 10px;
-            background: #8a2be2;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-left: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-            .openbtn .openbtn-area {
-                transition: all .4s;
-            }
-
-            .openbtn span {
-                position: absolute;
-                background: #fff;
-                display: inline-block;
-                border-radius: 3px;
-                left: 13px;
-                height: 3px;
-                transition: all .4s;
-                width: 50%;
-            }
-
-                .openbtn span:nth-of-type(1) {
-                    top: 16px;
-                }
-
-                .openbtn span:nth-of-type(2) {
-                    top: 24px;
-                }
-
-                .openbtn span:nth-of-type(3) {
-                    top: 32px;
-                }
-
-            .openbtn.active .openbtn-area {
-                transform: rotate(45deg);
-            }
-
-            .openbtn.active span:nth-of-type(1) {
-                width: 45%;
-                top: 18px;
-                left: 14px;
-                transform: translateY(6px) rotate(-135deg);
-            }
-
-            .openbtn.active span:nth-of-type(2) {
-                opacity: 0;
-            }
-
-            .openbtn.active span:nth-of-type(3) {
-                width: 45%;
-                top: 30px;
-                left: 14px;
-                transform: translateY(-6px) rotate(135deg);
-            }
-
-            .openbtn.active {
-                z-index: 1000; /* Ensure it's above the left container */
-            }
-
-        .left-container {
-            position: fixed;
-            top: 0;
-            left: -100%; /* Initially hidden */
-            width: 300px;
-            height: 100%;
-            background-color: white;
-            z-index: 999; /* Ensure it's below the hamburger menu */
-            transition: left 0.3s ease;
-        }
-        $black: #071011;
-        $white: #fff;
-        $red: tomato;
-        $standard: 10px;
-        $card-height: 450px;
-        $card-width: 300px;
-
-
-
-
-
-        .outer-div,
-        .inner-div {
-            height: $card-height;
-            max-width: $card-width;
-            margin: 0 auto;
-            position: relative;
-        }
-
-      
-
-        .inner-div {
-            margin: 0 auto;
-            border-radius: 5px;
-            font-weight: 400;
-            color: $black;
-            font-size: 1rem;
-            text-align: center;
-            transition: all 0.6s cubic-bezier(0.8, -0.4, 0.2, 1.7);
-            transform-style: preserve-3d;
-            &:hover .social-icon
-
-        {
-            opacity: 1;
-            top: 0;
-        }
-
-        /*&:hover .front__face-photo,
-  &:hover .front__footer {
-    opacity: 1;
-  }*/
-        }
-
-        .outer-div:hover .inner-div {
-            transform: rotateY(180deg);
-        }
-
-        .front,
-        .back {
-            position: relative;
-            top: 0;
-            left: 0;
-            backface-visibility: hidden;
-        }
-
-        .front {
-            cursor: pointer;
-            height: 100%;
-            background: white;
-            backface-visibility: hidden;
-            border-radius: 5px;
-            box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-        }
-        .outer-div {
-            width: 20%;
-            padding: 20px;
-            /* perspective: 900px; */
-            /* perspective-origin: 50% calc(50% - 18em); */
-        }
-
-        .front__bkg-photo {
-            position: relative;
-            height: 150px;
-            width: $card-width;
-            background: url("https://images.unsplash.com/photo-1511207538754-e8555f2bc187?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=88672068827eaeeab540f584b883cc66&auto=format&fit=crop&w=1164&q=80") no-repeat;
-            background-size: cover;
-            backface-visibility: hidden;
-            overflow: hidden;
-            border-top-right-radius: 5px;
-            border-top-left-radius: 5px;
-            &:after
-
-        {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-        }
-
-        }
-
-        .front__face-photo {
-            position: relative;
-            top: -60px;
-            height: 120px;
-            width: 120px;
-            margin: 0 auto;
-            border-radius: 50%;
-            border: 5px solid $white;
-            background: url("https://media.licdn.com/dms/image/C5603AQHKvoMsPrvwIw/profile-displayphoto-shrink_400_400/0/1613379952915?e=1715212800&v=beta&t=VHarV89foqytDtSQvcIQLNUJrv0bmgoPRQSRkgPsF7I") no-repeat;
-            background-size: contain;
-            overflow: hidden;
-            /* backface-visibility: hidden;
-  transition: all 0.6s cubic-bezier(0.8, -0.4, 0.2, 1.7);
-  z-index: 3;*/
-        }
-
-        .front__text {
-            position: relative;
-            top: -55px;
-            margin: 0 auto;
-            font-family: "Montserrat";
-            font-size: 18px;
-            backface-visibility: hidden;
-            .front__text-header
-
-        {
-            text-align: center;
-            font-weight: 700;
-            font-family: "Oswald";
-            text-transform: uppercase;
-            font-size: 20px;
-        }
-
-        .front__text-para {
-            text-align: center;
-            position: relative;
-            top: -5px;
-            color: #000;
-            font-size: 14px;
-            letter-spacing: 0.4px;
-            font-weight: 400;
-            font-family: "Montserrat", sans-serif;
-        }
-        .front-icons {
-            position: relative;
-            top: 0;
-            font-size: 14px;
-            margin-right: 6px;
-            color: gray;
-        }
-
-        .front__text-hover {
-            position: relative;
-            top: 10px;
-            font-size: 10px;
-            color: #8a2be2;
-            backface-visibility: hidden;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .4px;
-            border: 2px solid #8a2be2;
-            padding: 8px 15px;
-            border-radius: 30px;
-            background: #8a2be2;
-            color: white;
-        }
-
-        }
-
-        .back {
-            transform: rotateY(180deg);
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            flex-direction: column;
-            background-color: $black;
-            border-radius: 5px;
-            /* display: flex; */
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .social-media-wrapper {
-            font-size: 36px;
-            .social-icon
-
-        {
-            position: relative;
-            top: 20px;
-            margin-left: 5px;
-            margin-right: 5px;
-            opacity: 0;
-            color: #8a2be2;
-            transition: all 0.4s cubic-bezier(0.3, 0.7, 0.1, 1.9);
-        }
-
-        .social-icon:nth-child(1) {
-            transition-delay: 0.6s;
-        }
-
-        .social-icon:nth-child(2) {
-            transition-delay: 0.7s;
-        }
-
-        .social-icon:nth-child(3) {
-            transition-delay: 0.8s;
-        }
-
-        .social-icon:nth-child(4) {
-            transition-delay: 0.9s;
-        }
-
-        }
-
-        .fab {
-            position: relative;
-            top: 0;
-            left: 0;
-            transition: all 200ms ease-in-out;
-        }
-
-            .fab:hover {
-                top: -5px;
-            }
         *, html {
             scroll-behavior: smooth;
         }
@@ -1057,17 +315,6 @@
         }
 
         @@media screen and (max-width: 600px) {
-            .openbtn {
-                margin-top: 10px;
-                background: #8a2be2;
-                width: 50px;
-                height: 50px;
-                border-radius: 12px;
-                cursor: pointer;
-                margin-left: 10px;
-                position: relative;
-                overflow: hidden;
-            }
             .topnav {
                 background: #4033ff;
                 width: 100%;
@@ -1207,7 +454,8 @@
                     }
 
         @@keyframes arrows {
-            0%, 100% {
+            0%,
+            100% {
                 color: black;
                 transform: translateY(0);
             }
@@ -2067,8 +1315,8 @@
         .container-01 {
             position: relative;
             display: flex;
-            /* justify-content: center; */
-            /* align-items: center; */
+            justify-content: center;
+            align-items: center;
             flex-direction: row;
             height: 100vh;
             background: WHITE;
@@ -2137,7 +1385,7 @@
                         color: #8a2be2;
                         font-size: 16px;
                         text-decoration: none;
-                        box-shadow: -4px -4px 15px rgba(255,255,255,1), 4px 4px 15px rgba(0,0,0,0.1);
+                        box-shadow: -4px -4px 15px rgba(255,255,255,1), 4px 4px 15px rgb(0 0 0 / 39%);
                     }
 
                         .container-01 .neumorphic-card .contentBox a:hover {
@@ -2282,16 +1530,17 @@
         }
 
         @@media only screen and (max-width: 767px) {
-            .outer-div 
-              
+            .container-01 {
+                position: relative;
+                /* display: flex; */
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: 100%;
+                background: WHITE;
+                overflow: auto;
+            }
 
-        {
-            width: 100%;
-            padding: 20px;
-            /* perspective: 900px; */
-            /* perspective-origin: 50% calc(50% - 18em); */
-        }
-            
             body {
                 overflow: auto; /* Enable scrolling for the entire page on mobile */
             }
@@ -2311,7 +1560,11 @@
                 flex: 100%; /* Allow the right container to take the full width on mobile */
             }
 
-            
+            .header {
+                height: auto; /* Allow the header to take the necessary height */
+                /* Stack header items vertically in mobile view */
+                padding: 10px;
+            }
 
                 .header .nav-icons {
                     justify-content: flex-start; /* Align navigation icons to the start in mobile view */
@@ -2346,7 +1599,7 @@
             }
 
                 .chat-list .chat-box {
-                    flex-direction: row; /* Stack chat boxes vertically in mobile view */
+                    flex-direction: column; /* Stack chat boxes vertically in mobile view */
                     padding: 15px;
                 }
 
@@ -2378,11 +1631,10 @@
             .main-container .right-container {
                 background: #8a2be2;
                 position: relative;
-              
+                overflow: auto;
                 width: 100%;
                 height: 100vh;
             }
-
 
                 .main-container .right-container::before {
                     content: '';
@@ -2395,6 +1647,16 @@
                     opacity: 0.5;
                 }
 
+        .header {
+            margin-top: 20%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 60px;
+            background: #ededed;
+            padding: 0 15px;
+        }
 
         .user-img {
             position: relative;
@@ -2540,7 +1802,7 @@
                     width: 55px;
                     height: 45px;
                     overflow: hidden;
-                    border-radius: 50%;
+                    border-radius: 0%;
                 }
 
                 .chat-list .chat-box .chat-details {
@@ -2967,16 +2229,6 @@
         .slide-button-closed {
             left: 0;
         }
-        .header1 {
-          
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            height: 60px;
-            background: #ededed;
-            padding: 0 15px;
-        }
 
         .openbtn {
             margin-top: -18px;
@@ -2989,6 +2241,7 @@
             position: relative;
             overflow: hidden;
         }
+
             .openbtn .openbtn-area {
                 transition: all .4s;
             }
@@ -3052,136 +2305,202 @@
             z-index: 999; /* Ensure it's below the hamburger menu */
             transition: left 0.3s ease;
         }
-       
+
+        .contentBox ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+            .contentBox ul li:before {
+                content: "\2022"; /* Bullet point character */
+                color: #007bff; /* Bullet point color */
+                font-size: 1.2em; /* Bullet point size */
+                display: inline-block;
+                width: 1em;
+                margin-left: -1em;
+            }
     </style>
 }
 
 
 <div class="background-green"></div>
 
+<div class="main-container">
 
-    <div class="main-container">
-        
-        <div class="left-container" id="left-container">
+    <div class="left-container" id="left-container">
+        <!-- header -->
+        <div class="header">
 
-            <!-- header -->
-            <div class="header">
-                <div class="user-img">
-                    <a href="https://careertests.in/">
-                        <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+            <div class="user-img">
+                <a href="https://careertests.in/">
+                    <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                </a>
+            </div>
+            <div class="nav-icons">
+                <div class="linkedin-logo-container">
+                    <a href="https://www.linkedin.com/company/pexitics.com/" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" alt="LinkedIn" class="nav-icon linkedin-icon">
                     </a>
                 </div>
-                <div class="nav-icons">
-                    <div class="linkedin-logo-container">
-                        <a href="https://www.linkedin.com/company/pexitics.com/" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" alt="LinkedIn" class="nav-icon linkedin-icon">
-                        </a>
-                    </div>
-                    <div class="linkedin-logo-container">
-                        <a href="https://www.instagram.com/your_careergraph?igsh=NnR3ZjkxaGl1dGY4" target="_blank">
-                            <img src="https://github.com/shivangnayar-dev/img/blob/main/%E2%80%94Pngtree%E2%80%94instagram%20social%20platform%20icon_8704818.png?raw=true
-    " alt="LinkedIn" class="nav-icon linkedin-icon">
-                        </a>
-                    </div>
-                    <div class="linkedin-logo-container">
-                        <a href="https://wa.me/917349662320" target="_blank">
-                            <img src="https://github.com/shivangnayar-dev/img/blob/main/logo-whatsapp-png-46041.png?raw=true" alt="WhatsApp" class="nav-icon whatsapp-icon">
-                        </a>
-                    </div>
-                    <div class="linkedin-logo-container">
-                        <a href="https://www.youtube.com/playlist?list=PLFhNcXkdLYt-fFQYRTbIKYD77WabWVnSP" target="_blank">
-
-                            <img src="https://github.com/shivangnayar-dev/img/blob/main/youtube-logo-png-3566.png?raw=true
-    " alt="YouTube" class="nav-icon whatsapp-icon">
-                        </a>
-                    </div>
+                <div class="linkedin-logo-container">
+                    <a href="https://www.instagram.com/your_careergraph?igsh=NnR3ZjkxaGl1dGY4" target="_blank">
+                        <img src="https://img.freepik.com/premium-vector/modern-badge-logo-instagram-icon_578229-124.jpg" alt="LinkedIn" class="nav-icon linkedin-icon">
+                    </a>
                 </div>
-            </div>
-
-            <!-- notification -->
-            <!-- chats -->
-            <div class="chat-list">
-
-                <div class="chat-box" onclick="handleCareerExpertClick()">
-                    <div class="img-box">
-                        <img class="img-cover" src="https://media.licdn.com/dms/image/C5603AQHKvoMsPrvwIw/profile-displayphoto-shrink_400_400/0/1613379952915?e=1715212800&v=beta&t=VHarV89foqytDtSQvcIQLNUJrv0bmgoPRQSRkgPsF7I" alt="">
-                    </div>
-                    <div class="chat-details">
-                        <div class="text-head">
-                            <h4>Subhashini Sharma Tripathi</h4>
-                        </div>
-                        <div class="text-message">
-                            <p>
-                                Career Guidance counsellor
-
-                            </p>
-                        </div>
-                    </div>
-                    <div class="linkedin-logo-container">
-                        <a href="https://wa.me/917349662320" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png" alt="WhatsApp" class="nav-icon whatsapp-icon">
-                        </a>
-                    </div>
+                <div class="linkedin-logo-container">
+                    <a href="https://wa.me/917349662320" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png" alt="WhatsApp" class="nav-icon whatsapp-icon">
+                    </a>
                 </div>
-
-
-
-
-
-
+                <div class="linkedin-logo-container">
+                    <a href="https://www.youtube.com/playlist?list=PLFhNcXkdLYt-fFQYRTbIKYD77WabWVnSP" target="_blank">
+                        <img src="https://w7.pngwing.com/pngs/679/48/png-transparent-youtube-logo-youtube-play-button-computer-icons-youtube-icon-angle-rectangle-desktop-wallpaper.png" alt="YouTube" class="nav-icon whatsapp-icon">
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="right-container">
-            <div class="openbtn" id="openbtn">
-                <div class="openbtn-area">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            <!-- header -->
-            <div class="header1">
-                <div class="img-text">
-                    <div class="user-img">
+        <!-- notification -->
+        <!-- chats -->
+        <div class="chat-list">
 
+            <div class="chat-box" onclick="handleCareer()">
+                <div class="img-box">
+                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/CareerTests.PNG?raw=true" alt="">
+                </div>
+                <div class="chat-details">
+                    <div class="text-head">
+                        <h4>Career Graph</h4>
                     </div>
-
+                    <div class="text-message">
+                        <p>Your global partner in career guidance</p>
+                    </div>
                 </div>
-                <div id="google_translate_element"></div>
             </div>
+            <div class="chat-box" onclick="handlAboutUs()">
+                <div class="img-box">
+                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim.png?raw=true" alt="">
+                </div>
+                <div class="chat-details">
+                    <div class="text-head">
+                        <h4>About Us</h4>
+                    </div>
+                    <div class="text-message">
+                        <p>Know More About CareerGraph</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="chat-box" onclick="handleCareerExpertClick()">
+                <div class="img-box">
+                    <img class="img-cover" src="https://api.asm.skype.com/v1/objects/0-sa-d7-324af68e95f460dcabb1ade996fdfa15/views/imgpsh_fullsize_anim" alt="">
+                </div>
+                <div class="chat-details">
+                    <div class="text-head">
+                        <h4>Talk to Mentor</h4>
+                    </div>
+                    <div class="text-message">
+                        <p>Guidance Counsellor</p>
+                    </div>
+                </div>
+                <div class="linkedin-logo-container">
+                    <a href="https://wa.me/917349662320" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png" alt="WhatsApp" class="nav-icon whatsapp-icon">
+                    </a>
+                </div>
+            </div>
+            <div class="chat-box" onclick="handleDashboard()">
+                <div class="img-box">
+                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim%20(2).png?raw=true">
+                </div>
+                <div class="chat-details">
+                    <div class="text-head">
+                        <h4>Your Dashboard</h4>
+                    </div>
+                    <div class="text-message">
+                        <p>Content for Your Dashboard</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-box" onclick="redirectToGoogleSearch()">
+                <div class="img-box">
+                    <img class="img-cover" src="https://cdn-icons-png.flaticon.com/512/7198/7198207.png" alt="">
+                </div>
+                <div class="chat-details">
+                    <div class="text-head">
+                        <h4>Jobs to Jobs</h4>
+                    </div>
+                    <div class="text-message">
+                        <p>Content for Jobs to Jobs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-container">
+        <div class="openbtn" id="openbtn">
+            <div class="openbtn-area">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="main-blogs">
             <div class="container-01">
-                <!-- chat-container -->
-                <div class="outer-div">
-                    <div class="inner-div">
-                        <div class="front">
-                            <div class="front__bkg-photo"></div>
-                            <div class="front__face-photo"></div>
-                            <div class="front__text">
-                                <h3 class="front__text-header">Subhashini Tripathi</h3>
-                                <p class="front__text-para"><i class="fas fa-map-marker-alt front-icons"></i>Banglore</p>
+                <div class="neumorphic-card">
 
-                                <span class="front__text-hover">Hover to Know More</span>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <h2>Data Scientist with 20+ years of experience</h2>
-                            <br />
-                            <h2>Inquiry Now</h2>
-                            <div class="social-media-wrapper">
-                                <a href="https://wa.me/917349662320" class="social-icon"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
-                                <a href="https://www.linkedin.com/in/subhashinitripathi/" class="social-icon"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-                            </div>
-                        </div>
-
+                    <h2>Test</h2>
+                    <div class="contentBox">
+                        <p>Unlock your potential with AI-enabled psychometric and aptitude tests.</p>
+                        <p>Gain insights into your strengths, weaknesses, and career preferences for informed decisions and personalized growth.</p>
+                        <a href="https://careertests.in/Test"><span>Take Tests</span></a>
                     </div>
+                </div>
+                <div class="neumorphic-card">
 
-                    <!-- input-bottom -->
+                    <h2>Report</h2>
+                    <div class="contentBox">
+                        <p>Download the report for self-understanding and counseling.</p>
+                        <p>Gain insights into your strengths and career paths. Empower your decision-making process today.</p>
+                        <a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view"><span>Check Reports </span></a>
+                    </div>
+                </div>
+                <div class="neumorphic-card">
 
+                    <h2>Mentorship</h2>
+                    <div class="contentBox">
+                        <p>Speak with our experienced counselors to explore study streams (for classes 8 to 12 / PU) or job roles (graduates, postgraduates, professionals).</p>
+                        <p>Gain valuable insights today!</p>
+                        <a href="https://careertests.in/Councellor"><span>Enquire Now</span></a>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <footer>
+            <div class="footer-links">
+                <a href="https://careertests.in/Privacy" target="_blank">Privacy Policy</a>
+                <span>|</span>
+                <a href="https://careertests.in/RefundPolicy" target="_blank">Refund Policy</a>
+                <span>|</span>
+                <a href="https://pexitics.com/index.php/customers-partners/" target="_blank">Customers</a>
+            </div>
+        </footer>
 
 
-            <script src="/js/Councellor.js" asp-append-version="true"></script>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+    <script src="/js/Index.js" asp-append-version="true"></script>
+

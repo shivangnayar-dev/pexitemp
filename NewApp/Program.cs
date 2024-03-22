@@ -57,6 +57,10 @@ app.UseEndpoints(endpoints =>
      name: "career",
      pattern: "career",
      defaults: new { controller = "Home", action = "career" });
+    endpoints.MapControllerRoute(
+   name: "Dashboard",
+   pattern: "Dashboard",
+   defaults: new { controller = "Home", action = "Dashboard" });
 
     endpoints.MapControllerRoute(
         name: "Councellor",
@@ -87,6 +91,10 @@ app.UseEndpoints(endpoints =>
    name: "Privacy",
    pattern: "Privacy",
     defaults: new { controller = "Home", action = "Privacy" });
+    endpoints.MapControllerRoute(
+ name: "graph",
+ pattern: "graph",
+  defaults: new { controller = "Home", action = "graph" });
 
 
 

@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Benchmark Chart";
+}
+
+
+<h1>Benchmark Chart</h1>
+<div style="width: 80%; margin: auto;">
+    <canvas id="benchmarkChart" width="800" height="400"></canvas>
+
+</div>
+
+<!-- Add a button to trigger the API call -->
+<button id="showGraphButton">Show Graph</button>
+<select id="matrixFilter">
+    <!-- Placeholder or heading for the matrix dropdown -->
+    <option disabled selected>Select Matrix</option>
+</select>
+
+<select id="subAttributeFilter">
+    <!-- Placeholder or heading for the subattribute dropdown -->
+    <option disabled selected>Select Subattribute</option>
+</select>
+
+
+
+<script src="/js/benchmarkChart.js" asp-append-version="true"></script>

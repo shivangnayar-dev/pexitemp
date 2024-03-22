@@ -14,8 +14,11 @@ namespace NewApp.Models
         public DbSet<QualificationTypes> QualificationTypes { get; set; }
         public DbSet<Core> Core { get; set; }
         public DbSet<Specialization> Specialization { get; set; }
+        public DbSet<Benchmarkmodel> benchmarkmodel { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
         {
             // Specify the primary key for CandidateDetails
             modelBuilder.Entity<CandidateDetails>().ToTable("CandidateDetails");
@@ -27,6 +30,9 @@ namespace NewApp.Models
             modelBuilder.Entity<Core>().HasKey(qt => qt.Id);
             modelBuilder.Entity<Specialization>().ToTable("Specialization");
             modelBuilder.Entity<Specialization>().HasKey(qt => qt.CoreStreamID);
+
+            modelBuilder.Entity<Benchmarkmodel>().ToTable("benchmarkkkkkkk");
+            modelBuilder.Entity<Benchmarkmodel>().HasNoKey();
 
             // Specify the primary key for TestCode
             modelBuilder.Entity<TestCode>().ToTable("testcode");

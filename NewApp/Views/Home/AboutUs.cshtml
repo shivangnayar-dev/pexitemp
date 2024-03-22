@@ -1386,7 +1386,8 @@
                         color: #8a2be2;
                         font-size: 16px;
                         text-decoration: none;
-                        box-shadow: -4px -4px 15px rgba(255,255,255,1), 4px 4px 15px rgba(0,0,0,0.1);
+                        box-shadow: -4px -4px 15px rgba(255,255,255,1), 4px 4px 15px rgb(0 0 0 / 39%);
+                    
                     }
 
                         .container-01 .neumorphic-card .contentBox a:hover {
@@ -1531,6 +1532,16 @@
         }
 
         @@media only screen and (max-width: 767px) {
+            .container-01 {
+                position: relative;
+                /* display: flex; */
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: 100%;
+                background: WHITE;
+                overflow: auto;
+            }
             body {
                 overflow: auto; /* Enable scrolling for the entire page on mobile */
             }
@@ -1552,7 +1563,7 @@
 
             .header {
                 height: auto; /* Allow the header to take the necessary height */
-                flex-direction: column; /* Stack header items vertically in mobile view */
+                /* Stack header items vertically in mobile view */
                 padding: 10px;
             }
 
@@ -1614,19 +1625,17 @@
         }
 
         .main-container {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
+          
             overflow: hidden;
         }
 
 
-
             .main-container .right-container {
-                flex: 70%;
                 background: #8a2be2;
                 position: relative;
                 overflow: auto;
+                width: 100%;
+                height: 100vh;
             }
 
                 .main-container .right-container::before {
@@ -1641,6 +1650,7 @@
                 }
 
         .header {
+            margin-top:20%;
             position: relative;
             display: flex;
             align-items: center;
@@ -1793,7 +1803,7 @@
                     width: 55px;
                     height: 45px;
                     overflow: hidden;
-                    border-radius: 50%;
+                    border-radius: 0%;
                 }
 
                 .chat-list .chat-box .chat-details {
@@ -2220,6 +2230,95 @@
         .slide-button-closed {
             left: 0;
         }
+        .openbtn {
+            margin-top: -18px;
+            background: #8a2be2;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: -14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .openbtn .openbtn-area {
+                transition: all .4s;
+            }
+
+            .openbtn span {
+                position: absolute;
+                background: #fff;
+                display: inline-block;
+                border-radius: 3px;
+                left: 13px;
+                height: 3px;
+                transition: all .4s;
+                width: 50%;
+            }
+
+                .openbtn span:nth-of-type(1) {
+                    top: 16px;
+                }
+
+                .openbtn span:nth-of-type(2) {
+                    top: 24px;
+                }
+
+                .openbtn span:nth-of-type(3) {
+                    top: 32px;
+                }
+
+            .openbtn.active .openbtn-area {
+                transform: rotate(45deg);
+            }
+
+            .openbtn.active span:nth-of-type(1) {
+                width: 45%;
+                top: 18px;
+                left: 14px;
+                transform: translateY(6px) rotate(-135deg);
+            }
+
+            .openbtn.active span:nth-of-type(2) {
+                opacity: 0;
+            }
+
+            .openbtn.active span:nth-of-type(3) {
+                width: 45%;
+                top: 30px;
+                left: 14px;
+                transform: translateY(-6px) rotate(135deg);
+            }
+
+            .openbtn.active {
+                z-index: 1000; /* Ensure it's above the left container */
+            }
+
+        .left-container {
+            position: fixed;
+            top: 0;
+            left: -100%; /* Initially hidden */
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            z-index: 999; /* Ensure it's below the hamburger menu */
+            transition: left 0.3s ease;
+        }
+        .contentBox ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+            .contentBox ul li:before {
+                content: "\2022"; /* Bullet point character */
+                color: #007bff; /* Bullet point color */
+                font-size: 1.2em; /* Bullet point size */
+                display: inline-block;
+                width: 1em;
+                margin-left: -1em;
+            }
+
     </style>
 }
 
@@ -2227,11 +2326,15 @@
 <div class="background-green"></div>
 
 <div class="main-container">
-<div class="left-container">
+   
+    <div class="left-container" id="left-container">
         <!-- header -->
         <div class="header">
+
             <div class="user-img">
-                <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                <a href="https://careertests.in/">
+                    <img class="dp" src="https://github.com/shivangnayar-dev/img/blob/main/ai%201.png?raw=true" alt="">
+                </a>
             </div>
             <div class="nav-icons">
                 <div class="linkedin-logo-container">
@@ -2291,11 +2394,11 @@
 
             <div class="chat-box" onclick="handleCareerExpertClick()">
                 <div class="img-box">
-                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim%20(1).png?raw=true" alt="">
+                    <img class="img-cover" src="https://api.asm.skype.com/v1/objects/0-sa-d7-324af68e95f460dcabb1ade996fdfa15/views/imgpsh_fullsize_anim" alt="">
                 </div>
                 <div class="chat-details">
                     <div class="text-head">
-                        <h4>Talk to Career</h4>
+                        <h4>Talk to Mentor</h4>
                     </div>
                     <div class="text-message">
                         <p>Guidance Counsellor</p>
@@ -2320,9 +2423,9 @@
                     </div>
                 </div>
             </div>
-            <div class="chat-box">
+            <div class="chat-box" onclick="redirectToGoogleSearch()">
                 <div class="img-box">
-                    <img class="img-cover" src="https://cdn1.vectorstock.com/i/1000x1000/72/65/jobs-concept-retro-colorful-word-art-vector-35127265.jpg" alt="">
+                    <img class="img-cover" src="https://cdn-icons-png.flaticon.com/512/7198/7198207.png" alt="">
                 </div>
                 <div class="chat-details">
                     <div class="text-head">
@@ -2336,6 +2439,13 @@
         </div>
     </div>
     <div class="right-container">
+        <div class="openbtn" id="openbtn">
+            <div class="openbtn-area">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
 
         <div class="main">
             <table>
@@ -2380,7 +2490,13 @@
             <div class="neumorphic-card">
                 <h2>Basic Package</h2>
                 <div class="contentBox">
-                    <p><br>INR 1000/-<br>Test online<br><a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view?usp=sharing" target="_blank">Download report (Sample)</a><br>Counselor not included<br>Report help – WhatsApp/email</p>
+                    <ul>
+                        <li>INR 1000/-</li>
+                        <li>Test online</li>
+                        <a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view?usp=sharing" target="_blank">Download report (Sample)</a>
+                        <li>Counselor not included</li>
+                        <li>Report help – WhatsApp/email</li>
+                    </ul>
                     <a href="https://careertests.in/Test"><span>Buy Now</span></a>
                 </div>
             </div>
@@ -2388,7 +2504,13 @@
             <div class="neumorphic-card">
                 <h2>Premium Package</h2>
                 <div class="contentBox">
-                    <p><br>INR 3000/-<br>Test online<br><a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view?usp=sharing" target="_blank">Download report (Sample)</a><br>Counselor – Subhashini S Tripathi*<br>Report help – Career Counselor</p>
+                    <ul>
+                        <li>INR 3000/-</li>
+                        <li>Test online</li>
+                        <a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view?usp=sharing" target="_blank">Download report (Sample)</a>
+                        <li>Counselor – Subhashini S Tripathi*</li>
+                        <li>Report help – Career Counselor</li>
+                    </ul>
                     <a href="https://careertests.in/Test"><span>Buy Now</span></a>
                 </div>
             </div>
@@ -2396,20 +2518,27 @@
             <div class="neumorphic-card">
                 <h2>Mix & Match Package</h2>
                 <div class="contentBox">
-                    <p><br>Call to discuss<br>Test online<br><a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view?usp=sharing" target="_blank">Download report (Sample)</a><br>Counselor – Choose from list<br>Report help – Career Counselor</p>
+                    <ul>
+                        <li>Call to discuss</li>
+                        <li>Test online</li>
+                        <a href="https://drive.google.com/file/d/1zWVethLPXxjuXWAUko0bSD0fubSutiAG/view?usp=sharing" target="_blank">Download report (Sample)</a>
+                        <li>Counselor – Choose from list</li>
+                        <li>Report help – Career Counselor</li>
+                    </ul>
                     <a href="https://careertests.in/Test"><span>Talk to us</span></a>
                 </div>
             </div>
         </div>
-	 <footer>
-        <div class="footer-links">
-            <a href="https://careertests.in/Privacy" target="_blank">Privacy Policy</a>
-            <span>|</span>
-            <a href="https://careertests.in/RefundPolicy" target="_blank">Refund Policy</a>
-            <span>|</span>
-            <a href="https://pexitics.com/index.php/customers-partners/" target="_blank">Customers</a>
-        </div>
-    </footer>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://careertests.in/Privacy" target="_blank">Privacy Policy</a>
+                <span>|</span>
+                <a href="https://careertests.in/RefundPolicy" target="_blank">Refund Policy</a>
+                <span>|</span>
+                <a href="https://pexitics.com/index.php/customers-partners/" target="_blank">Customers</a>
+            </div>
+        </footer>
 
 
 

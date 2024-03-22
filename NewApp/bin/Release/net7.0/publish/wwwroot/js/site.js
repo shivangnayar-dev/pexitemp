@@ -184,7 +184,6 @@ function closeModal() {
 }
 let timerInterval; // Declare timer interval variable globally
 let totalSecondsRemaining; // Declare total seconds remaining globally
-
 function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId) {
     // Define the maximum number of questions per section
     const maxQuestionsPerSection = 20;
@@ -204,22 +203,28 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
     // Clear previous question boxes
     questionGridContainer.innerHTML = '';
 
-    // Create and manage sections
-    let startQuestionIndex = currentSectionIndex * maxQuestionsPerSection;
-    let endQuestionIndex = Math.min(startQuestionIndex + maxQuestionsPerSection, totalQuestions);
-
+    // Create section container for the current section only
     const sectionContainer = document.createElement('div');
     sectionContainer.className = 'section-container';
-    sectionContainer.style.display = 'flex';
-    sectionContainer.style.flexWrap = 'wrap';
-    sectionContainer.style.marginLeft = '10px';
-    sectionContainer.style.gap = '8px';
-    sectionContainer.style.marginTop = '60%';
-    sectionContainer.style.overflow = 'auto';
-    sectionContainer.style.maxHeight = '300px';
+    sectionContainer.style.marginBottom = '20px'; // Add margin to separate sections
 
-    // Create question boxes for this section
- for (let questionIndex = startQuestionIndex; questionIndex < endQuestionIndex; questionIndex++) {
+    // Create section heading
+    const sectionHeading = document.createElement('h3');
+    sectionHeading.textContent = `Section ${String.fromCharCode(65 + currentSectionIndex)}`;
+    sectionContainer.appendChild(sectionHeading);
+
+    // Calculate the range of questions for the current section
+    const startQuestionIndex = currentSectionIndex * maxQuestionsPerSection;
+    const endQuestionIndex = Math.min(startQuestionIndex + maxQuestionsPerSection, totalQuestions);
+
+    // Create question box container for the current section
+    const questionBoxContainer = document.createElement('div');
+    questionBoxContainer.className = 'question-box-container';
+    questionBoxContainer.style.display = 'flex';
+    questionBoxContainer.style.flexWrap = 'wrap';
+
+    // Create question boxes for the current section
+    for (let questionIndex = startQuestionIndex; questionIndex < endQuestionIndex; questionIndex++) {
         const questionBox = document.createElement('div');
         questionBox.className = 'question-box';
 
@@ -234,10 +239,18 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
         }
 
         questionBox.textContent = questionIndex + 1; // Display question number
-        sectionContainer.appendChild(questionBox);
+        questionBoxContainer.appendChild(questionBox);
     }
+
+    // Append the question box container to the section container
+    sectionContainer.appendChild(questionBoxContainer);
+
     // Append the section to the question grid container
     questionGridContainer.appendChild(sectionContainer);
+
+    // Display total number of questions and current section
+    console.log(`Total questions: ${totalQuestions}`);
+    console.log(`Current section: ${currentSectionIndex + 1}`);
 
     // Create and initialize timer elements if not already created
     let timerContainer = document.querySelector('.timer-container');
@@ -252,6 +265,7 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
         startTimer(timerContainer); // Start the timer
     }
 }
+
 
 function startTimer(timerContainer) {
     // Add timer elements
@@ -289,8 +303,6 @@ function startTimer(timerContainer) {
         }
     }, 1000); // Update every second
 }
-
-
 function checkOrientation() {
     if (window.innerWidth < window.innerHeight && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         alert("Please rotate your device to landscape mode for the best experience.");
@@ -304,26 +316,16 @@ checkOrientation();
 window.addEventListener("orientationchange", function () {
     checkOrientation();
 });
+
+// Run the checkOrientation function on page load
+
+// Listen for orientation change events
+
 let coreStreamId;
 
 let testInProgress = false;
 // Write your JavaScript code.
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: '', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
-}
 
-// Make sure to include the correct source URL for the Google Translate script
-var script = document.createElement('script');
-script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-document.head.appendChild(script);
-
-function handleGetMoreInfoClick() {
-    // Open the Google Form in a new tab or window
-    window.open('https://docs.google.com/forms/d/e/1FAIpQLSeqW3FXr6PaYY_9Bcxqe-FzeSy411-3-3GtYMYGfgv-oSD24g/viewform?usp=sf_link', '_blank');
-
-    // You can also continue the conversation or perform other actions as needed
-
-}
 
 let storedReportId =  "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
 function askConsent() {
@@ -344,6 +346,15 @@ function askConsent() {
         // Optionally, you can reset the form or take other actions
     }
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const openBtn = document.getElementById('openbtn');
+    const leftContainer = document.getElementById('left-container');
+
+    openBtn.addEventListener('click', function () {
+        const isActive = openBtn.classList.toggle('active');
+        leftContainer.style.left = isActive ? '0' : '-100%';
+    });
+});
 function askTransactionId() {
     const genderSelect = document.getElementById("genderSelect");
     if (genderSelect) {
@@ -531,13 +542,21 @@ function submitDobAfterGender() {
         clearMessageBoxes();
 
         submitUserDataToDatabase(userData);
- 	if (storedTestCode === "PEXCGRVIT2312O1009" || storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743") {
+        if (storedTestCode === "PEXCGRD2312O1009" || storedTestCode === "PEXCGJD2312O1011" || storedTestCode === "PEXCGSD2312O1013") {
             // If true, call askGender() instead of askCoreStream()
             askTransactionId();
             console.log(userData);
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
-        } else {
+        }
+
+
+	     else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId ==="E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
+            askCoreStream();
+        }
+          
+        }
+	 else {
             // If false, call askCoreStream()
             asktesttt();
             console.log(userData);
@@ -1180,7 +1199,7 @@ function submitLocation() {
         askOtherLocation();
     } else {
         // Process submitted location and proceed to the next step
-        userData.location = location;
+        userData.country = location;
         displaySubmittedInput("Location", location, true);
         locationSelect.removeEventListener("change", submitLocation);
         console.log(userData);
@@ -1480,6 +1499,7 @@ function askQualification() {
         },
     });
 }
+let below10th = "";
 function submitQualification() {
     const qualificationSelect = document.getElementById("qualificationSelect");
     const qualification = qualificationSelect.value;
@@ -1498,17 +1518,21 @@ function submitQualification() {
                 if (data) {
                     // Process the submitted qualification and ID, and proceed to the next step
                     userData.qualification = qualification;
+                    if (userData.qualification === "below 10th") {
+                        below10th = "1234"
+                    }
+                    console.log(below10th);
                     displaySubmittedInput("Qualification", qualification, true);
                     qualificationSelect.removeEventListener("change", submitQualification);
                     console.log(userData);
 
                     // Clear the dropdown menu
                     qualificationSelect.value = "";
-
+                    console.log(istextcodeInvalid);
                     // Check if storedTestCode is equal to "PEXCGR2312O1009"
-                    if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743") {
+                    if (!istextcodeInvalid) {
                         // If true, call askGender() instead of askCoreStream()
-                        askNextStep();
+                        askOrganization();
                         console.log(userData);
                         // Submit data to the server or handle the completion of the form
                         // You can call the next function or submit the entire form here
@@ -1585,7 +1609,7 @@ function askNextStep() {
 }
 
 function submitNextStep() {
-  
+
     const nextStepSelect = document.getElementById("nextStepSelect");
     const selectedNextStep = nextStepSelect.value;
 
@@ -1595,25 +1619,35 @@ function submitNextStep() {
         return;
     }
 
-   
+
 
     // Clear the dropdown menu
     nextStepSelect.value = "";
 
     // Handle the next step based on user's choice
-   if (selectedNextStep === "iwantajob") {
-        storedTestCode = "PEXCGRD2312O1009"
+    if ((below10th === "1234" && selectedNextStep === "iwantajob") ||
+        (userData.qualification.toLowerCase() === "10th/matriculation" && selectedNextStep === "iwantajob") ||
+        (userData.qualification.toLowerCase() === "12th/higher secondary" && selectedNextStep === "iwantajob")) {
+        storedReportId = "F3BC64D6-BFE5-49CC-9D9F-3F9BD5296637";
+        storedTestCode = "PEXCGSD2312O1013";
+        userData.storedTestCode = storedTestCode;
+
+        askOrganization();
+    } else if (selectedNextStep === "iwantajob") {
+        storedTestCode = "PEXCGRD2312O1009";
         userData.storedTestCode = storedTestCode;
         // Example: call a function to handle job-related tasks
         storedReportId = "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
         askOrganization();
     } else if (selectedNextStep === "iwanttostudy") {
         // Example: call a function to handle study-related tasks
+        storedTestCode = "PEXCGJD2312O1011";
         userData.storedTestCode = storedTestCode;
         storedReportId = "E198C384-58DC-403D-8D2D-854F9C4E6A7F";
         askOrganization();
-    }    
+    }
 
+    console.log(storedReportId);
 }
 function askCoreStream() {
     const qualificationSelect = document.getElementById("qualificationSelect");
@@ -2005,7 +2039,7 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
 }
 
 let isAskTestCodeCalled = false;
-
+let istextcodeInvalid = false;
 
 function askTestCode() {
     isAskTestCodeCalled = true;
@@ -2032,7 +2066,8 @@ function askTestCode() {
         // Log the current value of the input
         console.log('askTestCode - Current input value:', input.value);
     } else {
-	askConsent();        // If the user doesn't have a test code, display a message to connect on WhatsApp and email
+        istextcodeInvalid = true;
+        askConsent();        // If the user doesn't have a test code, display a message to connect on WhatsApp and email
  
     }
 }
@@ -2099,6 +2134,7 @@ function verifyTestCode(testCode) {
 			 
 	              alert('Test code is Invalid');
 			askTestCode();
+              
 		  // Optionally, you can ask the user to re-enter the test code or take other actions
             }
         },
@@ -2201,7 +2237,8 @@ function handleMultipleSubmit() {
         askInterest();
     }
     if (Indusry && !onNext && !testInProgress) {
-        askOrganization();
+	 asktesttt();
+
     }
     if (onNext && testInProgress) {
         onNextQuestion();
