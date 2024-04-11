@@ -2272,7 +2272,9 @@ function redirectToGoogleSearch() {
 function redirectToTest() {
     window.location.href = "https://careertests.in/Test";
 }
-
+function redirectToGraph() {
+    window.location.href = "https://careertests.in/Graph";
+}
 // Add event listener to the "Take a Test" label for click event
 document.getElementById('testLabel').addEventListener('click', redirectToTest);
 

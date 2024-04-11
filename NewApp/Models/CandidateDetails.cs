@@ -20,7 +20,7 @@ namespace NewApp.Models
         public string Mobile_No { get; set; } = "0";
         public string Adhar_No { get; set; } = "0";
         public string email_address { get; set; } = "0";
-        public string password { get; set; } 
+        public string password { get; set; } = "0"; 
 
         // Additional properties
 
