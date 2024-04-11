@@ -24,6 +24,53 @@
 // for details on configuring this project to bundle and minify static web assets.
 // Flag to track left container visibility
 
+var imageAddr = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+var downloadSize = 300000;
+
+function InitiateSpeedDetection() {
+    setInterval(MeasureConnectionSpeed, 1000); // Check every second
+}
+
+if (window.addEventListener) {
+    window.addEventListener('load', InitiateSpeedDetection, false);
+} else if (window.attachEvent) {
+    window.attachEvent('onload', InitiateSpeedDetection);
+}
+
+function MeasureConnectionSpeed() {
+    var startTime, endTime;
+    var download = new Image();
+    download.onload = function () {
+        endTime = (new Date()).getTime();
+        showResults();
+    }
+    download.onerror = function (err, msg) {
+        document.getElementById("result").innerHTML = "Invalid image, or error downloading";
+    }
+    startTime = (new Date()).getTime();
+    var cacheBuster = "?nnn=" + startTime;
+    download.src = imageAddr + cacheBuster;
+
+    function showResults() {
+        var duration = (endTime - startTime) / 1000;
+        var bitsLoaded = downloadSize * 8;
+        var speedBps = (bitsLoaded / duration).toFixed(2);
+        var speedKbps = (speedBps / 1024).toFixed(2);
+        var speedMbps = (speedKbps / 1024).toFixed(1);
+        document.getElementById("mb").innerHTML = speedMbps;
+
+
+        // Update indicator color based on connection speed
+        var indicator = document.querySelector('.indicator');
+        if (parseFloat(speedMbps) > 2) {
+            indicator.classList.add('green');
+        } else {
+            indicator.classList.remove('green');
+        }
+    }
+}
+
+
 let userDataSelected = {};
 let onNext = false;
 function highlightBasicInfoChatBox() {
@@ -144,48 +191,7 @@ function appendChatList() {
 document.addEventListener('DOMContentLoaded', function () {
     appendChatList();
 });;
-function measureUploadSpeed() {
-    return new Promise((resolve, reject) => {
-        const fileSizeInMB = 1; // 1 MB file size for testing
-        const file = new Blob(['0'.repeat(fileSizeInMB * 1024 * 1024)], { type: 'application/octet-stream' });
-        const formData = new FormData();
-        formData.append('file', file);
 
-        const xhr = new XMLHttpRequest();
-        xhr.upload.addEventListener('progress', (event) => {
-            const elapsedTime = new Date().getTime() - startTime;
-            const speed = (event.loaded / elapsedTime) * 1000; // Upload speed in bytes per second
-            const speedInMbps = (speed / (1024 * 1024)).toFixed(2); // Convert to Mbps
-
-            resolve(speedInMbps);
-        });
-
-        const startTime = new Date().getTime();
-        xhr.open('POST', '/upload', true);
-        xhr.send(formData);
-    });
-}
-
-// Function to update the indicator
-async function updateIndicator() {
-    try {
-        const uploadSpeed = await measureUploadSpeed();
-        const indicator = document.getElementById("internet-speed-indicator");
-
-        if (uploadSpeed < 2) {
-            indicator.textContent = "Upload speed is low: " + uploadSpeed + " Mbps";
-            indicator.classList.add("slow-speed");
-        } else {
-            indicator.textContent = "Upload speed is good: " + uploadSpeed + " Mbps";
-            indicator.classList.remove("slow-speed");
-        }
-    } catch (error) {
-        console.error("Error measuring upload speed:", error);
-    }
-}
-
-// Call the function to update the indicator
-updateIndicator();
 function showQR() {
     // Create the modal structure if it doesn't exist
     if (!document.getElementById("myModal")) {
@@ -760,6 +766,7 @@ function callApiToStartTest(reportId) {
         data: JSON.stringify({ ReportId: reportId }),
         success: function (response) {
             if (response.isValid) {
+		 console.log(reportId);
                 console.log(response);
 
                 const questionOptionsAndAnswers = Object.entries(response.questionOptionsAndAnswers);
@@ -1595,7 +1602,6 @@ function submitQualification() {
             })
             .catch(error => {
                 console.error('Error fetching qualification ID:', error);
-                alert('Error fetching qualification ID. Please try again.');
             });
     } else {
         // Handle the case where the qualification is not selected
@@ -1967,6 +1973,56 @@ function submitInterest() {
     // Submit data to the server or handle the completion of the form
     // You can call the next function or submit the entire form here
     // For example, you can call a function like askNextStep() or submitForm() here
+}
+function fetchNameAndPhoneFromURL() {
+    // Get the current URL
+    let currentUrl = window.location.href;
+
+    // Check if the URL contains the required parameters
+    if (currentUrl.includes('name=') && currentUrl.includes('phone=')) {
+        // Extract the name parameter
+        const nameParamStart = currentUrl.indexOf('name=') + 5; // Length of "name="
+        let nameParamEnd = currentUrl.indexOf('&', nameParamStart);
+        if (nameParamEnd === -1) {
+            nameParamEnd = currentUrl.length;
+        }
+        const name = decodeURIComponent(currentUrl.substring(nameParamStart, nameParamEnd));
+
+        // Extract the phone parameter
+        const phoneParamStart = currentUrl.indexOf('phone=') + 6; // Length of "phone="
+        let phoneParamEnd = currentUrl.indexOf('&', phoneParamStart);
+        if (phoneParamEnd === -1) {
+            phoneParamEnd = currentUrl.length;
+        }
+        const phone = decodeURIComponent(currentUrl.substring(phoneParamStart, phoneParamEnd));
+        userData.name = name;
+        userData.phoneNumber = phone;
+        // Return an object containing the name and phone number
+        return {
+            name: name,
+            phone: phone
+        };
+    } else {
+        // Parameters not found in the URL
+        return null;
+    }
+}
+
+// Example usage
+const nameAndPhone = fetchNameAndPhoneFromURL();
+if (nameAndPhone) {
+    clearMessageBoxes();
+   
+    storedReportId = "C51D2A9B-DC9D-4752-A3E7-F9C26A766F8F";
+   
+    userData.organization = "askshiva.ai";
+    userData.storedTestCode ="PEX4IT2312H1003-ai"
+
+    askQualification();
+    console.log("Name:", nameAndPhone.name);
+    console.log("Phone:", nameAndPhone.phone);
+} else {
+    console.log("Name and/or phone number not found in the URL.");
 }
 function checkboxselectIndustries(optionsData, onNextQuestion) {
     // Create a new message box

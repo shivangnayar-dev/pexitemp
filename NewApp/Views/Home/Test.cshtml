@@ -556,6 +556,32 @@
             background: linear-gradient(225deg, #fff 0%, #fff 50%, transparent 50%, transparent);
         }
 
+        .internet-speed-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: red; /* Default color */
+        }
+
+            .indicator.green {
+                background-color: green;
+            }
+
+      
+
+
         .chatbox-input {
             position: relative;
             width: 100%;
@@ -787,6 +813,15 @@
             z-index: 999; /* Ensure it's below the hamburger menu */
             transition: left 0.3s ease;
         }
+        .flex {
+            display: flex;
+            align-items: center;
+            justify-content: Center;
+        }
+
+        .flex-content {
+            margin: 10px;
+        }
     </style>
 }
 
@@ -795,13 +830,7 @@
 <div class="background-green"></div>
 
 <div class="main-container">
-    <div class="openbtn" id="openbtn">
-        <div class="openbtn-area">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>
+
     <div class="left-container" id="left-container">
         <!-- header -->
         <div class="header">
@@ -850,9 +879,14 @@
 
 
     <div class="right-container">
-
-        <!-- header -->
         <div class="header1">
+            <div class="openbtn" id="openbtn">
+                <div class="openbtn-area">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
             <div class="img-text">
                 <div class="user-img">
 
@@ -862,6 +896,8 @@
             <div id="google_translate_element"></div>
         </div>
 
+
+        <!-- header -->
         <!-- chat-container -->
         <div class="chat-container">
             <div class="message-box my-message">
@@ -882,10 +918,25 @@
             <i class="fa-sharp fa-solid fa-paperclip"></i>
             <input type="text" id="dobInput" placeholder="Type a message...">
             <button id="dobSubmitButton" onclick="handleMultipleSubmit()">Submit</button>
-            <i class="fa-solid fa-microphone" onclick="handleUserInput()"></i>
+           
+            <section class="flex flex-content">
+                <b id="mb"></b> <sub> Mbps</sub>
+            </section>
+            <section class="flex flex-content">
+               
+            </section>
+            <section class="flex flex-content">
+               
+            </section>
+            <section class="flex flex-content" id="result">
+            </section>
         </div>
     </div>
 </div>
+</div>
+
+<div class="internet-speed-indicator">
+    <div class="indicator"></div>
 </div>
 <script src="/js/test.js" asp-append-version="true"></script>
 
