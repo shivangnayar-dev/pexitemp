@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
-        
+
 
 
             console.log("Data from API:", data);
@@ -95,13 +95,40 @@ document.addEventListener("DOMContentLoaded", function () {
                 borderColor: 'rgba(255, 0, 0, 1)',
                 borderWidth: 2,
                 pointRadius: 0,
-          
+
             }];
 
             // Adjust font size for the labels directly within the datasets
             datasets.forEach(dataset => {
                 dataset.labelFontSize = 20; // Adjust font size for labels
             });
+
+            function isMobileDevice() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+            var isMobile = isMobileDevice();
+            var responsiveOption = true; // Default to true
+            if (isMobile) { // Apply fixed dimensions and disable responsiveness only for mobile devices
+                console.log("Setting responsiveOption to false for mobile view");
+             
+                responsiveOption = false
+                    ;
+        
+            }
+            if (isMobile) {
+                var canvas = document.getElementById("benchmarkChart");
+                canvas.setAttribute("width", "800"); // Set width to 1000px for mobile devices
+                canvas.setAttribute("height", "800"); // Set height to 1000px for mobile devices
+            }
+            var titleFontSize = 30; // Default font size for non-mobile devices
+            if (isMobile) {
+                titleFontSize = 20; // Font size for mobile devices
+            }
+            var TicksFontSize = 15;
+            if (isMobile) {
+                TicksFontSize = 10; // Font size for mobile devices
+            }
+
 
             // Generate the chart
             var ctx = document.getElementById("benchmarkChart").getContext('2d');
@@ -112,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     datasets: datasets
                 },
                 options: {
-                    responsive: false,
+                    responsive: responsiveOption,
                     plugins: {
                         title: {
                             display: true,
@@ -122,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             align: 'center',
                             font: {
                                 weight: 'bold',
-                                size: 50
+                                size: titleFontSize
                             },
                             fullSize: true,
                         },
@@ -139,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 color: 'black',
                                 font: {
                                     family: 'Arial',
-                                    size: 50,
+                                    size: titleFontSize,
                                     weight: 'bold',
                                 },
                                 padding: {
@@ -151,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             },
                             ticks: {
                                 font: {
-                                    size: 30, // Adjust font size for y-axis labels
+                                    size: TicksFontSize, // Adjust font size for y-axis labels
                                 }
                             }
                         },
@@ -163,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 color: 'black',
                                 font: {
                                     family: 'Arial',
-                                    size: 50,
+                                    size: titleFontSize,
                                     weight: 'bold',
                                 },
                                 padding: {
@@ -175,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             },
                             ticks: {
                                 font: {
-                                    size: 30, // Adjust font size for x-axis labels
+                                    size: TicksFontSize, // Adjust font size for x-axis labels
                                 }
                             }
                         },
@@ -260,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error fetching data:', error));
 });
 
+
 // Function to update the chart based on selected value
 function updateChart(selectedValue, data) {
     const selectedData = data.filter(item => item.matrix_new === selectedValue || item.subAttribute_new === selectedValue);
@@ -319,9 +347,9 @@ function updateChart(selectedValue, data) {
         "22-24": 'rgba(75, 192, 192, 0.2)',
         "25-29": 'rgba(153, 102, 255, 0.2)',
         "30-39": 'rgba(255, 159, 64, 0.2)',
-        "40-49": 'rgba(255, 99, 132, 0.4)', // Example of adding more colors
-        "50+": 'rgba(54, 162, 235, 0.4)',   // Example of adding more colors
-        "Grand Total": 'rgba(255, 206, 86, 0.4)' // Example of adding more colors
+        "40-49": 'rgba(255, 99, 132, 0.2)', // Adjusted alpha value to match the others
+        "50+": 'rgba(54, 162, 235, 0.2)',   // Adjusted alpha value to match the others
+        "Grand Total": 'rgba(255, 206, 86, 0.2)' // Adjusted alpha value to match the others
     };
 
     // Create datasets for the chart
@@ -352,6 +380,31 @@ function updateChart(selectedValue, data) {
     if (chart) {
         chart.destroy();
     }
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    var isMobile = isMobileDevice();
+    var responsiveOption = true; // Default to true
+    if (isMobile) { // Apply fixed dimensions and disable responsiveness only for mobile devices
+        console.log("Setting responsiveOption to false for mobile view");
+
+        responsiveOption = false
+            ;
+
+    }
+    if (isMobile) {
+        var canvas = document.getElementById("benchmarkChart");
+        canvas.setAttribute("width", "800"); // Set width to 1000px for mobile devices
+        canvas.setAttribute("height", "800"); // Set height to 1000px for mobile devices
+    }
+    var titleFontSize = 30; // Default font size for non-mobile devices
+    if (isMobile) {
+        titleFontSize = 20; // Font size for mobile devices
+    }
+    var TicksFontSize = 15;
+    if (isMobile) {
+        TicksFontSize = 10; // Font size for mobile devices
+    }
 
     // Create the new chart
     var ctx = document.getElementById("benchmarkChart").getContext('2d');
@@ -362,7 +415,7 @@ function updateChart(selectedValue, data) {
             datasets: datasets
         },
         options: {
-            responsive: false,
+            responsive: responsiveOption,
             plugins: {
                 title: {
                     display: true,
@@ -372,7 +425,7 @@ function updateChart(selectedValue, data) {
                     align: 'center',
                     font: {
                         weight: 'bold',
-                        size: 50
+                        size: titleFontSize
                     },
                     fullSize: true,
                 },
@@ -389,7 +442,7 @@ function updateChart(selectedValue, data) {
                         color: 'black',
                         font: {
                             family: 'Arial',
-                            size: 50,
+                            size: titleFontSize,
                             weight: 'bold',
                         },
                         padding: {
@@ -401,7 +454,7 @@ function updateChart(selectedValue, data) {
                     },
                     ticks: {
                         font: {
-                            size: 30, // Adjust font size for y-axis labels
+                            size: TicksFontSize, // Adjust font size for y-axis labels
                         }
                     }
                 },
@@ -413,7 +466,7 @@ function updateChart(selectedValue, data) {
                         color: 'black',
                         font: {
                             family: 'Arial',
-                            size: 50,
+                            size: titleFontSize,
                             weight: 'bold',
                         },
                         padding: {
@@ -425,7 +478,7 @@ function updateChart(selectedValue, data) {
                     },
                     ticks: {
                         font: {
-                            size: 30, // Adjust font size for x-axis labels
+                            size: TicksFontSize, // Adjust font size for x-axis labels
                         }
                     }
                 },

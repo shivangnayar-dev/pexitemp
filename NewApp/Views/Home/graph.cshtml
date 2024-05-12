@@ -7,6 +7,13 @@
 
 @section Styles{
     <style>
+        .default-font-size {
+            font-size: 15px;
+            padding: 0px;
+            /* margin-bottom: 20px; */
+            /* height: 24%; */
+            /* padding-bottom: 10px; */
+        }
         *, html {
             scroll-behavior: smooth;
         }
@@ -314,9 +321,9 @@
             display: block;
         }
 
-       
 
-      
+
+
         #navbar {
             background-color: #fff;
             position: fixed;
@@ -462,7 +469,7 @@
             float: left;
         }
 
-   
+
 
 
 
@@ -625,7 +632,7 @@
         }
 
 
-      
+
 
         .section1 {
             width: 90%;
@@ -674,7 +681,7 @@
             transition: max-height 0.2s ease-out;
         }
 
-   
+
 
 
 
@@ -761,7 +768,7 @@
             padding: 10px 0px;
         }
 
- 
+
 
         p {
             margin-top: 0;
@@ -989,24 +996,29 @@
                 }
 
         @@media screen and (max-width:767px) {
+            .mobile-font-size {
+                font-size: 10px;
+            }
             .Data-text {
-                font-size: 4px !important;
+                margin-left: 1%;
+                margin-top: 1%;
+                font-size: 10px;
             }
 
-            .disclaimer-text{
-                font-size: 4px !important;
+            .disclaimer-text {
+                margin-left: 1%;
+                margin-top: 2%;
+                font-size: 10px;
             }
+
             .container > div {
                 margin-bottom: 150% !important;
             }
-
-
             /* Override the canvas styles */
             #benchmarkChart {
-                height: 70% !important;
+                padding: 5%;
                 width: 100% !important;
             }
-
             /* Override the select styles */
             #matrixFilter, #subAttributeFilter {
                 margin-top: 10%;
@@ -1016,7 +1028,6 @@
                 /* margin-right: 0 !important; */
                 margin-bottom: 10px !important;
             }
-
             /* Override the button styles */
             #downloadGraph {
                 font-size: 7px !important;
@@ -1024,9 +1035,10 @@
                 margin-bottom: 10px !important;
                 margin-left: 2% !important;
             }
+
             .container-03 {
                 /* PADDING: 50PX; */
-              
+
                 FLEX-WRAP: wrap !important;
                 position: relative !important;
                 display: flex !important;
@@ -1036,6 +1048,7 @@
                 /* height: 100vh; */
                 background: WHITE !important;
             }
+
             .container-01 .neumorphic-card {
                 /* overflow-y: hidden; */
                 /* overflow-x: auto; */
@@ -1046,6 +1059,7 @@
                 border-radius: 40px !important;
                 box-shadow: -6px -6px 20px rgba(255,255,255,1), 6px 6px 20px rgba(0,0,0,0.1) !important;
             }
+
             .container-02 {
                 overflow: auto;
                 flex-wrap: wrap;
@@ -1058,6 +1072,7 @@
                 height: 133vh !important;
                 background: white !important;
             }
+
             .container-01 {
                 overflow-x: auto;
                 /* overflow: auto !important; */
@@ -1071,12 +1086,14 @@
                 background: WHITE !important;
                 overflow-y: hidden;
             }
+
             .main table td section {
                 margin-bottom: 30% !important;
                 padding: 10px !important;
                 /* margin: 5%; */
                 color: #fff !important;
             }
+
             .main table td img {
                 float: right !important;
                 width: 156% !important;
@@ -1085,6 +1102,7 @@
                 --delay: 0s !important;
                 animation: arrows 4s var(--delay) infinite ease-in !important;
             }
+
             .main table td img {
                 margin-bottom: 25%;
                 /* margin-top: 20px; */
@@ -1095,9 +1113,11 @@
                 --delay: 0s !important;
                 animation: arrows 4s var(--delay) infinite ease-in !important;
             }
+
             .main table td {
                 width: 5% !important;
             }
+
             .main-container {
                 overflow: hidden !important;
                 overflow-x: hidden !important,;
@@ -1539,7 +1559,7 @@
             font-weight: bold;
         }
 
-       
+
 
         importUrl = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap";
         body {
@@ -2085,6 +2105,7 @@
             cursor: pointer;
             border-radius: 15px;
         }
+
         .downloadGraph {
             background-color: #b766e9;
             border: none;
@@ -2144,7 +2165,7 @@
             position: relative;
             z-index: 3;
         }
-        
+
 
         .left-container {
             width: 20%;
@@ -2243,12 +2264,14 @@
             z-index: 999; /* Ensure it's below the hamburger menu */
             transition: left 0.3s ease;
         }
+
         .Data-text {
-            margin-top: 1%;
+            margin-top: -1%;
             font-size: 10px;
         }
+
         .disclaimer-text {
-            margin-top:2%;
+            margin-top: 2%;
             font-size: 10px;
         }
 
@@ -2258,7 +2281,6 @@
         }
 
         .container-03 {
- 
             position: relative;
             display: flex;
             justify-content: center;
@@ -2367,7 +2389,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
 </head>
 
-    <!-- Your existing HTML content -->
+<!-- Your existing HTML content -->
 
 
 <div class="background-green"></div>
@@ -2426,7 +2448,7 @@
             </div>
             <div class="chat-box" onclick="handlAboutUs()">
                 <div class="img-box">
-                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim.png?raw=true" alt="">
+                    <img class="img-cover" src="https://github.com/shivangnayar-dev/img/blob/main/abouttus.png?raw=true" alt="">
                 </div>
                 <div class="chat-details">
                     <div class="text-head">
@@ -2516,7 +2538,9 @@
                             <section>
                                 <h5 class="sub-title">Welcome To CareerGraph</h5>
                                 <h1 class="">Career Guidance and Advisory &ZeroWidthSpace;</h1>
-                                <p style="font-size: 10px; padding: 0px; /* margin-bottom: 20px; */ /* height: 24%; */ /* padding-bottom: 10px; */">In today's rapidly changing job landscape, new professions are emerging driven by technology advancements and global needs. The World Economic Forum emphasizes the importance of adaptability and continuous learning to keep pace with these changes. Roles such as computer specialists, data analysts, renewable energy engineers, and cybersecurity experts are becoming increasingly prevalent. To excel in these fields, individuals must possess strong problem-solving abilities, computer proficiency, effective communication skills, and resilience in the face of challenges. Employability is not merely about possessing the right skills or qualifications but also about demonstrating the right attitude and adaptability in diverse work environments. The perception of job acquisition has evolved over the years:</p>
+                                <p class="default-font-size mobile-font-size">
+                                    In today's rapidly changing job landscape, new professions are emerging driven by technology advancements and global needs. The World Economic Forum emphasizes the importance of adaptability and continuous learning to keep pace with these changes. Roles such as computer specialists, data analysts, renewable energy engineers, and cybersecurity experts are becoming increasingly prevalent. To excel in these fields, individuals must possess strong problem-solving abilities, computer proficiency, effective communication skills, and resilience in the face of challenges. Employability is not merely about possessing the right skills or qualifications but also about demonstrating the right attitude and adaptability in diverse work environments. The perception of job acquisition has evolved over the years:
+                                </p>
                             </section>
                         </td>
                         <td>
@@ -2625,7 +2649,7 @@
                 <p id="disclaimer"></p>
                 <div style="margin:" auto;"="">
                     <canvas id="benchmarkChart" width="3200" height="1600" style="display: block; box-sizing: border-box; height: 70%; width: 100%;"></canvas>
-                    <div style="display: flex;margin-top: 2%;">
+                    <div style="display: flex">
                         <select id="matrixFilter" style="text-align: center;background-color: #b766e9;border: none;color: white;padding: 6px 10px;font-size: 14px;margin-right: 10px;cursor: pointer;border-radius: 12px;">
                             <option disabled="" selected="">Matrix</option>
 
@@ -2639,14 +2663,14 @@
 
 
                     </div>
-                    <button id="downloadGraph" style="border: none; color: #8a2be2; padding: 7px 11px; margin-top: 2%; border-radius: 40px; font-size: 16px; text-decoration: none; display: inline-block; box-shadow: -4px -4px 15px rgba(255,255,255,1), 4px 4px 15px rgb(0 0 0 / 39%); background-color: white; transition: background-color 0.3s ease 0s;" onmouseover="this.style.backgroundColor='#9e4fae';" onmouseout="this.style.backgroundColor='white';">
+                    <button id="downloadGraph" style="border: none; color: #8a2be2; padding: 7px 11px; margin-top: 1%; border-radius: 40px; font-size: 16px; text-decoration: none; display: inline-block; box-shadow: -4px -4px 15px rgba(255,255,255,1), 4px 4px 15px rgb(0 0 0 / 39%); background-color: white; transition: background-color 0.3s ease 0s;" onmouseover="this.style.backgroundColor='#9e4fae';" onmouseout="this.style.backgroundColor='white';">
                         <i class="fas fa-download" style="margin-right: 5px;" aria-hidden="true"></i> Download
                     </button>
 
                     <p id="disclaimer" class="disclaimer-text">This site works on Machine learning and the data changes as more people take CareerGraph tests on the site.</p>
                     <p id="disclaimer" class="Data-text">Data refresh date : 1 march 2024 </p>
                 </div>
-               
+
 
 
                 <!-- Add a button to trigger the API call -->

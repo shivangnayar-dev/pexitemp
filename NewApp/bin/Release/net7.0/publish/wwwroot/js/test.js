@@ -933,7 +933,7 @@ function submitUserDataToDatabase(userData) {
 
 function askName() {
     highlightSignUpChatBox();
-    if (userData.name !== undefined && userData.name !== null && userData.name !== 0) {
+    if (userData.name !== undefined && userData.name !== null && userData.name !== "0" ) {
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Name", userData.name, false);
         askCountry();
@@ -987,7 +987,7 @@ function askGender() {
     if (organizationSelect) {
         organizationSelect.parentNode.removeChild(organizationSelect);
     }
-    if (userData.gender !== undefined && userData.gender !== null) {
+    if (userData.gender !== undefined && userData.gender !== null && userData.gender !=="0") {
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Gender", userData.gender, false);
         askDobAfterGender(); // Move on to the next step
@@ -1996,10 +1996,10 @@ function fetchNameAndPhoneFromURL() {
         }
         const phone = decodeURIComponent(currentUrl.substring(phoneParamStart, phoneParamEnd));
         userData.name = name;
-        userData.phoneNumber = phone;
+ 	userData.Mobile_No = phone;
         // Return an object containing the name and phone number
         return {
-            name: name,
+	    name: name,
             phone: phone
         };
     } else {
