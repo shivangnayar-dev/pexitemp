@@ -77,7 +77,7 @@ namespace NewApp.Controllers
                     (password,
     name,
     gender,
-    dob,country,location, organization, qualification) = await GetPasswordAndNameByUserAsync(candidate, identifierType);
+    dob, country, location, organization, qualification) = await GetPasswordAndNameByUserAsync(candidate, identifierType);
                 }
 
                 return Json(new
@@ -92,7 +92,7 @@ namespace NewApp.Controllers
                     Organization = organization,
                     Qualification = qualification
 
-                }) ;
+                });
             }
             catch (Exception ex)
             {
@@ -102,54 +102,53 @@ namespace NewApp.Controllers
         }
 
         private async Task<(string? password, string? name, string? gender, DateTime? dob, string? country, string? location, string? organization, string? qualification)> GetPasswordAndNameByUserAsync(CandidateDetails candidate, string identifierType)
-{
-    try
-    {
-        _logger.LogInformation($"Retrieving password and name for {identifierType}");
-
-        var query = _context.Candidates
-            .Where(c =>
-                (identifierType == "Mobile" && c.Mobile_No == candidate.Mobile_No) ||
-                (identifierType == "Aadhar" && c.Adhar_No == candidate.Adhar_No) ||
-                (identifierType == "Email" && c.email_address == candidate.email_address));
-
-        var result = await query
-            .OrderByDescending(c =>
-                identifierType == "Mobile" ? c.Mobile_No :
-                identifierType == "Aadhar" ? c.Adhar_No :
-                identifierType == "Email" ? c.email_address :
-                null)
-            .ThenByDescending(c => c.candidate_id)// Default ordering by null in case of unknown identifier
-            .FirstOrDefaultAsync();
-
-        if (result != null)
         {
-            return (
-                result.password,
-                result.name,
-                result.gender,
-                result.dob,
-                result.country,
-                result.location,
-                result.qualification,
-                result.organization
-            );
-        }
-        else
-        {
-            // Log a message if the candidate is not found
-            _logger.LogInformation($"No candidate found for {identifierType}");
+            try
+            {
+                _logger.LogInformation($"Retrieving password and name for {identifierType}");
 
-            return (null, null, null, null, null, null, null, null);
-        }
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError($"Error retrieving password and name: {ex}");
-        return (null, null, null, null, null, null, null, null);
-    }
-}
+                var query = _context.Candidates
+                    .Where(c =>
+                        (identifierType == "Mobile" && c.Mobile_No == candidate.Mobile_No) ||
+                        (identifierType == "Aadhar" && c.Adhar_No == candidate.Adhar_No) ||
+                        (identifierType == "Email" && c.email_address == candidate.email_address));
 
+                var result = await query
+                    .OrderByDescending(c =>
+                        identifierType == "Mobile" ? c.Mobile_No :
+                        identifierType == "Aadhar" ? c.Adhar_No :
+                        identifierType == "Email" ? c.email_address :
+                        null)
+                    .ThenByDescending(c => c.candidate_id)// Default ordering by null in case of unknown identifier
+                    .FirstOrDefaultAsync();
+
+                if (result != null)
+                {
+                    return (
+                        result.password,
+                        result.name,
+                        result.gender,
+                        result.dob,
+                        result.country,
+                        result.location,
+                        result.qualification,
+                        result.organization
+                    );
+                }
+                else
+                {
+                    // Log a message if the candidate is not found
+                    _logger.LogInformation($"No candidate found for {identifierType}");
+
+                    return (null, null, null, null, null, null, null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving password and name: {ex}");
+                return (null, null, null, null, null, null, null, null);
+            }
+        }
 
 
 
@@ -160,7 +159,56 @@ namespace NewApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Candidates.Add(candidate);
+                    // Check if the candidate with the same Mobile_No, Adhar_No, or email_address already exists
+                    var existingCandidate = await _context.Candidates.FirstOrDefaultAsync(c =>
+                        (c.Mobile_No != "0" && c.Mobile_No == candidate.Mobile_No) ||
+                        (c.Adhar_No != "0" && c.Adhar_No == candidate.Adhar_No) ||
+                        (c.email_address != "0" && c.email_address == candidate.email_address));
+
+                    if (existingCandidate != null)
+                    {
+                        // Ensure unique values in SelectedOptions and SelectedOptionTimestamps
+                        var existingOptions = existingCandidate.SelectedOptions.Split(',').ToList();
+                        var newOptions = candidate.SelectedOptions.Split(',').ToList();
+                        var combinedOptions = existingOptions.Union(newOptions).Distinct().ToList();
+                        existingCandidate.SelectedOptions = string.Join(",", combinedOptions);
+
+                        var existingTimestamps = existingCandidate.SelectedOptionTimestamps.Split(',').ToList();
+                        var newTimestamps = candidate.SelectedOptionTimestamps.Split(',').ToList();
+                        var combinedTimestamps = existingTimestamps.Union(newTimestamps).Distinct().ToList();
+                        existingCandidate.SelectedOptionTimestamps = string.Join(",", combinedTimestamps);
+
+                        // Update other candidate details
+                        existingCandidate.name = candidate.name;
+                        existingCandidate.gender = candidate.gender;
+                        existingCandidate.dob = candidate.dob;
+                        existingCandidate.country = candidate.country;
+                        existingCandidate.location = candidate.location;
+                        existingCandidate.organization = candidate.organization;
+                        existingCandidate.qualification = candidate.qualification;
+                        existingCandidate.otherOrganization = candidate.otherOrganization;
+                        existingCandidate.selectedSpecializations = candidate.selectedSpecializations;
+                        existingCandidate.selectedIndustries = candidate.selectedIndustries;
+                        existingCandidate.interest = candidate.interest;
+                        existingCandidate.pursuing = candidate.pursuing;
+                        existingCandidate.transactionId = candidate.transactionId;
+                        existingCandidate.rating = candidate.rating;
+                        existingCandidate.storedTestCode = candidate.storedTestCode;
+                        existingCandidate.upiPhoneNumber = candidate.upiPhoneNumber;
+                        existingCandidate.amountPaid = candidate.amountPaid;
+                        existingCandidate.mathScience = candidate.mathScience;
+                        existingCandidate.testProgress = candidate.testProgress;
+
+                        _context.Candidates.Update(existingCandidate);
+                    }
+                    else
+                    {
+                        // Ensure unique values in new candidate's SelectedOptions and SelectedOptionTimestamps
+                        candidate.SelectedOptions = string.Join(",", candidate.SelectedOptions.Split(',').Distinct());
+                        
+                        _context.Candidates.Add(candidate);
+                    }
+
                     await _context.SaveChangesAsync();
                     return Ok("Data submitted successfully");
                 }
@@ -173,6 +221,7 @@ namespace NewApp.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -215,8 +264,35 @@ namespace NewApp.Controllers
 
             return NoContent();
         }
+        [HttpGet("FetchCandidateId")]
+        public IActionResult FetchCandidateId(string email, string adhar, string mobile)
+        {
+            try
+            {
+                // Query CandidateDetails table based on email, Aadhar, or Mobile
+                var candidate = _context.Candidates.FirstOrDefault(c => c.email_address == email || c.Adhar_No == adhar || c.Mobile_No == mobile);
 
-        [HttpDelete("{id}")]
+                // If candidate is found, return the candidate_id
+                if (candidate != null)
+                {
+                    return Ok(new { candidateId = candidate.candidate_id });
+                }
+
+                // If no candidate is found, return NotFound
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return an error response
+                Console.WriteLine($"Error fetching candidate ID: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+    
+
+
+
+    [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var candidate = _context.Candidates.Find(id);
@@ -233,3 +309,4 @@ namespace NewApp.Controllers
         }
     }
 }
+
