@@ -25,9 +25,10 @@ namespace NewApp.Controllers
 
             // Randomly select questions along with their sub-attributes data
             var selectedQuestionsWithSubAttributes = CombineAndReturnIdsAndQuestions(assessmentSubAttributesData);
-
+            var GetOptionsAndAnswerIdsByAssessmentSubAttributee = GetOptionsAndAnswerIdsByAssessmentSubAttribute(selectedQuestionsWithSubAttributes);
             // Combine selected questions
-            var optionsAndAnswerIds = GetOptionsAndAnswerIdsWithQuestions(selectedQuestionsWithSubAttributes.Select(sq => sq.QuestionId).ToList());
+            var optionsAndAnswerIds = GetOptionsAndAnswerIdsWithQuestions(selectedQuestionsWithSubAttributes);
+
             var questionTextList = FetchQuestionData(selectedQuestionsWithSubAttributes.Select(sq => sq.QuestionId).ToList());
 
             // Fetch AssessmentSubAttribute, CountofQuestiontoDisplay, and QuestionCount
@@ -35,12 +36,15 @@ namespace NewApp.Controllers
             {
                 var countOfQuestionToDisplay = sq.SubAttributesData.Values.Last().Keys.Last();
                 var questionCount = sq.SubAttributesData.Values.Last().Values.Last()[0]; // Assuming there's at least one question in the subAttribute
-
+               var assessmentSubAttributeName = sq.SubAttributesData.Values.Last().Values.Last();
                 return new
                 {
                     AssessmentSubAttribute = sq.SubAttributesData.Keys.Last(),
                     CountofQuestiontoDisplay = countOfQuestionToDisplay,
-                    QuestionCount = questionCount,
+                    creativityValue = assessmentSubAttributeName[3],
+
+
+                QuestionCount = questionCount,
                     SelectedQuestionsCount = 1, // Each selected question represents one count
                     SelectedQuestions = new Dictionary<string, string> { { sq.QuestionId.ToString(), sq.Question } }
                 };
@@ -60,11 +64,32 @@ namespace NewApp.Controllers
             Item3 = opt.SequenceOfDisplay,
             Item4 = opt.MarksTotal
         }).ToList(),
-        subid = selectedQuestionsWithSubAttributes
-                    .Where(sq => sq.Item2 == kvp.Value.Question) // Find corresponding item in selectedQuestionsWithSubAttributes
-                    .Select(sq => sq.Item3.Keys.First()) // Extract the key from the first item in Item3
-                    .FirstOrDefault() // Get the first key or default value if not found
+        SubAttributeId = kvp.Value.SubAttributeId, // Using SubAttributeId from questionOptionsAndAnswers
+        AssessmentSubAttribute = kvp.Value.AssessmentSubAttribute
+        // Get the first key or default value if not found
     });
+            var formattedOptionsAndAnswerIdss = GetOptionsAndAnswerIdsByAssessmentSubAttributee.ToDictionary(
+               kvp => kvp.Key.ToString(), // kvp.Key is the assessmentSubAttribute
+               kvp => new
+               {
+                   assessmentSubAttribute = kvp.Key, // Using kvp.Key as AssessmentSubAttribute
+                   questions = kvp.Value.Select(q => new
+                   {
+                       question_id = q.QuestionId.ToString(),
+                       question = q.Question,
+                       optionsAndAnswerIds = q.OptionsAndAnswerIds.Select(opt => new
+                       {
+                           Item1 = opt.Options,
+                           Item2 = opt.AnswerId,
+                           Item3 = opt.SequenceOfDisplay,
+                           Item4 = opt.MarksTotal
+                       }).ToList(),
+                       SubAttributeId = q.SubAttributeId,
+                   }).ToList()
+               });
+
+
+
 
             // Check if the sum of countToDisplay of all attributes is equal to the length of combinedQuestions
             int sumCountToDisplay = assessmentSubAttributesData.Values
@@ -80,22 +105,31 @@ namespace NewApp.Controllers
                 questionOptionsAndAnswers = formattedOptionsAndAnswerIds,
                 isCountMatch = isCountMatch,
                 sumCountToDisplay = sumCountToDisplay,
+                questionOptionsAndAnswerss = formattedOptionsAndAnswerIdss,
+
                 selectedQuestionsWithSubAttributes = selectedQuestionsWithSubAttributes.Select(sq => new
                 {
-                    Item2 = sq.Item2, // Extracting Item2
-                    Item3 = sq.Item3// Extracting the key from the first item in Item3
+                    QuestionId = sq.QuestionId,
+                    Question = sq.Question,
+                  
+                    SubAttributeId = sq.SubAttributeId
+             
                 })
             });
         }
 
-        private Dictionary<Guid, (Guid QuestionId, string Question, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)> GetOptionsAndAnswerIdsWithQuestions(List<Guid> selectedQuestionIds)
+        private Dictionary<Guid, (Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)> GetOptionsAndAnswerIdsWithQuestions(List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute)> selectedQuestions)
         {
-            Dictionary<Guid, (Guid QuestionId, string Question, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)> questionOptionsAndAnswers = new Dictionary<Guid, (Guid QuestionId, string Question, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)>)>();
+            Dictionary<Guid, (Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)> questionOptionsAndAnswers = new Dictionary<Guid, (Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)>)>();
 
             using (var dbContext = new QuestionAnsMapDbContext())
             {
-                foreach (var questionId in selectedQuestionIds)
+                foreach (var selectedQuestion in selectedQuestions)
                 {
+                    var questionId = selectedQuestion.QuestionId;
+                    var subAttributeId = selectedQuestion.SubAttributeId;
+                    var assessmentSubAttribute = selectedQuestion.AssessmentSubAttribute;
+
                     // Ensure that the Select statement returns the correct types
                     var questionDataList = _context.QuestionAnsMaps
                         .Where(q => q.QuestionId == questionId)
@@ -122,7 +156,14 @@ namespace NewApp.Controllers
                                 MarksTotal: q.MarksTotal))
                             .ToList();
 
-                        var questionAndOptions = (QuestionId: questionDataList.First().QuestionId, Question: questionDataList.First().Question, OptionsAndAnswerIds: optionsAndAnswerList);
+                        var questionAndOptions = (
+                            QuestionId: questionDataList.First().QuestionId,
+                            Question: questionDataList.First().Question,
+                            SubAttributesData: selectedQuestion.SubAttributesData,
+                            SubAttributeId: subAttributeId,
+                            AssessmentSubAttribute: assessmentSubAttribute,
+                            OptionsAndAnswerIds: optionsAndAnswerList);
+
 
                         questionOptionsAndAnswers.Add(questionId, questionAndOptions);
                     }
@@ -131,6 +172,62 @@ namespace NewApp.Controllers
 
             return questionOptionsAndAnswers;
         }
+        private Dictionary<string, List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)>> GetOptionsAndAnswerIdsByAssessmentSubAttribute(List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute)> selectedQuestions)
+        {
+            Dictionary<string, List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)>> questionOptionsByAssessmentSubAttribute = new Dictionary<string, List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)>>();
+
+            foreach (var selectedQuestion in selectedQuestions)
+            {
+                var questionId = selectedQuestion.QuestionId;
+                var subAttributeId = selectedQuestion.SubAttributeId;
+                var assessmentSubAttribute = selectedQuestion.AssessmentSubAttribute;
+
+                // Ensure that the Select statement returns the correct types
+                var questionDataList = _context.QuestionAnsMaps
+                    .Where(q => q.QuestionId == questionId)
+                    .Select(q => new
+                    {
+                        q.QuestionId,
+                        q.Question,
+                        q.Options,
+                        q.AnswerId,
+                        q.SequenceOfDisplay,
+                        q.MarksTotal
+                    })
+                    .OrderBy(q => q.SequenceOfDisplay)
+                    .ToList();
+
+                if (questionDataList.Any())
+                {
+                    // Use the correct property names and types when adding to the dictionary
+                    var optionsAndAnswerList = questionDataList
+                        .Select(q => (
+                            Options: q.Options,
+                            AnswerId: q.AnswerId,
+                            SequenceOfDisplay: q.SequenceOfDisplay,
+                            MarksTotal: q.MarksTotal))
+                        .ToList();
+
+                    var questionAndOptions = (
+                        QuestionId: questionDataList.First().QuestionId,
+                        Question: questionDataList.First().Question,
+                        SubAttributesData: selectedQuestion.SubAttributesData,
+                        SubAttributeId: subAttributeId,
+                        AssessmentSubAttribute: assessmentSubAttribute,
+                        OptionsAndAnswerIds: optionsAndAnswerList);
+
+                    if (!questionOptionsByAssessmentSubAttribute.ContainsKey(assessmentSubAttribute))
+                    {
+                        questionOptionsByAssessmentSubAttribute[assessmentSubAttribute] = new List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute, List<(string Options, string AnswerId, int SequenceOfDisplay, int MarksTotal)> OptionsAndAnswerIds)>();
+                    }
+
+                    questionOptionsByAssessmentSubAttribute[assessmentSubAttribute].Add(questionAndOptions);
+                }
+            }
+
+            return questionOptionsByAssessmentSubAttribute;
+        }
+
 
         private List<string> FetchQuestionData(List<Guid> selectedQuestionIds)
         {
@@ -154,6 +251,7 @@ namespace NewApp.Controllers
 
             return questionTextList;
         }
+      
 
         private Dictionary<string, Dictionary<string, Dictionary<int, List<object>>>> GetAssessmentSubAttributesBy(string ReportId)
         {
@@ -174,7 +272,8 @@ namespace NewApp.Controllers
                         tc.AssessmentSubAttribute,
                         tc.CountofQuestiontoDisplay,
                         tc.QuestionCount,
-                        tc.TimeperQuestioninSec
+                        tc.TimeperQuestioninSec,
+                        tc.GradeCategory
                     })
                     .ToList();
 
@@ -194,7 +293,7 @@ namespace NewApp.Controllers
                         .Where(tq => tq.AssessmentSubAttributeId == value.AssessmentSubAttributeId)
                         .ToDictionary(tq => tq.QuestionId, tq => tq.Question);
 
-                    subAttributeData[value.AssessmentSubAttributeId].Add(cumulativeCount, new List<object> { value.QuestionCount, value.TimeperQuestioninSec, questions });
+                    subAttributeData[value.AssessmentSubAttributeId].Add(cumulativeCount, new List<object> { value.QuestionCount, value.TimeperQuestioninSec, questions,value.AssessmentSubAttribute,value.GradeCategory });
                 }
 
                 assessmentSubAttributesData.Add(assessmentSubAttributeId, subAttributeData);
@@ -209,9 +308,10 @@ namespace NewApp.Controllers
             return _context.ReportSubAttributes.Any(tc => tc.ReportId == ReportId);
         }
 
-        private List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData)> CombineAndReturnIdsAndQuestions(Dictionary<string, Dictionary<string, Dictionary<int, List<object>>>> assessmentSubAttributesData)
+
+        private List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute)> CombineAndReturnIdsAndQuestions(Dictionary<string, Dictionary<string, Dictionary<int, List<object>>>> assessmentSubAttributesData)
         {
-            List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData)> selectedQuestionsWithSubAttributes = new List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData)>();
+            List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute)> selectedQuestionsWithSubAttributes = new List<(Guid QuestionId, string Question, Dictionary<string, Dictionary<int, List<object>>> SubAttributesData, string SubAttributeId, string AssessmentSubAttribute)>();
 
             foreach (var subAttributeData in assessmentSubAttributesData)
             {
@@ -235,11 +335,20 @@ namespace NewApp.Controllers
 
                             foreach (var question in selectedSubset)
                             {
+                                // Fetch AssessmentSubAttribute from subAttributesData
+                                string assessmentSubAttribute = (string)questionData.Value.Last().Value.Last(); // Assuming the AssessmentSubAttribute is stored at index 3
+
                                 // Create the SubAttributesData dictionary containing the subAttributeId and its data
                                 var subAttributesData = new Dictionary<string, Dictionary<int, List<object>>>();
                                 subAttributesData.Add(subAttributeId, questionData.Value);
 
-                                selectedQuestionsWithSubAttributes.Add((question.Key, question.Value, subAttributesData));
+                                selectedQuestionsWithSubAttributes.Add((
+                                    question.Key,
+                                    question.Value,
+                                    subAttributesData,
+                                    subAttributeId,
+                                    assessmentSubAttribute
+                                ));
                             }
                         }
                     }
@@ -249,5 +358,7 @@ namespace NewApp.Controllers
             return selectedQuestionsWithSubAttributes;
         }
 
+
     }
 }
+

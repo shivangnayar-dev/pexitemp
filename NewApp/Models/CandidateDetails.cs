@@ -13,6 +13,9 @@ namespace NewApp.Models
 
 
 
+
+
+
         public int candidate_id { get; set; }
 
 
@@ -27,7 +30,7 @@ namespace NewApp.Models
         public string gender { get; set; } = "0";
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? dob { get; set; } 
+        public DateTime dob { get; set; } 
 
         public string location { get; set; } = "0";
 	 public string country { get; set; } = "India";
@@ -63,6 +66,13 @@ namespace NewApp.Models
 
         public string amountPaid { get; set; } = "0";
 	public string mathScience  { get; set; } = "0";
+        public string testProgress { get; set; } = "0";
+        public string mathStats { get; set; } = "0";
+        public string science { get; set; } = "0";// Default value is "0"
+        public string govJobs { get; set; } = "0";
+        public string armedForcesJobs { get; set; } = "0";
+
+        public string coreStream { get; set; } = "0";
 
     }
 

@@ -47,7 +47,7 @@ namespace NewApp.Controllers
                     .FirstOrDefault(qt => qt.StreamName == streamName);
 
                 // If found, return the ID; otherwise, return null
-                return Ok(coreStream?.Id);
+                return Ok(coreStream?.CoreStreamID);
             }
             catch (Exception ex)
             {

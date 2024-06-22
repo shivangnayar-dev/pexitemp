@@ -17,7 +17,7 @@ namespace NewApp.Controllers
         [HttpGet("GetAllBenchmarks")]
         public ActionResult<IEnumerable<Benchmarkmodel>> GetAllBenchmarks()
         {
-            return _context.benchmarkmodel.ToList();
+           return _context.benchmarkmodel.ToList();
         }
 
         // POST api/Benchmark/CheckBenchmarkValidity

@@ -44,8 +44,12 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
-        name: "Login",
-        pattern: "Log-In",
+        name: "code",
+        pattern: "code",
+        defaults: new { controller = "Home", action = "code" });
+    endpoints.MapControllerRoute(
+        name: "code",
+        pattern: "code",
         defaults: new { controller = "Home", action = "Login" });
 
     // Your existing default route

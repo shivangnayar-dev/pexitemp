@@ -714,7 +714,7 @@ let onNextQuestion;
 let submittedQuestions = [];
 
 function callApiToStartTest(reportId) {
-    $.ajax({
+    $.ajax({submittedQuestions
         type: 'POST',
         url: '/api/ReportSubAttribute/CheckreportIdValidity',
         contentType: 'application/json',

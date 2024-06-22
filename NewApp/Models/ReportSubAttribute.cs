@@ -10,8 +10,11 @@ namespace NewApp.Models
         public int CountofQuestiontoDisplay { get; set; }
         public int QuestionCount { get; set; }
         public int TimeperQuestioninSec { get; set; }
-       
-    
+        public string GradeCategory { get; set; }
+        public string Matrix { get; set; }
+        public string ReportSubAttributeId { get; set; }
+        public string ReportSubattribute { get; set; }
+
     }
 }
 

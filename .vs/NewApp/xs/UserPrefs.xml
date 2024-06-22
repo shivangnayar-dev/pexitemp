@@ -1,4 +1,107 @@
 ﻿<Properties StartupConfiguration="{04DBDFAF-213F-4F8E-B933-A4E5BC335E5D}|https">
-  <MonoDevelop.Ide.ItemProperties.NewApp FirstBuild="True" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.NewApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="NewApp/Controllers/candidateController.cs">
+    <Files>
+      <File FileName="NewApp/wwwroot/js/test.js" Line="3917" Column="2" />
+      <File FileName="NewApp/Models/ApplicationDbContext.cs" />
+      <File FileName="NewApp/Models/CandidateDetails.cs" Line="74" Column="1" />
+      <File FileName="NewApp/Models/CoreDbContext.cs" />
+      <File FileName="NewApp/Models/CandidateDbContext.cs" Line="90" Column="1" />
+      <File FileName="NewApp/Controllers/CoreController.cs" Line="46" Column="19" />
+      <File FileName="NewApp/Controllers/HomeController.cs" />
+      <File FileName="NewApp/Controllers/ReportSubAttributeController.cs" />
+      <File FileName="NewApp/Controllers/SpecializationController.cs" />
+      <File FileName="NewApp/Models/QuestionAnsMapDb.cs" />
+      <File FileName="NewApp/Models/QuestionAnsMap.cs" />
+      <File FileName="NewApp/Models/ShortSignUp.cs" />
+      <File FileName="NewApp/Models/ReportSubAttributeDbContext.cs" />
+      <File FileName="NewApp/Controllers/QualificationTypController.cs" />
+      <File FileName="NewApp/Program.cs" Line="11" Column="1" />
+      <File FileName="NewApp/Controllers/TestCodeController.cs" />
+      <File FileName="NewApp/wwwroot/js/site.js" Line="434" Column="5" />
+      <File FileName="NewApp/Models/SubmittedQuestionData.cs" />
+      <File FileName="NewApp/Models/TestCode.cs" />
+      <File FileName="NewApp/Models/ReportSubAttribute.cs" />
+      <File FileName="NewApp/wwwroot/js/testt.js" Line="753" Column="60" />
+      <File FileName="NewApp/wwwroot/js/EmptyJS.js" />
+      <File FileName="NewApp/Views/Home/Test.cshtml" Line="949" Column="21" />
+      <File FileName="NewApp/wwwroot/js/benchmarkChart.js" />
+      <File FileName="NewApp/Views/Home/Index.cshtml" />
+      <File FileName="NewApp/Views/Home/graph.cshtml" />
+      <File FileName="NewApp/wwwroot/js/career.js" />
+      <File FileName="NewApp/Views/Home/Dashboard.cshtml" />
+      <File FileName="NewApp/Views/Home/Councellor.cshtml" />
+      <File FileName="NewApp/Views/Home/career.cshtml" />
+      <File FileName="NewApp/Views/Home/Astro.cshtml" />
+      <File FileName="NewApp/Views/Home/AboutUs.cshtml" />
+      <File FileName="NewApp/Views/Home/Login.cshtml" />
+      <File FileName="NewApp/Models/QuestionData.cs" />
+      <File FileName="NewApp/Models/QuestionDbContext.cs" />
+      <File FileName="NewApp/Models/BenchmarkModel.cs" />
+      <File FileName="NewApp/Models/ApplicationUser.cs" />
+      <File FileName="NewApp/Models/LoginViewModel.cs" />
+      <File FileName="NewApp/Controllers/candidateController.cs" Line="17" Column="14" />
+      <File FileName="NewApp/Views/_ViewImports.cshtml" />
+      <File FileName="NewApp/Views/_ViewStart.cshtml" />
+      <File FileName="NewApp/Views/Shared/_Layout.cshtml" />
+      <File FileName="NewApp/appsettings.json" Line="14" Column="1" />
+      <File FileName="NewApp/Controllers/BenchmarkController.cs" />
+      <File FileName="NewApp/bin/Release/net7.0/publish/wwwroot/js/test.js" />
+      <File FileName="NewApp/Models/bechcomen.cs" Line="14" Column="55" />
+      <File FileName="NewApp/Models/CandidateSelectedOptionsDbContext.cs" Line="1" Column="1" />
+      <File FileName="NewApp/Models/DatabaseTable.cs" />
+      <File FileName="NewApp/Models/BenchmarkDbContext.cs" />
+      <File FileName="NewApp/Models/bechcomenDbContext.cs" />
+      <File FileName="NewApp/Models/QualificationTypes.cs" />
+      <File FileName="NewApp/Models/TemperamentTable.cs" />
+      <File FileName="NewApp/Models/InterestAnswersIIA.cs" />
+      <File FileName="NewApp/Models/InterestAnswersIIADbContext.cs" />
+      <File FileName="NewApp/Models/IIAIndustriessub.cs" />
+      <File FileName="NewApp/Models/IIAIndustriessubDbContext.cs" />
+      <File FileName="NewApp/Models/StreamJobRole.cs" />
+      <File FileName="NewApp/Models/StreamJobRoleDbContext.cs" />
+      <File FileName="NewApp/Models/CandidateSelectedOptions.cs" Line="1" Column="1" />
+      <File FileName="NewApp/Models/AssessmentResults.cs" />
+      <File FileName="NewApp/Models/Core.cs" />
+      <File FileName="NewApp/wwwroot/js/Index.js" />
+      <File FileName="NewApp/Views/Shared/_ValidationScriptsPartial.cshtml" />
+      <File FileName="NewApp/Views/Shared/Error.cshtml" />
+      <File FileName="../../Downloads/finaltablee-1_page_4/13.html" />
+      <File FileName="../../Downloads/finaltablee-1_page_4/1.html" />
+      <File FileName="../../Downloads/finaltablee-1_page 4 (1).html" />
+      <File FileName="NewApp/Models/Result.cs" />
+      <File FileName="NewApp/Views/Home/Result.html" />
+      <File FileName="NewApp/Views/Home/RefundPolicy.cshtml" />
+      <File FileName="NewApp/Views/Home/code.cshtml" />
+      <File FileName="NewApp/Models/AcademicStreamDbContext.cs" Line="1" Column="14" />
+      <File FileName="NewApp/Models/AssessmentResultsDbContext.cs" />
+      <File FileName="../../../../usr/local/share/dotnet/sdk/7.0.311/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" Line="266" Column="5" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="NewApp" expanded="True">
+            <Node name="NewApp" expanded="True">
+              <Node name="Controllers" expanded="True">
+                <Node name="candidateController.cs" selected="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="js" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
 </Properties>

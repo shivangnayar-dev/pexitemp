@@ -89,7 +89,7 @@
             flex-wrap: wrap;
             margin-left: 10px;
             gap: 8px;
-            margin-top: 60%;
+            margin-top: 20%;
             overflow: auto;
             max-height: 300px;
         }
@@ -501,31 +501,35 @@
             margin: 5px 0;
         }
 
-            .message-box p {
-                text-align: left;
-                max-width: 65%;
-                padding: 12px;
-                background: #dcf8c6;
-                border-radius: 10px;
-                font-size: 0.9em;
-            }
+        .openbtn.active ~ .right-container .chat-container .message-box {
+            margin-left: 20% !important;
+        }
 
-            .message-box.my-message p::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: -12px;
-                width: 20px;
-                height: 20px;
-                background: linear-gradient(135deg, #dcf8c6 0%, #dcf8c6 50%, transparent 50%, transparent);
-            }
+        .message-box p {
+            text-align: left;
+            max-width: 65%;
+            padding: 12px;
+            background: #dcf8c6;
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
 
-            .message-box p span {
-                display: block;
-                margin-top: 5px;
-                font-size: 0.8em;
-                opacity: 0.5;
-            }
+        .message-box.my-message p::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -12px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #dcf8c6 0%, #dcf8c6 50%, transparent 50%, transparent);
+        }
+
+        .message-box p span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.8em;
+            opacity: 0.5;
+        }
 
         .my-message {
             justify-content: flex-end;
@@ -579,7 +583,7 @@
                 background-color: green;
             }
 
-      
+
 
 
         .chatbox-input {
@@ -668,7 +672,7 @@
             border-radius: 15px;
         }
 
-        .western-button,
+        .western-button, .skipButton,
         .vedic-button, .ascendant-button, .ascendantsub-button,
         #dobSubmitButton, #ascendantInput {
             background-color: #8a2be2;
@@ -736,6 +740,21 @@
         .slide-button-closed {
             left: 0;
         }
+
+        .skip-button {
+            background-color: #8a2be2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
 
         .openbtn {
             margin-right: 10px;
@@ -813,6 +832,7 @@
             z-index: 999; /* Ensure it's below the hamburger menu */
             transition: left 0.3s ease;
         }
+
         .flex {
             display: flex;
             align-items: center;
@@ -914,30 +934,16 @@
 
         <!-- input-bottom -->
         <div class="chatbox-input">
-            <i class="fa-regular fa-face-grin"></i>
-            <i class="fa-sharp fa-solid fa-paperclip"></i>
+            <button id="skipButton" class="skip-button" style="display: none;">Skip</button>
+
             <input type="text" id="dobInput" placeholder="Type a message...">
             <button id="dobSubmitButton" onclick="handleMultipleSubmit()">Submit</button>
+
            
-            <section class="flex flex-content">
-                <b id="mb"></b> <sub> Mbps</sub>
-            </section>
-            <section class="flex flex-content">
-               
-            </section>
-            <section class="flex flex-content">
-               
-            </section>
-            <section class="flex flex-content" id="result">
-            </section>
         </div>
     </div>
 </div>
 </div>
 
-<div class="internet-speed-indicator">
-    <div class="indicator"></div>
-</div>
+
 <script src="/js/test.js" asp-append-version="true"></script>
-
-

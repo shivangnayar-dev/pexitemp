@@ -1,74 +1,10 @@
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-// Flag to track left container visibility
+let currentSectionIndex = 0;
+let HeadingSection = 0;
+console.log('HeadingSection', HeadingSection);
 
 var imageAddr = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
 var downloadSize = 300000;
-
-function InitiateSpeedDetection() {
-    setInterval(MeasureConnectionSpeed, 1000); // Check every second
-}
-
-if (window.addEventListener) {
-    window.addEventListener('load', InitiateSpeedDetection, false);
-} else if (window.attachEvent) {
-    window.attachEvent('onload', InitiateSpeedDetection);
-}
-
-function MeasureConnectionSpeed() {
-    var startTime, endTime;
-    var download = new Image();
-    download.onload = function () {
-        endTime = (new Date()).getTime();
-        showResults();
-    }
-    download.onerror = function (err, msg) {
-        document.getElementById("result").innerHTML = "Invalid image, or error downloading";
-    }
-    startTime = (new Date()).getTime();
-    var cacheBuster = "?nnn=" + startTime;
-    download.src = imageAddr + cacheBuster;
-
-    function showResults() {
-        var duration = (endTime - startTime) / 1000;
-        var bitsLoaded = downloadSize * 8;
-        var speedBps = (bitsLoaded / duration).toFixed(2);
-        var speedKbps = (speedBps / 1024).toFixed(2);
-        var speedMbps = (speedKbps / 1024).toFixed(1);
-        document.getElementById("mb").innerHTML = speedMbps;
-
-
-        // Update indicator color based on connection speed
-        var indicator = document.querySelector('.indicator');
-        if (parseFloat(speedMbps) > 2) {
-            indicator.classList.add('green');
-        } else {
-            indicator.classList.remove('green');
-        }
-    }
-}
+let testProgress = "1";
 
 
 let userDataSelected = {};
@@ -234,8 +170,10 @@ function closeModal() {
 let timerInterval; // Declare timer interval variable globally
 let totalSecondsRemaining; // Declare total seconds remaining globally
 function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId) {
+
     // Define the maximum number of questions per section
     const maxQuestionsPerSection = 20;
+
 
     // Calculate the current section index
     const currentSectionIndex = Math.floor(currentQuestionIndex / maxQuestionsPerSection);
@@ -256,10 +194,14 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
     const sectionContainer = document.createElement('div');
     sectionContainer.className = 'section-container';
     sectionContainer.style.marginBottom = '20px'; // Add margin to separate sections
+    sectionContainer.style.display = ''; // Add this line to include the provided styling
 
     // Create section heading
     const sectionHeading = document.createElement('h3');
-    sectionHeading.textContent = `Section ${String.fromCharCode(65 + currentSectionIndex)}`;
+    sectionHeading.textContent = "Section: " + (HeadingSection + 1) + " / " + filteredSections.length;
+    console.log('HeadingSection', HeadingSection);
+    sectionHeading.style.textAlign = '-webkit-center';
+
     sectionContainer.appendChild(sectionHeading);
 
     // Calculate the range of questions for the current section
@@ -272,16 +214,58 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
     questionBoxContainer.style.display = 'flex';
     questionBoxContainer.style.flexWrap = 'wrap';
 
+    // Count the number of submitted questions
+    const submittedCount = submittedQuestions.length;
+
+    // Count the number of skipped questions
+    const skippedCount = skippedQuestions.length;
+
+    // Create a container for the count boxes
+    const countContainer = document.createElement('div');
+    countContainer.className = 'count-container'; // Optional class for layout
+    countContainer.style.display = 'flex'; // Arrange boxes side-by-side
+    countContainer.style.marginTop = '10%'; // Add margin-top
+    countContainer.style.marginBottom = '10%'; // Add margin-bottom
+    countContainer.style.justifyContent = 'space-evenly'; // Distribute boxes evenly
+
+    sectionContainer.appendChild(countContainer);
+
+    // Create a green box for submitted count
+    const submittedBox = document.createElement('div');
+    submittedBox.className = 'count-box submitted'; // Class for green style
+    submittedBox.style.backgroundColor = 'green';
+    submittedBox.style.color = 'white';
+    submittedBox.style.padding = '5px 10px'; // Add padding for better spacing (optional)
+    submittedBox.style.borderRadius = '5px'; // Add rounded corners (optional)
+    submittedBox.textContent = submittedCount;
+    countContainer.appendChild(submittedBox);
+
+    // Create an orange box for skipped count
+    const skippedBox = document.createElement('div');
+    skippedBox.className = 'count-box skipped'; // Class for orange style
+    skippedBox.style.backgroundColor = 'orange';
+    skippedBox.style.color = 'white';
+    skippedBox.style.padding = '5px 10px'; // Add padding (optional)
+    skippedBox.style.borderRadius = '5px'; // Add rounded corners (optional)
+    skippedBox.textContent = skippedCount;
+    countContainer.appendChild(skippedBox);
+
     // Create question boxes for the current section
     for (let questionIndex = startQuestionIndex; questionIndex < endQuestionIndex; questionIndex++) {
         const questionBox = document.createElement('div');
         questionBox.className = 'question-box';
 
+
+
         // Check if the question has been submitted
-        if (submittedQuestions.includes(questionIndex)) {
+        const submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
+
+        if (submittedQuestionIndexes.includes(questionIndex + 1)) {
             questionBox.style.backgroundColor = 'green';
         }
-
+        if (skippedQuestions.includes(questionIndex + 1)) {
+            questionBox.style.backgroundColor = 'orange';
+        }
         // Add blue background to the current question box
         if (questionIndex === currentQuestionIndex) {
             questionBox.style.backgroundColor = 'blue';
@@ -314,8 +298,6 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
         startTimer(timerContainer); // Start the timer
     }
 }
-
-
 function startTimer(timerContainer) {
     // Add timer elements
     let minutesElement = document.createElement('div');
@@ -398,12 +380,25 @@ function askConsent() {
 document.addEventListener('DOMContentLoaded', function () {
     const openBtn = document.getElementById('openbtn');
     const leftContainer = document.getElementById('left-container');
+    const chatContainer = document.querySelector('.chat-container');
+    const skipButton = document.getElementById('skipButton');
 
     openBtn.addEventListener('click', function () {
         const isActive = openBtn.classList.toggle('active');
         leftContainer.style.left = isActive ? '0' : '-100%';
+
+        // Check if the screen width is greater than a certain value (indicating it's not a mobile view)
+        if (testactivated && window.innerWidth > 768) { // Adjust this value as needed
+            chatContainer.style.marginLeft = isActive ? '20%' : '0';
+
+        } else {
+            chatContainer.style.marginLeft = '0';
+            skipButton.style.marginLeft = '0';
+        }
     });
 });
+
+
 function askTransactionId() {
     const genderSelect = document.getElementById("genderSelect");
     if (genderSelect) {
@@ -643,9 +638,12 @@ function createMessageBoxq(question, currentQuestionIndex, totalQuestions) {
     // Append the newMessageBox to the body
     document.querySelector(".chat-container").appendChild(newMessageBox);
 }
+let sectionSelectedOptionsArray = [];
+let selectedOptionsLength = 0;
 
 
-function optionselect(optionsData, onNextQuestion, questionId) {
+
+function optionselect(optionsData, onNextQuestion, assessmentSubAttribute, questionId) {
     // Create a new message box
     let newMessageBox = document.createElement("div");
 
@@ -662,7 +660,7 @@ function optionselect(optionsData, onNextQuestion, questionId) {
         // Create a radio button
         const radioOption = document.createElement("input");
         radioOption.type = "radio";
-        radioOption.name = `option_${questionId}`; // Use question ID to create unique name for each question's options
+        radioOption.name = `option_${assessmentSubAttribute}`; // Use assessmentSubAttribute to create unique name for each question's options
         radioOption.value = optionData.item2;
         radioOption.id = `option_${optionData.item2}`; // Unique ID for each radio button
 
@@ -687,51 +685,56 @@ function optionselect(optionsData, onNextQuestion, questionId) {
     }
 
     // Append the new message box to the chat container
+
     document.querySelector(".chat-container").appendChild(newMessageBox);
     newMessageBox.addEventListener('change', function () {
-        const selectedOption = newMessageBox.querySelector(`input[name="option_${questionId}"]:checked`);
+        const selectedOption = newMessageBox.querySelector(`input[name="option_${assessmentSubAttribute}"]:checked`);
 
         if (selectedOption) {
             // Get current timestamp
             const timestamp = new Date().getTime();
 
-            // Assuming userDataSelected is a global object
-            userDataSelected.SelectedOptionss = userDataSelected.SelectedOptionss || {};
+            // Update the array storing selected options for the current section
+            sectionSelectedOptionsArray[currentSectionIndex] = sectionSelectedOptionsArray[currentSectionIndex] || {};
+            sectionSelectedOptionsArray[currentSectionIndex][questionId] = selectedOption.value;
 
-            // Store the selected option for the current question
-            userDataSelected.SelectedOptionss[questionId] = selectedOption.value;
+            // Log the selected options for the current section
+            console.log('Selected Options for Section:', sectionSelectedOptionsArray[currentSectionIndex]);
+            selectedOptionsLength = Object.keys(sectionSelectedOptionsArray[currentSectionIndex]).length;
+            console.log('Length of selected options for the current section:', selectedOptionsLength);
 
-            // Store the timestamp for the selected option
-            userDataSelected.SelectedOptionTimestamps = userDataSelected.SelectedOptionTimestamps || {};
-            userDataSelected.SelectedOptionTimestamps[questionId] = timestamp;
-
-            console.log(userDataSelected);
-
+            // Combine selected options from all sections into a single array
+            let allSelectedOptions = [];
+            for (const sectionSelectedOptions of sectionSelectedOptionsArray) {
+                if (sectionSelectedOptions) {
+                    allSelectedOptions.push(...Object.values(sectionSelectedOptions));
+                }
+            }
             onNext = true;
+            console.log('allSelectedOptions:', allSelectedOptions);
 
-            // Convert the array of selected options to a string
-            const selectedOptionsString = Object.values(userDataSelected.SelectedOptionss).join(",");
-            console.log(selectedOptionsString);
+            // Convert the combined selected options array to a string
+            const allSelectedOptionsString = allSelectedOptions.join(",");
+            console.log('All Selected Options:', allSelectedOptionsString);
+            console.log(allSelectedOptionsString.length);
 
-            // Convert the array of timestamps to a string
-            const timestampsString = Object.values(userDataSelected.SelectedOptionTimestamps).join(",");
-            console.log(timestampsString);
+            // Assign the combined selected options string to userData.SelectedOptions
+            userData.SelectedOptions = allSelectedOptionsString;
 
-            // Append selectedOptionsString and timestampsString to userDataSelected.SelectedOptions
-            userData.SelectedOptions = selectedOptionsString;
-            userData.SelectedOptionTimestamps = timestampsString;
             console.log(userData);
+
         }
     });
 }
+let completedAssessmentSubAttributes = [];
+let currentAssessmentSubattribte = "";
 
-
-function giveTest(questionId, question, optionsData, onNextQuestion, currentQuestionIndex, totalQuestions) {
+function giveTest(assessmentSubAttribute, question, optionsData, onNextQuestion, currentQuestionIndex, totalQuestions, questionId) {
     clearChatList();
+
 
     onNext = false;
 
-    showLeftContainer(totalQuestions, currentQuestionIndex);
 
     testInProgress = true;
 
@@ -740,74 +743,402 @@ function giveTest(questionId, question, optionsData, onNextQuestion, currentQues
     // Display current question number and its ID
     createMessageBoxq(question, currentQuestionIndex, totalQuestions);
 
-    optionselect(optionsData, onNextQuestion, questionId);
+
 
     const dobInput = document.getElementById("dobInput");
+    currentAssessmentSubattribte = assessmentSubAttribute;
+
+    console.log('currentAssessmentSubattribte:', currentAssessmentSubattribte);
+    showLeftContainer(totalQuestions, currentQuestionIndex);
+    optionselect(optionsData, onNextQuestion, assessmentSubAttribute, questionId);
 
     // Remove previous message box and select element
 
     console.log('Current Question:', question);
-    console.log('Question ID:', questionId);
+    console.log('Assessment SubAttribute:', assessmentSubAttribute);
     console.log(currentQuestionIndex);
     console.log(totalQuestions);
 }
+let unsubmittedQuestionIndexes = [];
 
+// Function to update the array of unsubmitted question indexes
+const updateUnsubmittedQuestionIndexes = () => {
+    const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+    const questions = section.questions;
+    const totalQuestions = questions.length;
+    unsubmittedQuestionIndexes = [];
+    for (let i = 1; i <= totalQuestions; i++) {
+        if (!submittedQuestions.some(question => question.questionIndex === i) && !skippedQuestions.includes(i)) {
+            unsubmittedQuestionIndexes.push(i);
+        }
+    }
+};
 
 let onNextQuestion;
-
-
 let submittedQuestions = [];
 
+
+let questionData = [];
+let questionOptionsAndAnswerss;
+let questionOptionsAndAnswers
+
+
+let currentQuestionIndex = 0;
+let skippedQuestions = [];
+let testactivated = false;
+console.log('skippedQuestions:',)
 function callApiToStartTest(reportId) {
+
+    testactivated = true;
+
+    const onSkipQuestion = function () {
+        clearMessageBoxes();
+        const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+        const questions = section.questions;
+        const totalQuestions = questions.length;
+        currentQuestionIndex++;
+
+        console.log(`Skipping Question. Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
+
+        if (currentQuestionIndex < totalQuestions) {
+
+            updateUnsubmittedQuestionIndexes();
+            console.log('Unsubmitted question indexes:', unsubmittedQuestionIndexes);
+
+            const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+
+            // Check if the current question index is not already in the skippedQuestions array
+            if (!skippedQuestions.includes(currentQuestionIndex)) {
+                // Store the index of the skipped question
+                skippedQuestions.push(currentQuestionIndex);
+                console.log('Skipped Questions:', skippedQuestions);
+
+                // Show the next question in the same section
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+            }
+        } else {
+            // Check if there are any skipped questions remaining
+            if (skippedQuestions.length > 0) {
+                // Store the index of the skipped question
+                skippedQuestions.push(currentQuestionIndex);
+                console.log('Skipped Questions:', skippedQuestions);
+                // Move to the next question index that is not completed
+                currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+            } else {
+                console.log("No more skipped questions.");
+                // Handle the case where there are no more skipped questions
+            }
+        }
+    };
+    userData.testProgress = testProgress;
+
     $.ajax({
         type: 'POST',
         url: '/api/ReportSubAttribute/CheckreportIdValidity',
         contentType: 'application/json',
         data: JSON.stringify({ ReportId: reportId }),
         success: function (response) {
+
             if (response.isValid) {
-		 console.log(reportId);
+                testactivated = true;
+                const skipButton = document.getElementById('skipButton');
+                skipButton.style.display = 'block';
+                skipButton.classList.add('skip-button');
+                const openBtn = document.getElementById('openbtn');
+                const isActive = openBtn.classList.contains('active');
+
+                // Add margin-left style to skipButton only if openBtn is active
+                skipButton.style.marginLeft = isActive ? '25% !important' : '0';
+                skipButton.addEventListener('click', onSkipQuestion);
+
+                console.log(reportId);
                 console.log(response);
+                questionOptionsAndAnswers = Object.entries(response.questionOptionsAndAnswers);
 
-                const questionOptionsAndAnswers = Object.entries(response.questionOptionsAndAnswers);
-                let currentQuestionIndex = 0;
-                const totalQuestions = questionOptionsAndAnswers.length;
+                questionOptionsAndAnswerss = response.questionOptionsAndAnswerss;
+                const sections = Object.keys(questionOptionsAndAnswerss);
 
-                onNextQuestion = function () {
-                    clearMessageBoxes();
-                    currentQuestionIndex++;
-                    submittedQuestions.push(currentQuestionIndex);
-                    console.log('Submitted Questions:', submittedQuestions);
 
-                    if (currentQuestionIndex < totalQuestions) {
-                        const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
-                        giveTest(questionId, currentQuestion.question, currentQuestion.optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions);
 
-                        // Add the current question and its selected option to userData
-                        const selectedOption = document.getElementById("countrySelect").options[document.getElementById("countrySelect").selectedIndex];
+                const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+
+                console.log(`Current Section Index: ${currentSectionIndex}, Total Sections: ${filteredSections.length}`);
+
+                // Call FetchAssessmentSubAttributes to filter sections
+                let isFirstQuestionPassed = false; // Initialize the boolean variable
+
+                FetchAssessmentSubAttributes(candidateId, sections, function () {
+                    // Check if filteredSections contains data
+                    if (filteredSections.length >= 0) {
+                        // Iterate through filteredSections
+                        for (const section of filteredSections) {
+                            // Check if the section exists in questionOptionsAndAnswerss
+                            if (questionOptionsAndAnswerss.hasOwnProperty(section)) {
+                                // Access the section and its corresponding data
+                                const sectionData = questionOptionsAndAnswerss[section];
+                                const questions = sectionData.questions;
+                                const totalQuestions = questions.length;
+
+                                // Perform operations with sectionData as needed
+                                console.log(`Section: ${section}`, sectionData);
+
+                                // Check if the first question hasn't been passed yet
+                                if (!isFirstQuestionPassed) {
+                                    showLeftContainer(totalQuestions, currentQuestionIndex);
+                                    // Call giveTest function for this section
+                                    giveTest(sectionData.assessmentSubAttribute, sectionData.questions[0].question, sectionData.questions[0].optionsAndAnswerIds, onNextQuestion, 0, totalQuestions, sectionData.questions[0].questionId);
+                                    isFirstQuestionPassed = true; // Update the boolean variable
+                                }
+                            } else {
+                                console.log(`Section '${section}' not found in questionOptionsAndAnswerss`);
+                                // Handle the case where the section doesn't exist
+                            }
+                        }
                     } else {
+                        console.log("filteredSections is empty");
+                        // Handle the case where filteredSections is empty
+                        const sections = Object.keys(questionOptionsAndAnswerss);
+                        // Now you can use sections as needed
+                    }
+                });
+
+                // Function to handle moving to the next section
+                const moveToNextSection = () => {
+
+                    HeadingSection++;
+
+
+                    submitUserDataToDatabase(userData);
+
+                    let skippedQuestions = [];
+                    currentQuestionIndex = 0;
+
+                    console.log(`Current Section Index: ${currentSectionIndex}, Total Sections: ${filteredSections.length}`);
+                    if (currentSectionIndex < filteredSections.length) {
+                        const nextSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+                        submittedQuestions = [];
+                        const firstQuestionIndex = 0;
+                        // Index of the first question of the next section
+                        giveTest(nextSection.assessmentSubAttribute, nextSection.questions[firstQuestionIndex].question, nextSection.questions[firstQuestionIndex].optionsAndAnswerIds, onNextQuestion, firstQuestionIndex, nextSection.questions.length);
+                    } else {
+
+                        submitUserDataToDatabase(userData);
+                        // No more sections, end the test
                         let testInProgress = false;
                         console.log('Length of SelectedOptions:', userData.SelectedOptions.length);
-
-
-
-                        // Create message boxes after checking if there are more questions
+                        userData.testProgress = "1";
                         createMessageBox("Thank you for taking the test");
                         createMessageBox("You can exit the page now");
                         gfg(5);
+                    }
+                };
+                onNextQuestion = function () {
+                    clearMessageBoxes();
+                    const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+                    const questions = section.questions;
+                    const totalQuestions = questions.length;
+                    const firstSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+                    currentQuestionIndex++;
+
+                    console.log(`Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
+
+                    if (currentQuestionIndex < totalQuestions && selectedOptionsLength != totalQuestions) {
+                        // Increment currentQuestionIndex only if it's within the bounds of the total number of questions
 
 
-                        // No more questions, do something or end the test
+                        updateUnsubmittedQuestionIndexes();
+                        console.log('Unsubmitted question indexes:', unsubmittedQuestionIndexes);
+
+                        if (unsubmittedQuestionIndexes.length === 0) {
+                            if (skippedQuestions.length > 0) {
+                                // Proceed with the first skipped question
+                                const firstSkippedIndex = skippedQuestions[0];
+                                currentQuestionIndex = firstSkippedIndex;
+                            } else {
+                                console.log("No more questions to answer.");
+
+                                // Add the current question index to submittedQuestions
+                                submittedQuestions.push({ questionIndex: currentQuestionIndex });
+                                console.log(submittedQuestions);
+
+                                // All questions are submitted, proceed to mark the section as completed and call the API
+                                completedAssessmentSubAttributes.push(section.assessmentSubAttribute);
+                                console.log('Completed Assessment SubAttributes:', completedAssessmentSubAttributes);
+
+                                const name = userData.name || "N/A";
+                                const email = userData.Email_Address || "N/A";
+                                const adhar = userData.Adhar_No || "N/A";
+                                const mobile = userData.Mobile_No || "N/A";
+
+                                questionData.push({ assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name });
+
+                                // Call the API to add the data for completed assessmentSubAttribute
+
+
+                                // Check if there are more sections
+                                const noSkippedQuestions = skippedQuestions.length === 0;
+
+                                if (noSkippedQuestions) {
+                                    currentSectionIndex++;
+
+
+                                    // All questions for the current section are submitted
+                                    if (currentSectionIndex < filteredSections.length) {
+                                        // Move to the next section
+                                        moveToNextSection();
+                                    } else {
+                                        submitUserDataToDatabase(userData);
+                                        // End of the test
+                                        userData.testProgress = "1"; // Update test progress
+                                        console.log("Test completed");
+                                        createMessageBox("Thank you for taking the test");
+                                        createMessageBox("You can exit the page now");
+                                        gfg(5);
+                                    }
+                                } else {
+                                    // Move to the next question index that is not completed
+                                    currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                                    const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                                    giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                                }
+                            }
+                        } else {
+                            // Get the first unsubmitted question index
+                            const firstUnsubmittedIndex = unsubmittedQuestionIndexes[0];
+                            console.log('First unsubmitted question index:', firstUnsubmittedIndex);
+
+                            // Set currentQuestionIndex to the first unsubmitted index
+                            currentQuestionIndex = firstUnsubmittedIndex;
+                        }
+
+                        // Get question data for the current question
+                        const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+
+                        // Remove the question index from skippedQuestions if it was previously skipped
+                        const indexInSkipped = skippedQuestions.indexOf(currentQuestionIndex);
+                        if (indexInSkipped !== -1) {
+                            skippedQuestions.splice(indexInSkipped, 1);
+                            console.log('Skipped Questions:', skippedQuestions);
+                        }
+
+                        // Add the current question to submittedQuestions
+                        submittedQuestions.push({ questionIndex: currentQuestionIndex });
+
+                        console.log(currentQuestionIndex);
+
+                        // Display the current question
+                        giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                    } else {
+                        {
+                            const indexInSkipped = skippedQuestions.indexOf(currentQuestionIndex);
+                            if (indexInSkipped !== -1) {
+                                skippedQuestions.splice(indexInSkipped, 1);
+                                console.log('Skipped Questions:', skippedQuestions);
+                            }
+                            console.log(currentQuestionIndex);
+                            submittedQuestions.push({ questionIndex: currentQuestionIndex });
+                            console.log(submittedQuestions);
+
+                            // All questions are submitted, proceed to mark the section as completed and call the API
+                            completedAssessmentSubAttributes.push(section.assessmentSubAttribute);
+                            console.log('Completed Assessment SubAttributes:', completedAssessmentSubAttributes);
+
+                            const name = userData.name || "N/A";
+                            const email = userData.Email_Address || "N/A";
+                            const adhar = userData.Adhar_No || "N/A";
+                            const mobile = userData.Mobile_No || "N/A";
+
+                            questionData.push({ assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name });
+
+                            // Call the API to add the data for completed assessmentSubAttribute
+
+
+                            // Check if there are more sections
+                            const noSkippedQuestions = skippedQuestions.length === 0;
+
+                            if (noSkippedQuestions) {
+                                currentSectionIndex++;
+
+                                // All questions for the current section are submitted
+                                if (HeadingSection < filteredSections.length) {
+                                    // Move to the next section
+                                    moveToNextSection();
+                                } else {
+                                    // End of the test
+                                    userData.testProgress = "1"; // Update test progress
+                                    console.log("Test completed");
+                                    createMessageBox("Thank you for taking the test");
+                                    createMessageBox("You can exit the page now");
+                                    gfg(5);
+                                }
+                            } else {
+                                // Move to the next question index that is not completed
+                                currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                            }
+                        }
                     }
                 };
 
-                const [firstQuestionId, firstQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
-                giveTest(firstQuestionId, firstQuestion.question, firstQuestion.optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions);
+
+                // Start the test with the first section
+
             } else {
                 alert('Report ID is invalid or no data found. Please re-enter.');
             }
         },
     });
+
+
+    // Function to handle moving to the next question within the current section
+
+}
+
+let assessmentSubAttributesArray = [];
+let filteredSections = [];// Define an array to store assessment subattributes
+
+function FetchAssessmentSubAttributes(candidateId, sections, callback) {
+    $.ajax({
+        type: 'GET',
+        url: `/api/QuestionData/FetchAssessmentSubAttributes/${candidateId}`,
+        contentType: 'application/json',
+        success: function (assessmentSubAttributes) {
+            assessmentSubAttributesArray = assessmentSubAttributes;
+            console.log('assessmentSubAttributesArray:', assessmentSubAttributesArray);
+            filteredSections = sections.filter(section => !assessmentSubAttributesArray.includes(section));
+            console.log('Filtered Sections:', filteredSections);
+
+            // Call the callback function to continue execution
+            callback();
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching assessment subattributes:', error);
+            // Handle error if needed
+        }
+    });
+}
+function FetchCandidateId(email, adhar, mobile) {
+    let candidateId = 0; // Initialize candidateId to 0 as a default value
+
+    // Make an AJAX request to fetch the candidate ID
+    $.ajax({
+        type: 'GET',
+        url: `/api/Candidate/FetchCandidateId?Email=${email}&Adhar=${adhar}&Mobile=${mobile}`,
+        contentType: 'application/json',
+        async: false, // Make the request synchronous to wait for the response
+        success: function (response) {
+            candidateId = response.candidateId; // Assign the fetched candidate ID
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching candidate ID:', error);
+            // Handle error if needed
+        }
+    });
+
+    return candidateId; // Return the fetched candidate ID
 }
 
 function gfg(n) {
@@ -933,7 +1264,7 @@ function submitUserDataToDatabase(userData) {
 
 function askName() {
     highlightSignUpChatBox();
-    if (userData.name !== undefined && userData.name !== null && userData.name !== "0" ) {
+    if (userData.name !== undefined && userData.name !== null && userData.name !== "0") {
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Name", userData.name, false);
         askCountry();
@@ -987,7 +1318,7 @@ function askGender() {
     if (organizationSelect) {
         organizationSelect.parentNode.removeChild(organizationSelect);
     }
-    if (userData.gender !== undefined && userData.gender !== null && userData.gender !=="0") {
+    if (userData.gender !== undefined && userData.gender !== null && userData.gender !== "0") {
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Gender", userData.gender, false);
         askDobAfterGender(); // Move on to the next step
@@ -1053,9 +1384,27 @@ function submitGender() {
 
         console.log(userData);
 
+        if (storedTestCode === "PEXCGRD2312O1009" || storedTestCode === "PEXCGJD2312O1011" || storedTestCode === "PEXCGSD2312O1013") {
+            // If true, call askGender() instead of askCoreStream()
+            askCoreStream();
+            console.log(userData);
+            // Submit data to the server or handle the completion of the form
+            // You can call the next function or submit the entire form here
+        }
+        else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId === "E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
+            askCoreStream();
+        }
+        else {
+            // If false, call askCoreStream()
+            askDobAfterGender();
+            console.log(userData);
+            // Submit data to the server or handle the completion of the form
+            // You can call the next function or submit the entire form here
+        }
         // Clear the input and move on to the next step (ask for Date of Birth)
         genderSelect.value = "";
-        askDobAfterGender();
+
+
     } else {
         // Handle the case where the gender is not selected
         alert('Please select your gender.');
@@ -1086,7 +1435,7 @@ function askOrganization() {
     if (userData.organization !== undefined && userData.organization !== null) {
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Organization", userData.organization, false);
-        askGender(); // Move on to the next step
+        askDobAfterGender(); // Move on to the next step
         const dobInput = document.getElementById("dobInput");
         dobInput.parentNode.removeChild(document.getElementById("organizationSelect")); // Remove the select element
         console.log(userData);
@@ -1168,7 +1517,7 @@ function askOtherOrganization() {
     const organizationInput = document.getElementById("dobInput");
 
     organizationInput.placeholder = "Enter another organization";
-    createMessageBox("Great! Please enter another Organization:");
+    createMessageBox("Great! Enter Name of Organization​:");
 
     // Remove the event listener for the previous function if it exists
     organizationInput.removeEventListener("change", submitOtherOrganization);
@@ -1229,7 +1578,7 @@ function askLocation() {
     const locationOptions = ["India", "Other"];
     for (const location of locationOptions) {
         const option = document.createElement("option");
-        option.value = location.toLowerCase();
+        option.value = location;
         option.text = location;
         locationSelect.appendChild(option);
     }
@@ -1276,7 +1625,6 @@ function askOtherLocation() {
     // Attach the event listener for submitOtherLocation
     locationInput.addEventListener("change", submitOtherLocation);
 }
-
 function submitOtherLocation() {
     const otherLocation = document.getElementById("dobInput").value;
     if (otherLocation) {
@@ -1292,7 +1640,7 @@ function submitOtherLocation() {
 
         // Submit data to the server or handle the completion of the form
         // You can call the next function or submit the entire form here
-        // or whatever is the next step
+        // or whatever is the next stepg
     } else {
         // Handle the case where the other location is not entered
         alert('Please enter another location.');
@@ -1557,12 +1905,20 @@ function submitQualification() {
     const qualification = qualificationSelect.value;
 
     if (qualification) {
-        const confirmed = window.confirm("Are you pursuing this qualification?");
-
-        // Add the user's choice to userData
+        const confirmed = window.confirm("Are you pursuing this qualification? Click 'OK' if yes and 'Cancel' if no.");
         userData.pursuing = confirmed ? "Yes" : "No";
-        const studiedMathScience = window.confirm("Have you studied Math and Science as part of this qualification? Click 'OK' if you have studied and 'Cancel' if you haven't.");
-        userData.mathScience = studiedMathScience ? "Yes" : "No";
+
+        const studiedMathStats = window.confirm("Have you studied Math / Statistics as part of this qualification? Click 'OK' if yes and 'Cancel' if no.");
+        userData.mathStats = studiedMathStats ? "Yes" : "No";
+
+        const studiedScience = window.confirm("Have you studied Science as part of this qualification? Click 'OK' if yes and 'Cancel' if no.");
+        userData.science = studiedScience ? "Yes" : "No";
+
+        const openToGovJobs = window.confirm("Are you open to Government Jobs? Click 'OK' if yes and 'Cancel' if no.");
+        userData.govJobs = openToGovJobs ? "Yes" : "No";
+
+        const openToArmedForces = window.confirm("Are you open to Armed Forces Jobs? Click 'OK' if yes and 'Cancel' if no.");
+        userData.armedForcesJobs = openToArmedForces ? "Yes" : "No";
         // Fetch the ID corresponding to the selected qualification
         fetch(`/api/QualificationTyp/GetIdByName?name=${encodeURIComponent(qualification)}`)
             .then(response => response.json())
@@ -1701,12 +2057,13 @@ function submitNextStep() {
     console.log(storedReportId);
 }
 function askCoreStream() {
-    const qualificationSelect = document.getElementById("qualificationSelect");
+    const genderSelect = document.getElementById("genderSelect");
     const messageBox = document.getElementById("messageBox");
 
+
     // Remove the existing country select if it exists
-    if (qualificationSelect) {
-        qualificationSelect.parentNode.removeChild(qualificationSelect);
+    if (genderSelect) {
+        genderSelect.parentNode.removeChild(genderSelect);
     }
 
     // Update placeholder and message
@@ -1768,7 +2125,7 @@ function submitCoreStream() {
             .then(data => {
                 if (data) {
                     // Process the submitted core stream and ID, and proceed to the next step
-                    userData.coreStream = { name: coreStream, id: data };
+                    userData.coreStream = coreStream;
                     displaySubmittedInput("Core Stream", coreStream, true);
                     coreStreamSelect.removeEventListener("change", submitCoreStream);
                     console.log(userData);
@@ -1995,11 +2352,16 @@ function fetchNameAndPhoneFromURL() {
             phoneParamEnd = currentUrl.length;
         }
         const phone = decodeURIComponent(currentUrl.substring(phoneParamStart, phoneParamEnd));
+
+        userData.Mobile_No = name;
+        userData.phoneNumber = phone;
+
         userData.name = name;
- 	userData.Mobile_No = phone;
+        userData.Mobile_No = phone;
+
         // Return an object containing the name and phone number
         return {
-	    name: name,
+            name: name,
             phone: phone
         };
     } else {
@@ -2012,11 +2374,11 @@ function fetchNameAndPhoneFromURL() {
 const nameAndPhone = fetchNameAndPhoneFromURL();
 if (nameAndPhone) {
     clearMessageBoxes();
-   
+
     storedReportId = "C51D2A9B-DC9D-4752-A3E7-F9C26A766F8F";
-   
+
     userData.organization = "askshiva.ai";
-    userData.storedTestCode ="PEX4IT2312H1003-ai"
+    userData.storedTestCode = "PEX4IT2312H1003-ai"
 
     askQualification();
     console.log("Name:", nameAndPhone.name);
@@ -2182,6 +2544,7 @@ function submitTestCode() {
         console.log('submitTestCode - Test code before verification:', testCode);
 
         storedTestCode = testCode;
+        userData.storedTestCode = storedTestCode;
         // Assuming you have a function to verify the test code against the database
         verifyTestCode(testCode);
         document.getElementById("dobInput").removeEventListener("change", submitTestCode);
@@ -2244,6 +2607,13 @@ function verifyTestCode(testCode) {
         }
     });
 }
+$(document).ready(function () {
+    $("#dobInput").intlTelInput({
+        initialCountry: "in",
+        separateDialCode: true,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Optional: Enable this if you need additional utilities
+    });
+});
 
 function askemail() {
     document.getElementById("dobInput").placeholder = "Enter your email address";
@@ -2256,6 +2626,7 @@ function askemail() {
 }
 
 function askPhone() {
+
     document.getElementById("dobInput").placeholder = "Enter your phone number";
     createMessageBox("Great! Let's start with your phone number. Please enter your phone number");
 
@@ -2338,7 +2709,7 @@ function handleMultipleSubmit() {
         askInterest();
     }
     if (Indusry && !onNext && !testInProgress) {
-        asktesttt();
+        askDobAfterGender();
     }
     if (onNext && testInProgress) {
         onNextQuestion();
@@ -3013,8 +3384,6 @@ function handleUserInput() {
     document.querySelector(".astro-button-container").style.display = "none";
     // Add logic to handle user input, you can call other functions as needed
 }
-
-
 let sunsign;
 let month; // Declare month globally
 let day; // Declare day globally

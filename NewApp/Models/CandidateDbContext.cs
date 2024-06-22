@@ -9,17 +9,51 @@ namespace NewApp.Models
         public DbSet<CandidateDetails> Candidates { get; set; }
         public DbSet<TestCode> TestCodes { get; set; }
         public DbSet<TotalQuestion> TotalQuestions { get; set; } // Add this line
+
         public DbSet<ReportSubAttribute> ReportSubAttributes { get; set; }
         public DbSet<QuestionAnsMap> QuestionAnsMaps { get; set; } // Add this line
         public DbSet<QualificationTypes> QualificationTypes { get; set; }
         public DbSet<Core> Core { get; set; }
         public DbSet<Specialization> Specialization { get; set; }
         public DbSet<Benchmarkmodel> benchmarkmodel { get; set; }
+        public DbSet<QuestionData> QuestionData { get; set; }
+        public DbSet<CandidateSelectedOptions> CandidateSelectedOptions { get; set; }
+        public DbSet<Result> Result { get; set; }
+        public DbSet<AssessmentResults> AssessmentResults { get; set; }
+        public DbSet<DatabaseTable> DatabaseTable { get; set; }
+        public DbSet<TemperamentTable> TemperamentTable { get; set; }
+        public DbSet<bechcomen> bechcomen { get; set; }
+        public DbSet<InterestAnswersIIA> InterestAnswersIIA { get; set; }
+        public DbSet<StreamJobRole> StreamJobRole { get; set; }
+        public DbSet<AcademicStream> AcademicStream { get; set; }
+       
+
+        public DbSet<IIAIndustriessub> IIAIndustriessub { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
         {
+            modelBuilder.Entity<StreamJobRole>().ToTable("streamjobrole");
+            modelBuilder.Entity<StreamJobRole>().HasNoKey();
+            modelBuilder.Entity<IIAIndustriessub>().ToTable("IIAIndustriessub");
+            modelBuilder.Entity<IIAIndustriessub>().HasNoKey();
+            modelBuilder.Entity<bechcomen>().ToTable("bechcomen");
+            modelBuilder.Entity<bechcomen>().HasNoKey();
+            modelBuilder.Entity<InterestAnswersIIA>().ToTable("InterestAnswersIIA");
+            modelBuilder.Entity<InterestAnswersIIA>().HasNoKey();
+            modelBuilder.Entity<TemperamentTable>().ToTable("TemperamentTable");
+            modelBuilder.Entity<TemperamentTable>().HasKey(qd => qd.id);
+            modelBuilder.Entity<Core>().ToTable("DatabaseTable");
+            modelBuilder.Entity<Core>().HasKey(qt => qt.Id);
+            modelBuilder.Entity<AssessmentResults>().ToTable("AssessmentResults");
+            modelBuilder.Entity<AssessmentResults>().HasKey(qd => qd.Id);
+
+            modelBuilder.Entity<Result>().ToTable("Result");
+            modelBuilder.Entity<Result>().HasKey(qd => qd.Id);
+
+            modelBuilder.Entity<QuestionData>().ToTable("QuestionData");
+            modelBuilder.Entity<QuestionData>().HasKey(qd => qd.SerialNumber);
             // Specify the primary key for CandidateDetails
             modelBuilder.Entity<CandidateDetails>().ToTable("CandidateDetails");
             modelBuilder.Entity<CandidateDetails>().HasKey(c => c.candidate_id);
@@ -44,10 +78,15 @@ namespace NewApp.Models
 
             modelBuilder.Entity<QuestionAnsMap>().ToTable("QuestionAnsMap");
             modelBuilder.Entity<QuestionAnsMap>().HasKey(qam => qam.AnswerId);
-         
+            modelBuilder.Entity<CandidateSelectedOptions>().ToTable("CandidateSelectedOptions");
+            modelBuilder.Entity<CandidateSelectedOptions>().HasKey(tm => tm.selected_option);
+
+
             // Specify the primary key for ReportSubAttribute
             modelBuilder.Entity<ReportSubAttribute>().ToTable("reportsubattribute");
             modelBuilder.Entity<ReportSubAttribute>().HasKey(rsa => rsa.ReportId);
+            modelBuilder.Entity<AcademicStream>().ToTable("AcademicStream");
+            modelBuilder.Entity<AcademicStream>().HasNoKey();
 
             // Other configurations if needed
 

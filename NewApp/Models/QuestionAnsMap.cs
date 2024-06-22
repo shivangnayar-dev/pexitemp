@@ -9,6 +9,9 @@ namespace NewApp.Models
         public int SequenceOfDisplay { get; set; }
         public int MarksTotal { get; set; }
         public string Question { get; set; }
+        public string SubjectiveCorrectAnswer { get; set; }
+
+
     }
 }
 
