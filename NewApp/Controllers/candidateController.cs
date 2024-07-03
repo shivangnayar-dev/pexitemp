@@ -9,8 +9,15 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Linq;
+using System.IO;
 using System.Net.Mail;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
@@ -221,19 +228,21 @@ namespace NewApp.Controllers
                         existingCandidate.govJobs = candidate.govJobs;
                         existingCandidate.armedForcesJobs = candidate.armedForcesJobs;
                         existingCandidate.coreStream = candidate.coreStream;
+                        existingCandidate.age = candidate.age;
                         _context.Candidates.Update(existingCandidate);
+
                     }
                     else
                     {
                         // Ensure unique values in new candidate's SelectedOptions and SelectedOptionTimestamps
                         candidate.SelectedOptions = string.Join(",", candidate.SelectedOptions.Split(',').Distinct());
 
-                        
+
                         _context.Candidates.Add(candidate);
                     }
-                   
-                   List<string> selectedOptionsList = GetSelectedOptionsList(candidateidd,candidate.name, candidate.SelectedOptions, candidate.testProgress,candidate.rating,candidate.dob,candidate.mathScience);
-                 
+
+                    List<string> selectedOptionsList = GetSelectedOptionsList(candidateidd, candidate.name, candidate.SelectedOptions, candidate.testProgress, candidate.rating, candidate.dob, candidate.mathScience);
+
                     if (candidate.rating > 0)
                     {
                         await GetTop5Motivations(candidate.SelectedOptions, candidateidd);
@@ -246,18 +255,28 @@ namespace NewApp.Controllers
 
                         await AddDataToDatabaseTable(candidateidd, candidate.dob);
                         await GetCareerChoicesFromTemperamentTable(candidate.dob, candidateidd);
-                        await GetJobStream(candidate.selectedSpecializations, candidate.mathScience, candidate.science, selectedOrganisation);
-                        AddDataFromSelectedTables(candidateidd,candidate.storedTestCode);
 
-                   
+                        await GetJobStream(candidate.selectedSpecializations, candidate.mathScience, candidate.science, selectedOrganisation, candidate.selectedIndustries);
+                        AddDataFromSelectedTables(candidateidd, candidate.storedTestCode);
+                        var reportHtmls = await GenerateReports(candidateidd);
+                        var combinedHtml = CombineReportsIntoHtml(reportHtmls);
 
+                        // Save combined HTML to a file and get the relative URL
+                        string relativeUrl = SaveHtmlToWwwroot(combinedHtml);
+
+                        // Construct the full URL
+                        string fileUrl = $"{Request.Scheme}://{Request.Host}{relativeUrl}";
+                        AddToResultTable("result", "reporturl", fileUrl, candidateidd, "");
+
+                        // Return the URL
+                        return Ok(fileUrl);
 
 
                     }
-              
+
                     await _context.SaveChangesAsync();
                     return Ok("Data submitted successfully");
-                  
+
                 }
 
                 return BadRequest(ModelState);
@@ -267,6 +286,48 @@ namespace NewApp.Controllers
                 _logger.LogError($"Error submitting user data: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        private string SaveHtmlToWwwroot(string htmlContent)
+        {
+            try
+            {
+                // Define the path to the wwwroot/generated-files directory
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                string filePath = Path.Combine(webRootPath, "generated-files");
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
+                string fileName = $"CombinedReport_{Guid.NewGuid()}.html";
+                string fullPath = Path.Combine(filePath, fileName);
+
+                // Write the HTML content to the file
+                using (StreamWriter writer = new StreamWriter(fullPath))
+                {
+                    writer.Write(htmlContent);
+                }
+
+                // Return the relative URL of the saved file
+                string relativeUrl = $"/generated-files/{fileName}";
+
+                return relativeUrl;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error saving HTML to wwwroot: {ex.Message}");
+                throw;
+            }
+        }
+
+        private string GetFileUrl(string filePath)
+        {
+            // Construct URL to access the temporary HTML file
+            string fileUrl = $"file://{filePath.Replace('\\', '/')}";
+            return fileUrl;
         }
         private async Task<List<Result>> GetCandidateResultsAsync(int candidateId)
         {
@@ -282,71 +343,84 @@ namespace NewApp.Controllers
                 return new List<Result>(); // Return an empty list in case of an error
             }
         }
-        private async Task<byte[]> GenerateReportPdfAsync(int candidateId)
+        private string CombineReportsIntoHtml(List<string> reportHtmls)
         {
-            try
+            // Combine all HTML strings into a single HTML document with iframes
+            var combinedHtmlBuilder = new StringBuilder();
+            combinedHtmlBuilder.Append("<!DOCTYPE html><html><head><title>Combined Report</title></head><body>");
+
+            foreach (var reportHtml in reportHtmls)
             {
-                var candidateResults = await GetCandidateResultsAsync(candidateId);
-                string htmlTemplate = System.IO.File.ReadAllText("Views/Home/Result.html"); // Adjust the path to your HTML template
-
-                string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
-
-                var converter = new SynchronizedConverter(new PdfTools());
-                var doc = new HtmlToPdfDocument()
-                {
-                    GlobalSettings = new GlobalSettings
-                    {
-                        ColorMode = ColorMode.Color,
-                        Orientation = Orientation.Portrait,
-                        PaperSize = PaperKind.A4,
-                    },
-                    Objects = {
-                new ObjectSettings
-                {
-                    HtmlContent = modifiedHtml,
-                    WebSettings = { DefaultEncoding = "utf-8" },
-                }
+                combinedHtmlBuilder.Append("<iframe style='width:100%; height:800px; border:none;' srcdoc='");
+                combinedHtmlBuilder.Append(System.Net.WebUtility.HtmlEncode(reportHtml));
+                combinedHtmlBuilder.Append("'></iframe>");
             }
-                };
 
-                return converter.Convert(doc);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error generating PDF: {ex.Message}");
-                throw; // Rethrow the exception to propagate it to the caller
-            }
+            combinedHtmlBuilder.Append("</body></html>");
+
+            return combinedHtmlBuilder.ToString();
         }
-
 
         private string InsertCandidateDataIntoHtml(string htmlTemplate, List<Result> candidateResults)
         {
             foreach (var result in candidateResults)
             {
-                htmlTemplate = htmlTemplate.Replace($"{{{{ {result.FieldName} }}}}", result.Value);
+                htmlTemplate = htmlTemplate.Replace($"{{{{{result.FieldName}}}}}", result.Value);
             }
 
             return htmlTemplate;
         }
-        private async Task<string> GenerateReport(int candidateId)
+
+        private async Task<List<string>> GenerateReports(int candidateId)
         {
             var candidateResults = await GetCandidateResultsAsync(candidateId);
-            string htmlTemplate = System.IO.File.ReadAllText("Views/Home/Result.html"); // Adjust the path to your HTML template
+            List<string> modifiedHtmlTemplates = new List<string>();
 
-            string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
-            return modifiedHtml;
+            try
+            {
+                // Loop through each ResultX.html file
+                for (int i = 1; i <= 13; i++)
+                {
+                    string htmlTemplate = System.IO.File.ReadAllText($"Views/Home/Result{i}.html");
+                    string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
+                    modifiedHtmlTemplates.Add(modifiedHtml);
+                }
+
+                return modifiedHtmlTemplates;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error generating reports: {ex.Message}");
+                return new List<string>(); // Return an empty list or handle error as needed
+            }
         }
 
 
-        private async Task GetJobStream(string selectedSpecializations, string mathScience, string science, string selectedOrganisation)
+        private async Task GetJobStream(string selectedSpecializations, string mathScience, string science, string selectedOrganisation,string selectedIndustries)
         {
             try
             {
                 // Parse the selected specializations
                 var specializationsList = selectedSpecializations.Split(',').ToList();
+                while (specializationsList.Count < 5)
+                {
+                    specializationsList.Add("");
+                }
+
                 for (int i = 0; i < specializationsList.Count; i++)
                 {
-                    AddToResultTable("StreamJobRole", $"Specialization{i + 1}", specializationsList[i], candidateidd, "");
+                    AddToResultTable("StreamJobRole", $"selectedSpecializations{i + 1}", specializationsList[i], candidateidd, "");
+                }
+
+                var industriesList = selectedIndustries.Split(',').ToList();
+                while (industriesList.Count < 5)
+                {
+                    industriesList.Add("");
+                }
+
+                for (int i = 0; i < industriesList.Count; i++)
+                {
+                    AddToResultTable("StreamJobRole", $"selectedIndustries{i + 1}", industriesList[i], candidateidd, "");
                 }
 
                 // Fetch job streams based on the parsed specializations
@@ -560,8 +634,8 @@ namespace NewApp.Controllers
                     qualification = candidate.qualification,
                     time = DateTime.Now
                 };
+                AddToResultTable("CandidateDetails", "age", age, candidateidd, "");
 
-             
                 _context.DatabaseTable.Add(databaseEntry);
                 await _context.SaveChangesAsync();
             }
@@ -727,10 +801,17 @@ namespace NewApp.Controllers
 
         // Save changes to the database
         _context.SaveChanges();
+                string[] desiredSequence = {
+    "Morality", "Emotional Stability",
+    "Creativity", "Openness to Learning", "Fight vs. Flight", "Comprehension",
+    "Workplace communication", "Resourcefulness", "Logical thinking", "Numeracy",
+    "Situational Judgment", "Motivation", "Interests", "Handling Conflict",
+    "Self Esteem", "Team Management", "Negotiation", "Role", "Needs",
+    "Responsibility", "Goal", "Integrity", "Income Dependency"
+};
 
-
-        // Aggregate data for assessment results
-        var assessmentResults = _context.CandidateSelectedOptions
+                // Aggregate data for assessment results
+                var assessmentResults = _context.CandidateSelectedOptions
             .Where(c => c.candidate_id == candidateId)
             .GroupBy(c => new { c.candidate_id, c.candidate_name, c.AssessmentSubAttributeId, c.AssessmentSubAttribute, c.CountofQuestiontoDisplay })
             .Select(g => new
@@ -773,7 +854,13 @@ namespace NewApp.Controllers
                     "0ABBA87C-C943-475E-A67F-CC1B199D98E2", "7C2AE8FA-F950-4BEB-876C-DF548AD82ACB", "03CFCA9E-3F37-4445-BE22-85DF99BD1F1E", "A171535D-0266-4AD3-A361-0D70D1426F2F",
                     "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60"
                 }.Contains(g.Key.AssessmentSubAttributeId) ? g.Key.CountofQuestiontoDisplay * 5 : g.Key.CountofQuestiontoDisplay * 4)) * 100
-            }).ToList();
+            }).AsEnumerable() // Fetch data into memory
+    .OrderBy(g =>
+    {
+        var index = Array.IndexOf(desiredSequence, g.AssessmentSubAttribute);
+        return index == -1 ? int.MaxValue : index;
+    })
+    .ToList();
                 var bechcomenData = _context.bechcomen
                     .Select(b => new {
                         b.ReportSubAttributeId,
@@ -902,8 +989,8 @@ namespace NewApp.Controllers
 foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
 {
     var entry = reportSubAttributeToPercentageMap[reportSubAttribute];
-    var averagePercentage = entry.Sum / entry.Count;
-    averageReportSubAttributePercentages[reportSubAttribute] = averagePercentage;
+    var averagePercentage = Math.Round(entry.Sum / entry.Count, 0);
+        averageReportSubAttributePercentages[reportSubAttribute] = averagePercentage;
 }
 
                 // Update the percentage in AssessmentResults with the average percentage for each ReportSubattribute
@@ -924,7 +1011,7 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
 
                     if (totalCount > 0)
                     {
-                        matrixAverages[matrix] = totalSum / totalCount;
+                        matrixAverages[matrix] = Math.Round(totalSum / totalCount, 0);
                     }
                 }
 
@@ -961,6 +1048,10 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                                 .FirstOrDefault();
 
                     var matrixToReportSubAttributes = new Dictionary<string, Dictionary<string, double>>();
+                    if (double.TryParse(benchmarkValue, out double benchmarkValueDouble))
+                    {
+                        benchmarkValue = Math.Round(benchmarkValueDouble, 0).ToString();
+                    }
 
                     // Check if the reportSubAttribute has already been processed
                     if (!processedReportSubAttributes.Contains(reportSubAttribute))
@@ -995,6 +1086,7 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                             var Score = filteredBenchmarkEntry.Score;
                             var Grade = filteredBenchmarkEntry.Grade;
                             var Comments2 = filteredBenchmarkEntry.Comments2;
+
 
                             AddToResultTable("AssessmentResult", $"reportSubAttributeName{i}", reportSubAttribute, candidateId, "");
                             AddToResultTable("AssessmentResult", $"reportSubAttributeValue{i}", averagePercentage.ToString(), candidateId, "");
@@ -1254,7 +1346,7 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                     double.TryParse(parts[0].Trim(), out double min) &&
                     double.TryParse(parts[1].Trim(), out double max))
                 {
-                    return percentage >= min && percentage <= max;
+                    return percentage > min && percentage < max;
                 }
             }
             else if (double.TryParse(score.Trim(), out double exact))

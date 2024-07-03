@@ -17,6 +17,18 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/Users/shivangnayar/Projects/pexi/NewApp/wwwroot/generated-files/CombinedReport_21ee7e31-2bdf-4483-be3f-e9c177e40c2a.html",
+      "PackagePath": "staticwebassets/generated-files/CombinedReport_21ee7e31-2bdf-4483-be3f-e9c177e40c2a.html"
+    },
+    {
+      "Id": "/Users/shivangnayar/Projects/pexi/NewApp/wwwroot/generated-files/CombinedReport_6b623873-535f-4f03-85b6-84a1bec74d3b.html",
+      "PackagePath": "staticwebassets/generated-files/CombinedReport_6b623873-535f-4f03-85b6-84a1bec74d3b.html"
+    },
+    {
+      "Id": "/Users/shivangnayar/Projects/pexi/NewApp/wwwroot/generated-files/CombinedReport_b674663c-ba93-4693-bef2-256ba074dd79.html",
+      "PackagePath": "staticwebassets/generated-files/CombinedReport_b674663c-ba93-4693-bef2-256ba074dd79.html"
+    },
+    {
       "Id": "/Users/shivangnayar/Projects/pexi/NewApp/wwwroot/js/Councellor.js",
       "PackagePath": "staticwebassets/js/Councellor.js"
     },

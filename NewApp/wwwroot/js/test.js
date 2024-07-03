@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
     appendChatList();
 });;
 
+
 function showQR() {
     // Create the modal structure if it doesn't exist
     if (!document.getElementById("myModal")) {
@@ -170,136 +171,109 @@ function closeModal() {
 let timerInterval; // Declare timer interval variable globally
 let totalSecondsRemaining; // Declare total seconds remaining globally
 function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId) {
-
-    // Define the maximum number of questions per section
-    const maxQuestionsPerSection = 20;
-
-
-    // Calculate the current section index
+    const maxQuestionsPerSection = totalQuestions;
+    console.log(maxQuestionsPerSection)// Dynamically set maxQuestionsPerSection
     const currentSectionIndex = Math.floor(currentQuestionIndex / maxQuestionsPerSection);
 
-    // Select or create a container for the question grid
     let questionGridContainer = document.querySelector('.question-grid-container');
-
     if (!questionGridContainer) {
         questionGridContainer = document.createElement('div');
         questionGridContainer.className = 'question-grid-container';
         document.querySelector('.left-container').appendChild(questionGridContainer);
     }
 
-    // Clear previous question boxes
     questionGridContainer.innerHTML = '';
 
-    // Create section container for the current section only
     const sectionContainer = document.createElement('div');
     sectionContainer.className = 'section-container';
-    sectionContainer.style.marginBottom = '20px'; // Add margin to separate sections
-    sectionContainer.style.display = ''; // Add this line to include the provided styling
+    sectionContainer.style.marginBottom = '20px';
+    sectionContainer.style.textAlign = '-webkit-center';
 
-    // Create section heading
     const sectionHeading = document.createElement('h3');
     sectionHeading.textContent = "Section: " + (HeadingSection + 1) + " / " + filteredSections.length;
     console.log('HeadingSection', HeadingSection);
     sectionHeading.style.textAlign = '-webkit-center';
 
+    const styleElement = document.createElement('style');
+    styleElement.textContent = ".h3, h3 { text-align: -webkit-center; font-size: calc(1.3rem + .6vw); }";
+    document.head.appendChild(styleElement);
+
     sectionContainer.appendChild(sectionHeading);
 
-    // Calculate the range of questions for the current section
     const startQuestionIndex = currentSectionIndex * maxQuestionsPerSection;
     const endQuestionIndex = Math.min(startQuestionIndex + maxQuestionsPerSection, totalQuestions);
 
-    // Create question box container for the current section
     const questionBoxContainer = document.createElement('div');
     questionBoxContainer.className = 'question-box-container';
     questionBoxContainer.style.display = 'flex';
     questionBoxContainer.style.flexWrap = 'wrap';
 
-    // Count the number of submitted questions
     const submittedCount = submittedQuestions.length;
-
-    // Count the number of skipped questions
     const skippedCount = skippedQuestions.length;
 
-    // Create a container for the count boxes
     const countContainer = document.createElement('div');
-    countContainer.className = 'count-container'; // Optional class for layout
-    countContainer.style.display = 'flex'; // Arrange boxes side-by-side
-    countContainer.style.marginTop = '10%'; // Add margin-top
-    countContainer.style.marginBottom = '10%'; // Add margin-bottom
-    countContainer.style.justifyContent = 'space-evenly'; // Distribute boxes evenly
+    countContainer.className = 'count-container';
+    countContainer.style.display = 'flex';
+    countContainer.style.marginTop = '10%';
+    countContainer.style.marginBottom = '10%';
+    countContainer.style.justifyContent = 'space-evenly';
 
     sectionContainer.appendChild(countContainer);
 
-    // Create a green box for submitted count
-    const submittedBox = document.createElement('div');
-    submittedBox.className = 'count-box submitted'; // Class for green style
-    submittedBox.style.backgroundColor = 'green';
-    submittedBox.style.color = 'white';
-    submittedBox.style.padding = '5px 10px'; // Add padding for better spacing (optional)
-    submittedBox.style.borderRadius = '5px'; // Add rounded corners (optional)
-    submittedBox.textContent = submittedCount;
-    countContainer.appendChild(submittedBox);
+    const createCountBox = (count, color, className) => {
+        const box = document.createElement('div');
+        box.className = `count-box ${className}`;
+        box.style.backgroundColor = color;
+        box.style.color = 'white';
+        box.style.padding = '5px 10px';
+        box.style.borderRadius = '5px';
+        box.textContent = count;
+        return box;
+    };
 
-    // Create an orange box for skipped count
-    const skippedBox = document.createElement('div');
-    skippedBox.className = 'count-box skipped'; // Class for orange style
-    skippedBox.style.backgroundColor = 'orange';
-    skippedBox.style.color = 'white';
-    skippedBox.style.padding = '5px 10px'; // Add padding (optional)
-    skippedBox.style.borderRadius = '5px'; // Add rounded corners (optional)
-    skippedBox.textContent = skippedCount;
-    countContainer.appendChild(skippedBox);
+    countContainer.appendChild(createCountBox(submittedCount, 'green', 'submitted'));
+    countContainer.appendChild(createCountBox(skippedCount, 'orange', 'skipped'));
 
-    // Create question boxes for the current section
+    const submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
+
     for (let questionIndex = startQuestionIndex; questionIndex < endQuestionIndex; questionIndex++) {
         const questionBox = document.createElement('div');
         questionBox.className = 'question-box';
 
-
-
-        // Check if the question has been submitted
-        const submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
+        questionBox.addEventListener('click', function () {
+            moveToQuestion(questionIndex);
+        });
 
         if (submittedQuestionIndexes.includes(questionIndex + 1)) {
             questionBox.style.backgroundColor = 'green';
-        }
-        if (skippedQuestions.includes(questionIndex + 1)) {
+        } else if (skippedQuestions.includes(questionIndex + 1)) {
             questionBox.style.backgroundColor = 'orange';
-        }
-        // Add blue background to the current question box
-        if (questionIndex === currentQuestionIndex) {
+        } else if (questionIndex === currentQuestionIndex) {
             questionBox.style.backgroundColor = 'blue';
         }
 
-        questionBox.textContent = questionIndex + 1; // Display question number
+        questionBox.textContent = questionIndex + 1;
         questionBoxContainer.appendChild(questionBox);
     }
 
-    // Append the question box container to the section container
     sectionContainer.appendChild(questionBoxContainer);
-
-    // Append the section to the question grid container
     questionGridContainer.appendChild(sectionContainer);
 
-    // Display total number of questions and current section
     console.log(`Total questions: ${totalQuestions}`);
     console.log(`Current section: ${currentSectionIndex + 1}`);
 
-    // Create and initialize timer elements if not already created
     let timerContainer = document.querySelector('.timer-container');
-
     if (!timerContainer) {
         timerContainer = document.createElement('div');
         timerContainer.className = 'timer-container';
-        document.querySelector('.left-container').insertBefore(timerContainer, questionGridContainer); // Insert before question grid container
+        document.querySelector('.left-container').insertBefore(timerContainer, questionGridContainer);
 
-        // Set total seconds remaining based on storedReportId
-        totalSecondsRemaining = storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" ? 60 * 60 : 30 * 60;
-        startTimer(timerContainer); // Start the timer
+        totalSecondsRemaining = maxQuestionsPerSection >= 20 ? 60 * 60 : 20 * 60;
+        startTimer(timerContainer);
     }
 }
+
 function startTimer(timerContainer) {
-    // Add timer elements
     let minutesElement = document.createElement('div');
     minutesElement.className = 'minutes';
     minutesElement.textContent = '00';
@@ -315,25 +289,23 @@ function startTimer(timerContainer) {
     secondsElement.textContent = '00';
     timerContainer.appendChild(secondsElement);
 
-    // Start the timer interval
     timerInterval = setInterval(function () {
         totalSecondsRemaining--;
 
         let minutes = Math.floor(totalSecondsRemaining / 60);
         let seconds = totalSecondsRemaining % 60;
 
-        // Update timer display
         minutesElement.textContent = minutes < 10 ? '0' + minutes : minutes;
         secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
 
-        // Check if the timer has reached 0
         if (totalSecondsRemaining <= 0) {
-            clearInterval(timerInterval); // Stop the timer
-            // Call function when timer ends
-            onNextQuestion();
+            clearInterval(timerInterval);
+            moveToNextSection();
         }
-    }, 1000); // Update every second
+    }, 1000);
 }
+
+
 function checkOrientation() {
     if (window.innerWidth < window.innerHeight && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         alert("Please rotate your device to landscape mode for the best experience.");
@@ -593,9 +565,7 @@ function submitDobAfterGender() {
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
         }
-        else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId === "E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
-            askCoreStream();
-        }
+
         else {
             // If false, call askCoreStream()
             asktesttt();
@@ -796,6 +766,7 @@ function callApiToStartTest(reportId) {
         const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
         const questions = section.questions;
         const totalQuestions = questions.length;
+        sectionquestioncount = totalQuestions;
         currentQuestionIndex++;
 
         console.log(`Skipping Question. Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
@@ -816,16 +787,28 @@ function callApiToStartTest(reportId) {
                 // Show the next question in the same section
                 giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
             }
+            else {
+                currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+
+
+            }
         } else {
+            if (!skippedQuestions.includes(currentQuestionIndex)) {
+                // Store the index of the skipped question
+                skippedQuestions.push(currentQuestionIndex);
+            }
             // Check if there are any skipped questions remaining
             if (skippedQuestions.length > 0) {
                 // Store the index of the skipped question
-                skippedQuestions.push(currentQuestionIndex);
+
                 console.log('Skipped Questions:', skippedQuestions);
                 // Move to the next question index that is not completed
                 currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
                 const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
                 giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                console.log('currentQuestionIndex', currentQuestionIndex);
             } else {
                 console.log("No more skipped questions.");
                 // Handle the case where there are no more skipped questions
@@ -1559,8 +1542,8 @@ function askLocation() {
 
 
     // Update placeholder and message
-    dobInput.placeholder = "Select your location";
-    createMessageBox("Please select your Location:");
+    dobInput.placeholder = "Select your Country";
+    createMessageBox("Please select your Country:");
 
     // Create select element for location
     const locationSelect = document.createElement("select");
