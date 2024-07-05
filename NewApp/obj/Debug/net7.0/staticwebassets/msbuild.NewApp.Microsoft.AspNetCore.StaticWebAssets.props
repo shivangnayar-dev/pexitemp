@@ -48,12 +48,12 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_21ee7e31-2bdf-4483-be3f-e9c177e40c2a.html))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_048996ba-6c51-4227-9a55-bcc6a81be998.html))">
       <SourceType>Package</SourceType>
       <SourceId>NewApp</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/NewApp</BasePath>
-      <RelativePath>generated-files/CombinedReport_21ee7e31-2bdf-4483-be3f-e9c177e40c2a.html</RelativePath>
+      <RelativePath>generated-files/CombinedReport_048996ba-6c51-4227-9a55-bcc6a81be998.html</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -62,14 +62,14 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_21ee7e31-2bdf-4483-be3f-e9c177e40c2a.html))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_048996ba-6c51-4227-9a55-bcc6a81be998.html))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_6b623873-535f-4f03-85b6-84a1bec74d3b.html))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_0fd13c81-233e-40f5-bfeb-79aa74942711.html))">
       <SourceType>Package</SourceType>
       <SourceId>NewApp</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/NewApp</BasePath>
-      <RelativePath>generated-files/CombinedReport_6b623873-535f-4f03-85b6-84a1bec74d3b.html</RelativePath>
+      <RelativePath>generated-files/CombinedReport_0fd13c81-233e-40f5-bfeb-79aa74942711.html</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -78,14 +78,14 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_6b623873-535f-4f03-85b6-84a1bec74d3b.html))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_0fd13c81-233e-40f5-bfeb-79aa74942711.html))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_b674663c-ba93-4693-bef2-256ba074dd79.html))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_11882c5e-9e0a-4159-aa54-79aca6bc2497.html))">
       <SourceType>Package</SourceType>
       <SourceId>NewApp</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/NewApp</BasePath>
-      <RelativePath>generated-files/CombinedReport_b674663c-ba93-4693-bef2-256ba074dd79.html</RelativePath>
+      <RelativePath>generated-files/CombinedReport_11882c5e-9e0a-4159-aa54-79aca6bc2497.html</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -94,7 +94,423 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_b674663c-ba93-4693-bef2-256ba074dd79.html))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_11882c5e-9e0a-4159-aa54-79aca6bc2497.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_11fd9344-b0d6-4196-ac85-b78271dcd3fe.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_11fd9344-b0d6-4196-ac85-b78271dcd3fe.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_11fd9344-b0d6-4196-ac85-b78271dcd3fe.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_33132590-bed8-452d-b368-bfa2f3fb1b29.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_33132590-bed8-452d-b368-bfa2f3fb1b29.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_33132590-bed8-452d-b368-bfa2f3fb1b29.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_37146191-dc6f-4d9b-a9d5-bee34e974657.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_37146191-dc6f-4d9b-a9d5-bee34e974657.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_37146191-dc6f-4d9b-a9d5-bee34e974657.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_4265199e-01c7-4139-a526-5759e104ffe4.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_4265199e-01c7-4139-a526-5759e104ffe4.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_4265199e-01c7-4139-a526-5759e104ffe4.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_5e1bf61f-40be-4ac9-ae16-00db7b6b34a5.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_5e1bf61f-40be-4ac9-ae16-00db7b6b34a5.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_5e1bf61f-40be-4ac9-ae16-00db7b6b34a5.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_78b16cb4-5178-4258-a553-4b4ac291576c.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_78b16cb4-5178-4258-a553-4b4ac291576c.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_78b16cb4-5178-4258-a553-4b4ac291576c.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_7b6ddc25-3450-4cba-8e94-b8c6126de7db.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_7b6ddc25-3450-4cba-8e94-b8c6126de7db.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_7b6ddc25-3450-4cba-8e94-b8c6126de7db.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_80e66983-1045-4978-9359-40295c2c81ba.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_80e66983-1045-4978-9359-40295c2c81ba.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_80e66983-1045-4978-9359-40295c2c81ba.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_841b82b2-c60b-46c3-b887-1012bdea8bba.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_841b82b2-c60b-46c3-b887-1012bdea8bba.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_841b82b2-c60b-46c3-b887-1012bdea8bba.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_a0e35e4b-6516-4dcc-b6ce-3d9e0155d647.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_a0e35e4b-6516-4dcc-b6ce-3d9e0155d647.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_a0e35e4b-6516-4dcc-b6ce-3d9e0155d647.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_ab5ec1e1-8a6b-4cc2-9914-8a1d3fbb188b.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_ab5ec1e1-8a6b-4cc2-9914-8a1d3fbb188b.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_ab5ec1e1-8a6b-4cc2-9914-8a1d3fbb188b.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_b690c527-a975-4f59-94a8-3f6e1784aeed.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_b690c527-a975-4f59-94a8-3f6e1784aeed.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_b690c527-a975-4f59-94a8-3f6e1784aeed.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_bf8d3096-5d0b-4d1b-82ec-f4264b05494f.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_bf8d3096-5d0b-4d1b-82ec-f4264b05494f.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_bf8d3096-5d0b-4d1b-82ec-f4264b05494f.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_ca737330-746e-4f3c-ad1c-4faba59207be.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_ca737330-746e-4f3c-ad1c-4faba59207be.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_ca737330-746e-4f3c-ad1c-4faba59207be.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_cf1208ff-d4ac-489d-a1de-276561c4095f.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_cf1208ff-d4ac-489d-a1de-276561c4095f.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_cf1208ff-d4ac-489d-a1de-276561c4095f.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_d9a04371-4f99-4e00-aa3a-053329b70c9d.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_d9a04371-4f99-4e00-aa3a-053329b70c9d.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_d9a04371-4f99-4e00-aa3a-053329b70c9d.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e07cc266-fe7d-43a9-b8db-194bc4129b90.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_e07cc266-fe7d-43a9-b8db-194bc4129b90.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e07cc266-fe7d-43a9-b8db-194bc4129b90.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e1d2bc70-6c2a-46a0-91f0-37c32f845bf8.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_e1d2bc70-6c2a-46a0-91f0-37c32f845bf8.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e1d2bc70-6c2a-46a0-91f0-37c32f845bf8.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e81fda65-2b34-49e1-89dc-a7a63cb3b5ec.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_e81fda65-2b34-49e1-89dc-a7a63cb3b5ec.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e81fda65-2b34-49e1-89dc-a7a63cb3b5ec.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e82f3d14-0ad4-42df-a500-471a30e4d157.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_e82f3d14-0ad4-42df-a500-471a30e4d157.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_e82f3d14-0ad4-42df-a500-471a30e4d157.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f30289ee-c38c-4d34-a486-6d2de33bb0aa.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_f30289ee-c38c-4d34-a486-6d2de33bb0aa.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f30289ee-c38c-4d34-a486-6d2de33bb0aa.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f664e9fd-cb1e-469e-bced-88869272458e.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_f664e9fd-cb1e-469e-bced-88869272458e.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f664e9fd-cb1e-469e-bced-88869272458e.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f74348cf-ec2d-47da-acee-dcf6902bd292.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_f74348cf-ec2d-47da-acee-dcf6902bd292.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f74348cf-ec2d-47da-acee-dcf6902bd292.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f8678d32-ef01-4099-a35e-a81c99065731.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_f8678d32-ef01-4099-a35e-a81c99065731.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_f8678d32-ef01-4099-a35e-a81c99065731.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_fe0d817c-3dd8-464e-a0f1-33c8e2b7db1a.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_fe0d817c-3dd8-464e-a0f1-33c8e2b7db1a.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_fe0d817c-3dd8-464e-a0f1-33c8e2b7db1a.html))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_ff798b75-bec2-478e-8cc8-7d8e83f7cdf7.html))">
+      <SourceType>Package</SourceType>
+      <SourceId>NewApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/NewApp</BasePath>
+      <RelativePath>generated-files/CombinedReport_ff798b75-bec2-478e-8cc8-7d8e83f7cdf7.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\generated-files\CombinedReport_ff798b75-bec2-478e-8cc8-7d8e83f7cdf7.html))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\js\benchmarkChart.js))">
       <SourceType>Package</SourceType>

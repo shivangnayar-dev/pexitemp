@@ -258,15 +258,21 @@ namespace NewApp.Controllers
 
                         await GetJobStream(candidate.selectedSpecializations, candidate.mathScience, candidate.science, selectedOrganisation, candidate.selectedIndustries);
                         AddDataFromSelectedTables(candidateidd, candidate.storedTestCode);
-                        var reportHtmls = await GenerateReports(candidateidd);
-                        var combinedHtml = CombineReportsIntoHtml(reportHtmls);
+                        var reportHtml = await GenerateReport(candidateidd);
 
-                        // Save combined HTML to a file and get the relative URL
-                        string relativeUrl = SaveHtmlToWwwroot(combinedHtml);
+                        if (string.IsNullOrEmpty(reportHtml))
+                        {
+                            return StatusCode(500, "Error generating report");
+                        }
+
+                        // Save the modified HTML to a file and get the relative URL
+                        string relativeUrl = SaveHtmlToWwwroot(reportHtml);
 
                         // Construct the full URL
                         string fileUrl = $"{Request.Scheme}://{Request.Host}{relativeUrl}";
                         AddToResultTable("result", "reporturl", fileUrl, candidateidd, "");
+
+                        await _context.SaveChangesAsync();
 
                         // Return the URL
                         return Ok(fileUrl);
@@ -371,29 +377,27 @@ namespace NewApp.Controllers
             return htmlTemplate;
         }
 
-        private async Task<List<string>> GenerateReports(int candidateId)
+        private async Task<string> GenerateReport(int candidateId)
         {
             var candidateResults = await GetCandidateResultsAsync(candidateId);
-            List<string> modifiedHtmlTemplates = new List<string>();
 
             try
             {
-                // Loop through each ResultX.html file
-                for (int i = 1; i <= 13; i++)
-                {
-                    string htmlTemplate = System.IO.File.ReadAllText($"Views/Home/Result{i}.html");
-                    string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
-                    modifiedHtmlTemplates.Add(modifiedHtml);
-                }
+                // Read the single HTML template
+                string htmlTemplate = System.IO.File.ReadAllText($"Views/Home/Result1.html");
 
-                return modifiedHtmlTemplates;
+                // Insert candidate data into the template
+                string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
+
+                return modifiedHtml;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error generating reports: {ex.Message}");
-                return new List<string>(); // Return an empty list or handle error as needed
+                _logger.LogError($"Error generating report: {ex.Message}");
+                return string.Empty; // Return an empty string or handle error as needed
             }
         }
+
 
 
         private async Task GetJobStream(string selectedSpecializations, string mathScience, string science, string selectedOrganisation,string selectedIndustries)
@@ -1360,15 +1364,14 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
         {
             try
             {
-               
                 // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
                 var resultEntry = new Result
                 {
                     CandidateId = candidateId,
                     TableName = tableName,
                     FieldName = fieldName,
-                    Value = value?.ToString() ?? "NULL",
-                    ReportName = testName// Convert null values to "NULL" string
+                    Value = value != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToString()) : "NULL", // Convert to proper case or "NULL"
+                    ReportName = testName
                 };
 
                 // Add the entry to the Result table
