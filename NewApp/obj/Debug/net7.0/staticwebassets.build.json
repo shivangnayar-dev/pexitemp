@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Ge+QYxAONG/nHH2KjO3SzOLy9dnlXtf9520UMwGi3Tw=",
+  "Hash": "kDet4qH2gaMAh4vjZDd/kBHO8iOOgeJakIYTk1l3wNo=",
   "Source": "NewApp",
   "BasePath": "_content/NewApp",
   "Mode": "Default",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/generated-files/CombinedReport_048996ba-6c51-4227-9a55-bcc6a81be998.html"
+    },
+    {
+      "Identity": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/generated-files/CombinedReport_0ba2389e-857f-4c7d-b82f-1186cb212eac.html",
+      "SourceId": "NewApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/",
+      "BasePath": "_content/NewApp",
+      "RelativePath": "generated-files/CombinedReport_0ba2389e-857f-4c7d-b82f-1186cb212eac.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/generated-files/CombinedReport_0ba2389e-857f-4c7d-b82f-1186cb212eac.html"
     },
     {
       "Identity": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/generated-files/CombinedReport_0fd13c81-233e-40f5-bfeb-79aa74942711.html",
@@ -406,6 +423,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/generated-files/CombinedReport_841b82b2-c60b-46c3-b887-1012bdea8bba.html"
+    },
+    {
+      "Identity": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/generated-files/CombinedReport_8da8332f-9322-45bb-9014-4ed9aeb28a4c.html",
+      "SourceId": "NewApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/",
+      "BasePath": "_content/NewApp",
+      "RelativePath": "generated-files/CombinedReport_8da8332f-9322-45bb-9014-4ed9aeb28a4c.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/generated-files/CombinedReport_8da8332f-9322-45bb-9014-4ed9aeb28a4c.html"
+    },
+    {
+      "Identity": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/generated-files/CombinedReport_8e16f92a-ed0f-47f7-9986-77426c6724d9.html",
+      "SourceId": "NewApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/",
+      "BasePath": "_content/NewApp",
+      "RelativePath": "generated-files/CombinedReport_8e16f92a-ed0f-47f7-9986-77426c6724d9.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/generated-files/CombinedReport_8e16f92a-ed0f-47f7-9986-77426c6724d9.html"
     },
     {
       "Identity": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/wwwroot/generated-files/CombinedReport_a0e35e4b-6516-4dcc-b6ce-3d9e0155d647.html",
