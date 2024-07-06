@@ -73,7 +73,7 @@ namespace NewApp.Models
         public string armedForcesJobs { get; set; } = "0";
 
         public string coreStream { get; set; } = "0";
-        public string age { get; set; } = "0";
+     
 
     }
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj": {}
+    "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj": {}
   },
   "projects": {
-    "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj": {
+    "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj",
+        "projectUniqueName": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
         "projectName": "NewApp",
-        "projectPath": "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj",
+        "projectPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
         "packagesPath": "/Users/shivangnayar/.nuget/packages/",
-        "outputPath": "/Users/shivangnayar/Projects/pexi/NewApp/obj/",
+        "outputPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/shivangnayar/.nuget/NuGet/NuGet.Config"

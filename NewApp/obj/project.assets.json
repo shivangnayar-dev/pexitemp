@@ -6671,11 +6671,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj",
+      "projectUniqueName": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
       "projectName": "NewApp",
-      "projectPath": "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj",
+      "projectPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
       "packagesPath": "/Users/shivangnayar/.nuget/packages/",
-      "outputPath": "/Users/shivangnayar/Projects/pexi/NewApp/obj/",
+      "outputPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/shivangnayar/.nuget/NuGet/NuGet.Config"
@@ -6747,13 +6747,5 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.311/RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file /Users/shivangnayar/Projects/pexi/NewApp/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

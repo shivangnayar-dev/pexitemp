@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YIpLA5po9yNfoV+2HQKS0MZ6j7eeSFQRodr3fZUeunIozfuIhkDVLQW1C5QUTqX+OMOwKLHOoXfOy6V5sKvUdw==",
+  "dgSpecHash": "lon+yCCWuyQVJteUhCYYGylWJuetWWpyBBKp1gdINpt+JfiDaLifGTYgTkWq6zdm9glkvxE50PyP+ziz9mQ9VQ==",
   "success": true,
-  "projectFilePath": "/Users/shivangnayar/Projects/pexi/NewApp/NewApp.csproj",
+  "projectFilePath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
   "expectedPackageFiles": [
     "/Users/shivangnayar/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/Users/shivangnayar/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
@@ -116,12 +116,5 @@
     "/Users/shivangnayar/.nuget/packages/system.xml.readerwriter/4.0.11/system.xml.readerwriter.4.0.11.nupkg.sha512",
     "/Users/shivangnayar/.nuget/packages/system.xml.xdocument/4.0.11/system.xml.xdocument.4.0.11.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file /Users/shivangnayar/Projects/pexi/NewApp/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

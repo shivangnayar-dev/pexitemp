@@ -228,7 +228,7 @@ namespace NewApp.Controllers
                         existingCandidate.govJobs = candidate.govJobs;
                         existingCandidate.armedForcesJobs = candidate.armedForcesJobs;
                         existingCandidate.coreStream = candidate.coreStream;
-                        existingCandidate.age = candidate.age;
+                      
                         _context.Candidates.Update(existingCandidate);
 
                     }
@@ -243,7 +243,7 @@ namespace NewApp.Controllers
 
                     List<string> selectedOptionsList = GetSelectedOptionsList(candidateidd, candidate.name, candidate.SelectedOptions, candidate.testProgress, candidate.rating, candidate.dob, candidate.mathScience);
 
-                    if (candidate.rating > 0)
+                    if (candidate.SelectedOptions != "0")
                     {
                         await GetTop5Motivations(candidate.SelectedOptions, candidateidd);
 
@@ -384,7 +384,7 @@ namespace NewApp.Controllers
             try
             {
                 // Read the single HTML template
-                string htmlTemplate = System.IO.File.ReadAllText($"Views/Home/Result1.html");
+                string htmlTemplate = System.IO.File.ReadAllText($"Result1.html");
 
                 // Insert candidate data into the template
                 string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
