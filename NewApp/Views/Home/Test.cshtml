@@ -235,7 +235,35 @@
             height: 60px;
             background: #ededed;
             padding: 0 15px;
+            justify-content: space-between;
         }
+        #progress-container {
+            width: 70%;
+            height: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 15px;
+        }
+
+        .progress-section {
+            flex: 1;
+            height: 100%;
+            background-color: grey;
+            margin: 0 2px;
+            border-radius: 5px;
+            transition: background-color 1s ease-in-out;
+        }
+
+@@keyframes fillProgressBar {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
 
         #internet-speed-indicator {
             position: fixed;
@@ -511,7 +539,6 @@
             padding: 12px;
             background: #dcf8c6;
             border-radius: 10px;
-            font-size: 0.9em;
         }
 
         .message-box.my-message p::before {
@@ -822,6 +849,7 @@
                 z-index: 1000; /* Ensure it's above the left container */
             }
 
+
         .left-container {
             position: fixed;
             top: 0;
@@ -906,7 +934,9 @@
                     <span></span>
                     <span></span>
                 </div>
+
             </div>
+         
             <div class="img-text">
                 <div class="user-img">
 
@@ -934,11 +964,10 @@
 
         <!-- input-bottom -->
         <div class="chatbox-input">
-            <button id="skipButton" class="skip-button" style="display: none;">Skip</button>
 
             <input type="text" id="dobInput" placeholder="Type a message...">
             <button id="dobSubmitButton" onclick="handleMultipleSubmit()">Submit</button>
-
+	    <button id="skipButton" class="skip-button" style="display: none;">Skip</button>
            
         </div>
     </div>

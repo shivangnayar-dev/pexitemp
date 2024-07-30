@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using System.Net;
 
 namespace NewApp.Controllers
 {
@@ -243,7 +244,7 @@ namespace NewApp.Controllers
 
                     List<string> selectedOptionsList = GetSelectedOptionsList(candidateidd, candidate.name, candidate.SelectedOptions, candidate.testProgress, candidate.rating, candidate.dob, candidate.mathScience);
 
-                    if (candidate.SelectedOptions != "0")
+                    if (candidate.testProgress != "0")
                     {
                         await GetTop5Motivations(candidate.SelectedOptions, candidateidd);
 
@@ -266,11 +267,38 @@ namespace NewApp.Controllers
                         }
 
                         // Save the modified HTML to a file and get the relative URL
-                        string relativeUrl = SaveHtmlToWwwroot(reportHtml);
+                        string relativeUrl = SaveHtmlToWwwroot(reportHtml, candidate.name);
 
                         // Construct the full URL
                         string fileUrl = $"{Request.Scheme}://{Request.Host}{relativeUrl}";
                         AddToResultTable("result", "reporturl", fileUrl, candidateidd, "");
+                        string recipientEmail;
+                        string subject = "Your Report is Ready";
+                        string body;
+
+                        // Determine recipient email based on candidate's organization
+                        switch (candidate.organization.ToLower())
+                        {
+
+   			      case "vibe fintech":
+    			    recipientEmail = "vikram@vibefintech.com, subhashini@pexitics.com, shivangnayar22@gmail.com";
+    			    break;
+  			  case "supreme court":
+       			 recipientEmail = "purushottam.st@gmail.com, subhashini@pexitics.com, shivangnayar22@gmail.com";
+       			 break;
+   			 default:
+       			 recipientEmail = "subhashini@pexitics.com, shivangnayar22@gmail.com";
+      			  break;
+                            
+
+
+                        }
+
+                        // Prepare email message body
+			 body = $"Dear Candidate,\n\nYour report is ready.\n\nOrganization: {candidate.organization}\nName: {candidate.name}\n\nPlease click here to view your report: <a href=\"{fileUrl}\">Click Here</a>\n\nThank you for taking the test with {candidate.organization}.";
+
+                        // Send email
+                        await SendEmailAsync(new List<string> { recipientEmail }, subject, body);
 
                         await _context.SaveChangesAsync();
 
@@ -293,8 +321,43 @@ namespace NewApp.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        private async Task SendEmailAsync(List<string> recipientEmails, string subject, string htmlMessage)
+        {
+            try
+            {
+                var smtpServer = "smtp.gmail.com"; // Replace with your SMTP server
+                var smtpPort = 587; // Replace with your SMTP port
+                var enableSsl = true; // Replace with your SSL/TLS configuration
+                var username = "ai.careertests@gmail.com"; // Replace with your email address
+                var password = "szyaorwsvdbdajqb"; // Replace with your app-specific password
 
-        private string SaveHtmlToWwwroot(string htmlContent)
+                using (var client = new SmtpClient(smtpServer, smtpPort))
+                {
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(username, password);
+                    client.EnableSsl = enableSsl;
+
+                    var message = new MailMessage();
+                    message.From = new MailAddress(username);
+
+                    foreach (var recipientEmail in recipientEmails)
+                    {
+                        message.To.Add(recipientEmail);
+                    }
+
+                    message.Subject = subject;
+                    message.Body = htmlMessage;
+                    message.IsBodyHtml = true;
+
+                    await client.SendMailAsync(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Error sending email: {ex.Message}");
+            }
+        }
+        private string SaveHtmlToWwwroot(string htmlContent,string name)
         {
             try
             {
@@ -308,7 +371,8 @@ namespace NewApp.Controllers
                     Directory.CreateDirectory(filePath);
                 }
 
-                string fileName = $"CombinedReport_{Guid.NewGuid()}.html";
+                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = $"{name}_{timestamp}.html";
                 string fullPath = Path.Combine(filePath, fileName);
 
                 // Write the HTML content to the file
@@ -379,21 +443,64 @@ namespace NewApp.Controllers
 
         private async Task<string> GenerateReport(int candidateId)
         {
-            var candidateResults = await GetCandidateResultsAsync(candidateId);
-
             try
             {
-                // Read the single HTML template
-                string htmlTemplate = System.IO.File.ReadAllText($"Result1.html");
+                string logMessage;
+
+                logMessage = $"Starting report generation for candidate ID: {candidateId}";
+                _logger.LogInformation(logMessage);
+                Console.WriteLine(logMessage);
+
+                // Fetch candidate results
+                var candidateResults = await GetCandidateResultsAsync(candidateId);
+                if (candidateResults == null)
+                {
+                    logMessage = "Candidate results are null.";
+                    _logger.LogError(logMessage);
+                    Console.WriteLine(logMessage);
+                    return string.Empty;
+                }
+
+                logMessage = "Candidate results fetched successfully.";
+                _logger.LogInformation(logMessage);
+                Console.WriteLine(logMessage);
+
+                // Define the path to the HTML template
+                string templatePath = "/root/NewApp/pexibackup/NewApp/Result1.html";
+                logMessage = $"Template path: {templatePath}";
+                _logger.LogInformation(logMessage);
+                Console.WriteLine(logMessage);
+
+                // Read the HTML template
+                string htmlTemplate;
+                if (System.IO.File.Exists(templatePath))
+                {
+                    htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+                    logMessage = "HTML template read successfully.";
+                    _logger.LogInformation(logMessage);
+                    Console.WriteLine(logMessage);
+                }
+                else
+                {
+                    logMessage = $"Template file not found at {templatePath}";
+                    _logger.LogError(logMessage);
+                    Console.WriteLine(logMessage);
+                    return string.Empty;
+                }
 
                 // Insert candidate data into the template
                 string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
+                logMessage = "Candidate data inserted into HTML template successfully.";
+                _logger.LogInformation(logMessage);
+                Console.WriteLine(logMessage);
 
                 return modifiedHtml;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error generating report: {ex.Message}");
+                string logMessage = $"Error generating report for candidate ID: {candidateId}. Exception: {ex.Message}";
+                _logger.LogError(logMessage);
+                Console.WriteLine(logMessage);
                 return string.Empty; // Return an empty string or handle error as needed
             }
         }
@@ -467,9 +574,10 @@ namespace NewApp.Controllers
                     }
                 }
 
-                for (int i = 0; i < suggestedRoles.Count; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    AddToResultTable("StreamJobRole", $"Suggestedjobrole{i + 1}", suggestedRoles[i], candidateidd, "");
+                    string role = i < suggestedRoles.Count ? suggestedRoles[i] : "";  // Check if index is within bounds
+                    AddToResultTable("StreamJobRole", $"Suggestedjobrole{i + 1}", role, candidateidd, "");
                 }
 
 
@@ -509,52 +617,50 @@ namespace NewApp.Controllers
                     .Take(5)
                     .ToList();
 
+                // Ensure top5Motivations has exactly 5 items, fill with empty strings if less
+                while (top5Motivations.Count < 5)
+                {
+                    top5Motivations.Add("");
+                }
+
+                // Get exactly 3 motivations (if available) to send to AddToResultTable
+                var motivationsToSend = top5Motivations.Take(3).ToList();
+
+                Dictionary<string, List<string>> motivationToSuggestions = new Dictionary<string, List<string>>
+        {
+            { "Power/Wealth creation", new List<string> { "Govt. job", "Large MNC / Manufacturing firm" } },
+            { "Service/Functional Excellence", new List<string> { "Consulting firm", "Services firm", "Specialist", "Entrepreneurship" } },
+            { "Social Acceptance", new List<string> { "Govt. job", "Large MNC / Manufacturing firm" } },
+            { "Creative/Independence", new List<string> { "Entrepreneurship" } }
+            // Add more mappings as needed
+        };
+
                 List<string> motivationSuggestions = new List<string>();
 
-                // Map each top motivation to its corresponding suggestions
-                for (int i = 0; i < top5Motivations.Count; i++)
+                // Add top 3 motivations to the result table
+                for (int i = 0; i < motivationsToSend.Count; i++)
                 {
-                    string motivation = top5Motivations[i];
+                    string motivation = motivationsToSend[i];
                     AddToResultTable("StreamJobRole", $"top5Motivations{i + 1}", motivation, candidateId, "");
 
-                    switch (motivation)
+                    // Get suggestions for the current motivation
+                    if (motivationToSuggestions.ContainsKey(motivation))
                     {
-                        case "Creativ/Independence":
-                            if (!motivationSuggestions.Contains("Entrepreneurship"))
-                                motivationSuggestions.Add("Entrepreneurship");
-                            break;
-                        case "Service/Functional Excellence":
-                            if (!motivationSuggestions.Contains("Consulting firm"))
-                                motivationSuggestions.Add("Consulting firm");
-                            if (!motivationSuggestions.Contains("Services firm"))
-                                motivationSuggestions.Add("Services firm");
-                            if (!motivationSuggestions.Contains("Specialist"))
-                                motivationSuggestions.Add("Specialist");
-                            if (!motivationSuggestions.Contains("Entrepreneurship"))
-                                motivationSuggestions.Add("Entrepreneurship");
-                            break;
-                        case "Power/Wealth Creation":
-                            if (!motivationSuggestions.Contains("Govt. job"))
-                                motivationSuggestions.Add("Govt. job");
-                            if (!motivationSuggestions.Contains("Large MNC / Manufacturing firm"))
-                                motivationSuggestions.Add("Large MNC / Manufacturing firm");
-                            break;
-                        case "Social Acceptance":
-                            if (!motivationSuggestions.Contains("Govt. job"))
-                                motivationSuggestions.Add("Govt. job");
-                            if (!motivationSuggestions.Contains("Large MNC / Manufacturing firm"))
-                                motivationSuggestions.Add("Large MNC / Manufacturing firm");
-                            break;
-                        case "Security":
-                            if (!motivationSuggestions.Contains("Govt. job"))
-                                motivationSuggestions.Add("Govt. job");
-                            if (!motivationSuggestions.Contains("Large MNC / Manufacturing firm"))
-                                motivationSuggestions.Add("Large MNC / Manufacturing firm");
-                            break;
-                        default:
-                            // Handle other motivations if needed
-                            break;
+                        List<string> suggestions = motivationToSuggestions[motivation];
+                        foreach (string suggestion in suggestions)
+                        {
+                            if (!motivationSuggestions.Contains(suggestion))
+                            {
+                                motivationSuggestions.Add(suggestion);
+                            }
+                        }
                     }
+                }
+
+                // Ensure motivationSuggestions has at least 3 items, fill with empty strings if less
+                while (motivationSuggestions.Count < 3)
+                {
+                    motivationSuggestions.Add("");
                 }
 
                 // Add motivation suggestions to the result table
@@ -562,7 +668,6 @@ namespace NewApp.Controllers
                 {
                     AddToResultTable("StreamJobRole", $"motivationSuggestion{i + 1}", motivationSuggestions[i], candidateId, "");
                 }
-
             }
             catch (Exception ex)
             {
@@ -683,8 +788,11 @@ namespace NewApp.Controllers
             var sortedResult = result.OrderByDescending(r => r.Value.Count);
             PrimaryIndustryIds.AddRange(top3PrimaryIndustryIds);
 
+
             // Take the top 3 IIAFitment
             var top3IIAFitment = sortedResult.Take(3).Select(r => r.Value.IIAFitment).ToList();
+           
+
 
             string IIAFitment1 = top3IIAFitment.Count > 0 ? top3IIAFitment[0] : string.Empty;
             string IIAFitment2 = top3IIAFitment.Count > 1 ? top3IIAFitment[1] : string.Empty;
@@ -814,8 +922,7 @@ namespace NewApp.Controllers
     "Responsibility", "Goal", "Integrity", "Income Dependency"
 };
 
-                // Aggregate data for assessment results
-                var assessmentResults = _context.CandidateSelectedOptions
+    var assessmentResults = _context.CandidateSelectedOptions
             .Where(c => c.candidate_id == candidateId)
             .GroupBy(c => new { c.candidate_id, c.candidate_name, c.AssessmentSubAttributeId, c.AssessmentSubAttribute, c.CountofQuestiontoDisplay })
             .Select(g => new
@@ -840,7 +947,8 @@ namespace NewApp.Controllers
                     "36E8D2D9-75BF-49C6-8028-B538E954AD5A", "CE33B73B-CAE9-4011-B631-9CC8A922DFD3", "51B65867-5243-4846-A205-BD940E299C69", "A29808AF-E025-4756-803D-274FF0E3EE42",
                     "4E0BCCA3-E4F8-48D9-BACB-8D7AAA9BB209", "D5EEB76E-597E-4482-BFC9-D9D0D5BCC15C", "3CBFAF9C-D9B5-4FD3-AE29-E3AF9FCE7A33", "AA8CD5EC-062B-4745-A29D-167E1228920E",
                     "0ABBA87C-C943-475E-A67F-CC1B199D98E2", "7C2AE8FA-F950-4BEB-876C-DF548AD82ACB", "03CFCA9E-3F37-4445-BE22-85DF99BD1F1E", "A171535D-0266-4AD3-A361-0D70D1426F2F",
-                    "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60"
+                    "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60","A42DF8E3-404A-42D9-872D-ABAFB46C4D51",
+                    "2C090191-C836-47BD-AE36-A660D55B3872","013D5373-3B62-4592-A59A-67DF8599CE9B","EB12C328-C637-485F-9C56-2BCE18FBC72A"
                 }.Contains(g.Key.AssessmentSubAttributeId) ? g.Key.CountofQuestiontoDisplay * 5 : g.Key.CountofQuestiontoDisplay * 4,
                 percentage = (g.Sum(c => c.maxmarks) / (new[] {
                     "3FF4087B-F429-403E-97DF-728FF3908212", "310594A1-EDE4-406E-AEF2-BF2F5673A50F", "DD2B0C9C-0E3C-47E1-9A0E-4CBF4CEF3733", "72128D6A-65A3-4EE4-A100-C4D238CB8DBC",
@@ -856,7 +964,8 @@ namespace NewApp.Controllers
                     "36E8D2D9-75BF-49C6-8028-B538E954AD5A", "CE33B73B-CAE9-4011-B631-9CC8A922DFD3", "51B65867-5243-4846-A205-BD940E299C69", "A29808AF-E025-4756-803D-274FF0E3EE42",
                     "4E0BCCA3-E4F8-48D9-BACB-8D7AAA9BB209", "D5EEB76E-597E-4482-BFC9-D9D0D5BCC15C", "3CBFAF9C-D9B5-4FD3-AE29-E3AF9FCE7A33", "AA8CD5EC-062B-4745-A29D-167E1228920E",
                     "0ABBA87C-C943-475E-A67F-CC1B199D98E2", "7C2AE8FA-F950-4BEB-876C-DF548AD82ACB", "03CFCA9E-3F37-4445-BE22-85DF99BD1F1E", "A171535D-0266-4AD3-A361-0D70D1426F2F",
-                    "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60"
+                    "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60","A42DF8E3-404A-42D9-872D-ABAFB46C4D51",
+                     "2C090191-C836-47BD-AE36-A660D55B3872","013D5373-3B62-4592-A59A-67DF8599CE9B","EB12C328-C637-485F-9C56-2BCE18FBC72A"
                 }.Contains(g.Key.AssessmentSubAttributeId) ? g.Key.CountofQuestiontoDisplay * 5 : g.Key.CountofQuestiontoDisplay * 4)) * 100
             }).AsEnumerable() // Fetch data into memory
     .OrderBy(g =>
@@ -864,7 +973,9 @@ namespace NewApp.Controllers
         var index = Array.IndexOf(desiredSequence, g.AssessmentSubAttribute);
         return index == -1 ? int.MaxValue : index;
     })
-    .ToList();
+    .ToList();                // Aggregate data for assessment results
+
+
                 var bechcomenData = _context.bechcomen
                     .Select(b => new {
                         b.ReportSubAttributeId,

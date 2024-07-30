@@ -24,6 +24,10 @@
 // Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 // Flag to track left container visibility
+let currentSectionIndex = 0;
+let HeadingSection = 0;
+console.log('HeadingSection', HeadingSection);
+
 
 var imageAddr = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
 var downloadSize = 300000;
@@ -800,12 +804,14 @@ function giveTest(assessmentSubAttribute, question, optionsData, onNextQuestion,
     // Display current question number and its ID
     createMessageBoxq(question, currentQuestionIndex, totalQuestions);
 
-    optionselect(optionsData, onNextQuestion, assessmentSubAttribute, questionId);
+
 
     const dobInput = document.getElementById("dobInput");
     currentAssessmentSubattribte = assessmentSubAttribute;
+
     console.log('currentAssessmentSubattribte:', currentAssessmentSubattribte);
     showLeftContainer(totalQuestions, currentQuestionIndex);
+    optionselect(optionsData, onNextQuestion, assessmentSubAttribute, questionId);
 
     // Remove previous message box and select element
 
@@ -814,55 +820,77 @@ function giveTest(assessmentSubAttribute, question, optionsData, onNextQuestion,
     console.log(currentQuestionIndex);
     console.log(totalQuestions);
 }
+let unsubmittedQuestionIndexes = [];
+
+// Function to update the array of unsubmitted question indexes
+const updateUnsubmittedQuestionIndexes = () => {
+    const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+    const questions = section.questions;
+    const totalQuestions = questions.length;
+    unsubmittedQuestionIndexes = [];
+    for (let i = 1; i <= totalQuestions; i++) {
+        if (!submittedQuestions.some(question => question.questionIndex === i) && !skippedQuestions.includes(i)) {
+            unsubmittedQuestionIndexes.push(i);
+        }
+    }
+};
 
 let onNextQuestion;
 let submittedQuestions = [];
 
+
 let questionData = [];
 let questionOptionsAndAnswerss;
 let questionOptionsAndAnswers
-let currentSectionIndex = 0;
+
+
 let currentQuestionIndex = 0;
 let skippedQuestions = [];
+let testactivated = false;
 console.log('skippedQuestions:',)
-let testativated = false;
 function callApiToStartTest(reportId) {
-    testativated = true;
 
-
+    testactivated = true;
 
     const onSkipQuestion = function () {
         clearMessageBoxes();
         const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
         const questions = section.questions;
         const totalQuestions = questions.length;
-        let submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
         currentQuestionIndex++;
+
         console.log(`Skipping Question. Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
 
         if (currentQuestionIndex < totalQuestions) {
+
+            updateUnsubmittedQuestionIndexes();
+            console.log('Unsubmitted question indexes:', unsubmittedQuestionIndexes);
+
             const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
-            // Store the index of the skipped question
-            skippedQuestions.push(currentQuestionIndex);
-            // Show the next question in the same section
-            giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
-        } else {
-            submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
-            // Find the next question index that is not completed
-            let nextQuestionIndex = 0;
-            for (let i = 0; i < totalQuestions; i++) {
-                if (!submittedQuestionIndexes.includes(i)) {
-                    nextQuestionIndex = i;
-                    break;
-                }
+
+            // Check if the current question index is not already in the skippedQuestions array
+            if (!skippedQuestions.includes(currentQuestionIndex)) {
+                // Store the index of the skipped question
+                skippedQuestions.push(currentQuestionIndex);
+                console.log('Skipped Questions:', skippedQuestions);
+
+                // Show the next question in the same section
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
             }
-
-            // Move to the next question index that is not completed
-            currentQuestionIndex = nextQuestionIndex;
-
-            // Show the next question
-            const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
-            giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+        } else {
+            // Check if there are any skipped questions remaining
+            if (skippedQuestions.length > 0) {
+                // Store the index of the skipped question
+                skippedQuestions.push(currentQuestionIndex);
+                console.log('Skipped Questions:', skippedQuestions);
+                // Move to the next question index that is not completed
+                currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+            } else {
+                console.log("No more skipped questions.");
+                // Handle the case where there are no more skipped questions
+            }
         }
     };
     userData.testProgress = testProgress;
@@ -875,8 +903,15 @@ function callApiToStartTest(reportId) {
         success: function (response) {
 
             if (response.isValid) {
+                testactivated = true;
                 const skipButton = document.getElementById('skipButton');
                 skipButton.style.display = 'block';
+                skipButton.classList.add('skip-button');
+                const openBtn = document.getElementById('openbtn');
+                const isActive = openBtn.classList.contains('active');
+
+                // Add margin-left style to skipButton only if openBtn is active
+                skipButton.style.marginLeft = isActive ? '25% !important' : '0';
                 skipButton.addEventListener('click', onSkipQuestion);
 
                 console.log(reportId);
@@ -933,18 +968,23 @@ function callApiToStartTest(reportId) {
                 // Function to handle moving to the next section
                 const moveToNextSection = () => {
 
-                    let submittedQuestions = [];
+                    HeadingSection++;
+
+
+                    submitUserDataToDatabase(userData);
 
                     let skippedQuestions = [];
                     currentQuestionIndex = 0;
-                    currentSectionIndex++;
+
                     console.log(`Current Section Index: ${currentSectionIndex}, Total Sections: ${filteredSections.length}`);
                     if (currentSectionIndex < filteredSections.length) {
                         const nextSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
+                        submittedQuestions = [];
                         const firstQuestionIndex = 0;
                         // Index of the first question of the next section
                         giveTest(nextSection.assessmentSubAttribute, nextSection.questions[firstQuestionIndex].question, nextSection.questions[firstQuestionIndex].optionsAndAnswerIds, onNextQuestion, firstQuestionIndex, nextSection.questions.length);
                     } else {
+                        submitUserDataToDatabase(userData);
                         // No more sections, end the test
                         let testInProgress = false;
                         console.log('Length of SelectedOptions:', userData.SelectedOptions.length);
@@ -961,28 +1001,106 @@ function callApiToStartTest(reportId) {
                     const totalQuestions = questions.length;
                     const firstSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
                     currentQuestionIndex++;
+
                     console.log(`Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
-                    if (currentQuestionIndex < totalQuestions) {
+
+                    if (currentQuestionIndex < totalQuestions && selectedOptionsLength != totalQuestions) {
+                        // Increment currentQuestionIndex only if it's within the bounds of the total number of questions
+
+
+                        updateUnsubmittedQuestionIndexes();
+                        console.log('Unsubmitted question indexes:', unsubmittedQuestionIndexes);
+
+                        if (unsubmittedQuestionIndexes.length === 0) {
+                            if (skippedQuestions.length > 0) {
+                                // Proceed with the first skipped question
+                                const firstSkippedIndex = skippedQuestions[0];
+                                currentQuestionIndex = firstSkippedIndex;
+                            } else {
+                                console.log("No more questions to answer.");
+
+                                // Add the current question index to submittedQuestions
+                                submittedQuestions.push({ questionIndex: currentQuestionIndex });
+                                console.log(submittedQuestions);
+
+                                // All questions are submitted, proceed to mark the section as completed and call the API
+                                completedAssessmentSubAttributes.push(section.assessmentSubAttribute);
+                                console.log('Completed Assessment SubAttributes:', completedAssessmentSubAttributes);
+
+                                const name = userData.name || "N/A";
+                                const email = userData.Email_Address || "N/A";
+                                const adhar = userData.Adhar_No || "N/A";
+                                const mobile = userData.Mobile_No || "N/A";
+
+                                questionData.push({ assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name });
+
+                                // Call the API to add the data for completed assessmentSubAttribute
+
+
+                                // Check if there are more sections
+                                const noSkippedQuestions = skippedQuestions.length === 0;
+
+                                if (noSkippedQuestions) {
+                                    currentSectionIndex++;
+
+
+                                    // All questions for the current section are submitted
+                                    if (currentSectionIndex < filteredSections.length) {
+                                        // Move to the next section
+                                        moveToNextSection();
+                                    } else {
+                                        submitUserDataToDatabase(userData);
+                                        // End of the test
+                                        userData.testProgress = "1"; // Update test progress
+                                        console.log("Test completed");
+                                        createMessageBox("Thank you for taking the test");
+                                        createMessageBox("You can exit the page now");
+                                        gfg(5);
+                                    }
+                                } else {
+                                    // Move to the next question index that is not completed
+                                    currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                                    const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                                    giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                                }
+                            }
+                        } else {
+                            // Get the first unsubmitted question index
+                            const firstUnsubmittedIndex = unsubmittedQuestionIndexes[0];
+                            console.log('First unsubmitted question index:', firstUnsubmittedIndex);
+
+                            // Set currentQuestionIndex to the first unsubmitted index
+                            currentQuestionIndex = firstUnsubmittedIndex;
+                        }
+
+                        // Get question data for the current question
                         const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
 
-                        if (!submittedQuestions.some(q => q.questionIndex === currentQuestionIndex)) {
-                            // Add the question to submittedQuestions
-                            submittedQuestions.push({ questionIndex: currentQuestionIndex, questionId: questionId });
-                            console.log('Submitted Questions:', submittedQuestions);
-
-
-                            // Check if the current question index is in skippedQuestions
-                            const indexInSkipped = skippedQuestions.indexOf(currentQuestionIndex);
-                            if (indexInSkipped !== -1) {
-                                // Remove the question index from skippedQuestions
-                                skippedQuestions.splice(indexInSkipped, 1);
-                                console.log('Skipped Questions:', skippedQuestions);
-                            }
+                        // Remove the question index from skippedQuestions if it was previously skipped
+                        const indexInSkipped = skippedQuestions.indexOf(currentQuestionIndex);
+                        if (indexInSkipped !== -1) {
+                            skippedQuestions.splice(indexInSkipped, 1);
+                            console.log('Skipped Questions:', skippedQuestions);
                         }
-                        // Show the next question in the same section
+
+                        // Add the current question to submittedQuestions
+                        submittedQuestions.push({ questionIndex: currentQuestionIndex });
+
+                        console.log(currentQuestionIndex);
+
+                        // Display the current question
                         giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
                     } else {
                         {
+                            const indexInSkipped = skippedQuestions.indexOf(currentQuestionIndex);
+                            if (indexInSkipped !== -1) {
+                                skippedQuestions.splice(indexInSkipped, 1);
+                                console.log('Skipped Questions:', skippedQuestions);
+                            }
+                            console.log(currentQuestionIndex);
+                            submittedQuestions.push({ questionIndex: currentQuestionIndex });
+                            console.log(submittedQuestions);
+
                             // All questions are submitted, proceed to mark the section as completed and call the API
                             completedAssessmentSubAttributes.push(section.assessmentSubAttribute);
                             console.log('Completed Assessment SubAttributes:', completedAssessmentSubAttributes);
@@ -995,20 +1113,7 @@ function callApiToStartTest(reportId) {
                             questionData.push({ assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name });
 
                             // Call the API to add the data for completed assessmentSubAttribute
-                            $.ajax({
-                                type: 'POST',
-                                url: '/api/QuestionData/AddQuestionData',
-                                contentType: 'application/json',
-                                data: JSON.stringify(questionData),
-                                success: function (response) {
-                                    console.log('Assessment SubAttribute data added successfully:', response);
-                                    // Handle success response if needed
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error('Error adding assessment SubAttribute data:', error);
-                                    // Handle error if needed
-                                }
-                            });
+
 
                             // Check if there are more sections
                             const noSkippedQuestions = skippedQuestions.length === 0;
@@ -1016,10 +1121,8 @@ function callApiToStartTest(reportId) {
                             if (noSkippedQuestions) {
                                 currentSectionIndex++;
 
-
                                 // All questions for the current section are submitted
-                                if (currentSectionIndex < filteredSections.length - 1) {
-
+                                if (HeadingSection < filteredSections.length) {
                                     // Move to the next section
                                     moveToNextSection();
                                 } else {
@@ -1032,8 +1135,7 @@ function callApiToStartTest(reportId) {
                                 }
                             } else {
                                 // Move to the next question index that is not completed
-                                const nextQuestionIndex = submittedQuestions.find(question => question.sectionIndex === currentSectionIndex).questionIndex + 1;
-                                currentQuestionIndex = nextQuestionIndex;
+                                currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
                                 const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
                                 giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
                             }
@@ -2057,7 +2159,7 @@ function submitCoreStream() {
             .then(data => {
                 if (data) {
                     // Process the submitted core stream and ID, and proceed to the next step
-                    userData.coreStream = { name: coreStream, id: data };
+                    userData.coreStream = { name: coreStream};
                     displaySubmittedInput("Core Stream", coreStream, true);
                     coreStreamSelect.removeEventListener("change", submitCoreStream);
                     console.log(userData);

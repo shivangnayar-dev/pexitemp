@@ -452,15 +452,17 @@
                 }
 
                     .main table td img {
-                        width: 80%;
+                        /* transform: scale(2.5); */
+                        width: 100%;
+                        height: 100%;
                         float: right;
-                        height: 80%;
                         margin-top: 10%;
                         pointer-events: none;
                         --delay: 0s;
                         animation: arrows 4s var(--delay) infinite ease-in;
+                        object-fit: contain;
+                     /* Ensure the image covers the container without stretching */
                     }
-
         @@keyframes arrows {
             0%,
             100% {
@@ -2783,7 +2785,7 @@ input[type="checkbox"]:checked ~ .content .logo .logo__line:last-child {
                             </section>
                         </td>
                         <td>
-                            <img src="https://previews.123rf.com/images/microbagrandioza/microbagrandioza1911/microbagrandioza191100055/134252877-career-development-office-workers-teamwork-concept-vector-flat-cartoon-graphic-design-illustration.jpg" class="inline-photo show-on-scroll is-visible" alt="INFERNO">
+                            <img src="https://github.com/shivangnayar-dev/img/blob/main/imgpsh_fullsize_anim.jpeg?raw=true" class="inline-photo show-on-scroll is-visible" alt="INFERNO">
                         </td>
                     </tr>
                 </tbody>

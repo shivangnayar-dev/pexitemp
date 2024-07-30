@@ -1,29 +1,14 @@
+      function dontLeave() {
 
+                    return "Are you sure you want to quit? The test is not completed.";
+                }
 
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-// Flag to track left container visibility
+                // Add the event listener to window
+                window.addEventListener("beforeunload", function (event) {
+                    const message = dontLeave();
+                    event.returnValue = message; // For most browsers
+                    return message; // For some browsers
+                });
 
 let currentSectionIndex = 0;
 let HeadingSection = 0;
@@ -31,66 +16,7 @@ console.log('HeadingSection', HeadingSection);
 
 var imageAddr = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
 var downloadSize = 300000;
-let testProgress = "1";
-
-function InitiateSpeedDetection() {
-    setInterval(MeasureConnectionSpeed, 1000); // Check every second
-}
-
-if (window.addEventListener) {
-    window.addEventListener('load', InitiateSpeedDetection, false);
-} else if (window.attachEvent) {
-    window.attachEvent('onload', InitiateSpeedDetection);
-}
-
-function MeasureConnectionSpeed() {
-    var startTime, endTime;
-    var download = new Image();
-    download.onload = function () {
-        endTime = (new Date()).getTime();
-        showResults();
-    }
-    download.onerror = function (err, msg) {
-        document.getElementById("result").innerHTML = "Invalid image, or error downloading";
-    }
-    startTime = (new Date()).getTime();
-    var cacheBuster = "?nnn=" + startTime;
-    download.src = imageAddr + cacheBuster;
-
-    function showResults() {
-        var duration = (endTime - startTime) / 1000;
-        var bitsLoaded = downloadSize * 8;
-        var speedBps = (bitsLoaded / duration).toFixed(2);
-        var speedKbps = (speedBps / 1024).toFixed(2);
-        var speedMbps = (speedKbps / 1024).toFixed(1);
-        document.getElementById("mb").innerHTML = speedMbps;
-
-
-        // Update indicator color based on connection speed
-        var indicator = document.querySelector('.indicator');
-        var speedCheckInterval = 1000; // Check speed every 5 seconds
-        var lowSpeedThreshold = 0; // Mbps
-        var lowSpeedCount = 0;
-        var maxLowSpeedCount = 10; // 50 seconds / 5 seconds = 10
-
-        function checkSpeed() {
-            if (parseFloat(speedMbps) > lowSpeedThreshold) {
-                indicator.classList.add('green');
-                lowSpeedCount = 0; // Reset the counter if speed is above the threshold
-            } else {
-                indicator.classList.remove('green');
-                lowSpeedCount++;
-
-                if (lowSpeedCount >= maxLowSpeedCount) {
-                    alert("Low Internet – Please try with a better connection");
-                }
-            }
-        }
-
-        // Check speed at regular intervals
-        setInterval(checkSpeed, speedCheckInterval);
-    }
-}
+let testProgress = "0";
 
 
 let userDataSelected = {};
@@ -128,6 +54,10 @@ function highlightSignUpChatBox() {
             chatBox.style.color = 'white';
         }
     });
+}
+function scrollToBottom() {
+    const chatContainer = document.querySelector(".chat-container");
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 function clearLeftContainer() {
     const leftContainer = document.getElementById('leftContainer');
@@ -214,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     appendChatList();
 });;
 
+
 function showQR() {
     // Create the modal structure if it doesn't exist
     if (!document.getElementById("myModal")) {
@@ -256,136 +187,109 @@ function closeModal() {
 let timerInterval; // Declare timer interval variable globally
 let totalSecondsRemaining; // Declare total seconds remaining globally
 function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId) {
-   
-    // Define the maximum number of questions per section
-    const maxQuestionsPerSection = 20;
-   
-
-    // Calculate the current section index
+    const maxQuestionsPerSection = totalQuestions;
+    console.log(maxQuestionsPerSection)// Dynamically set maxQuestionsPerSection
     const currentSectionIndex = Math.floor(currentQuestionIndex / maxQuestionsPerSection);
 
-    // Select or create a container for the question grid
     let questionGridContainer = document.querySelector('.question-grid-container');
-
     if (!questionGridContainer) {
         questionGridContainer = document.createElement('div');
         questionGridContainer.className = 'question-grid-container';
         document.querySelector('.left-container').appendChild(questionGridContainer);
     }
 
-    // Clear previous question boxes
     questionGridContainer.innerHTML = '';
 
-    // Create section container for the current section only
     const sectionContainer = document.createElement('div');
     sectionContainer.className = 'section-container';
-    sectionContainer.style.marginBottom = '20px'; // Add margin to separate sections
-    sectionContainer.style.display = ''; // Add this line to include the provided styling
+    sectionContainer.style.marginBottom = '20px';
+    sectionContainer.style.textAlign = '-webkit-center';
 
-    // Create section heading
     const sectionHeading = document.createElement('h3');
     sectionHeading.textContent = "Section: " + (HeadingSection + 1) + " / " + filteredSections.length;
     console.log('HeadingSection', HeadingSection);
     sectionHeading.style.textAlign = '-webkit-center';
 
+    const styleElement = document.createElement('style');
+    styleElement.textContent = ".h3, h3 { text-align: -webkit-center; font-size: calc(1.3rem + .6vw); }";
+    document.head.appendChild(styleElement);
+
     sectionContainer.appendChild(sectionHeading);
 
-    // Calculate the range of questions for the current section
     const startQuestionIndex = currentSectionIndex * maxQuestionsPerSection;
     const endQuestionIndex = Math.min(startQuestionIndex + maxQuestionsPerSection, totalQuestions);
 
-    // Create question box container for the current section
     const questionBoxContainer = document.createElement('div');
     questionBoxContainer.className = 'question-box-container';
     questionBoxContainer.style.display = 'flex';
     questionBoxContainer.style.flexWrap = 'wrap';
 
-    // Count the number of submitted questions
     const submittedCount = submittedQuestions.length;
-
-    // Count the number of skipped questions
     const skippedCount = skippedQuestions.length;
 
-    // Create a container for the count boxes
     const countContainer = document.createElement('div');
-    countContainer.className = 'count-container'; // Optional class for layout
-    countContainer.style.display = 'flex'; // Arrange boxes side-by-side
-    countContainer.style.marginTop = '10%'; // Add margin-top
-    countContainer.style.marginBottom = '10%'; // Add margin-bottom
-    countContainer.style.justifyContent = 'space-evenly'; // Distribute boxes evenly
+    countContainer.className = 'count-container';
+    countContainer.style.display = 'flex';
+    countContainer.style.marginTop = '10%';
+    countContainer.style.marginBottom = '10%';
+    countContainer.style.justifyContent = 'space-evenly';
 
     sectionContainer.appendChild(countContainer);
 
-    // Create a green box for submitted count
-    const submittedBox = document.createElement('div');
-    submittedBox.className = 'count-box submitted'; // Class for green style
-    submittedBox.style.backgroundColor = 'green';
-    submittedBox.style.color = 'white';
-    submittedBox.style.padding = '5px 10px'; // Add padding for better spacing (optional)
-    submittedBox.style.borderRadius = '5px'; // Add rounded corners (optional)
-    submittedBox.textContent = submittedCount;
-    countContainer.appendChild(submittedBox);
+    const createCountBox = (count, color, className) => {
+        const box = document.createElement('div');
+        box.className = `count-box ${className}`;
+        box.style.backgroundColor = color;
+        box.style.color = 'white';
+        box.style.padding = '5px 10px';
+        box.style.borderRadius = '5px';
+        box.textContent = count;
+        return box;
+    };
 
-    // Create an orange box for skipped count
-    const skippedBox = document.createElement('div');
-    skippedBox.className = 'count-box skipped'; // Class for orange style
-    skippedBox.style.backgroundColor = 'orange';
-    skippedBox.style.color = 'white';
-    skippedBox.style.padding = '5px 10px'; // Add padding (optional)
-    skippedBox.style.borderRadius = '5px'; // Add rounded corners (optional)
-    skippedBox.textContent = skippedCount;
-    countContainer.appendChild(skippedBox);
+    countContainer.appendChild(createCountBox(submittedCount, 'green', 'submitted'));
+    countContainer.appendChild(createCountBox(skippedCount, 'orange', 'skipped'));
 
-    // Create question boxes for the current section
+    const submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
+
     for (let questionIndex = startQuestionIndex; questionIndex < endQuestionIndex; questionIndex++) {
         const questionBox = document.createElement('div');
         questionBox.className = 'question-box';
 
-
-
-        // Check if the question has been submitted
-        const submittedQuestionIndexes = submittedQuestions.map(question => question.questionIndex);
+        questionBox.addEventListener('click', function () {
+            moveToQuestion(questionIndex);
+        });
 
         if (submittedQuestionIndexes.includes(questionIndex + 1)) {
             questionBox.style.backgroundColor = 'green';
-        }
-        if (skippedQuestions.includes(questionIndex + 1)) {
+        } else if (skippedQuestions.includes(questionIndex + 1)) {
             questionBox.style.backgroundColor = 'orange';
-        }
-        // Add blue background to the current question box
-        if (questionIndex === currentQuestionIndex) {
+        } else if (questionIndex === currentQuestionIndex) {
             questionBox.style.backgroundColor = 'blue';
         }
 
-        questionBox.textContent = questionIndex + 1; // Display question number
+        questionBox.textContent = questionIndex + 1;
         questionBoxContainer.appendChild(questionBox);
     }
 
-    // Append the question box container to the section container
     sectionContainer.appendChild(questionBoxContainer);
-
-    // Append the section to the question grid container
     questionGridContainer.appendChild(sectionContainer);
 
-    // Display total number of questions and current section
     console.log(`Total questions: ${totalQuestions}`);
     console.log(`Current section: ${currentSectionIndex + 1}`);
 
-    // Create and initialize timer elements if not already created
     let timerContainer = document.querySelector('.timer-container');
-
     if (!timerContainer) {
         timerContainer = document.createElement('div');
         timerContainer.className = 'timer-container';
-        document.querySelector('.left-container').insertBefore(timerContainer, questionGridContainer); // Insert before question grid container
+        document.querySelector('.left-container').insertBefore(timerContainer, questionGridContainer);
 
-        // Set total seconds remaining based on storedReportId
-        totalSecondsRemaining = storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" ? 60 * 60 : 30 * 60;
-        startTimer(timerContainer); // Start the timer
+        totalSecondsRemaining = maxQuestionsPerSection >= 20 ? 60 * 60 : 20 * 60;
+        startTimer(timerContainer);
     }
-}     
+}
+
 function startTimer(timerContainer) {
-    // Add timer elements
     let minutesElement = document.createElement('div');
     minutesElement.className = 'minutes';
     minutesElement.textContent = '00';
@@ -401,25 +305,23 @@ function startTimer(timerContainer) {
     secondsElement.textContent = '00';
     timerContainer.appendChild(secondsElement);
 
-    // Start the timer interval
     timerInterval = setInterval(function () {
         totalSecondsRemaining--;
 
         let minutes = Math.floor(totalSecondsRemaining / 60);
         let seconds = totalSecondsRemaining % 60;
 
-        // Update timer display
         minutesElement.textContent = minutes < 10 ? '0' + minutes : minutes;
         secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
 
-        // Check if the timer has reached 0
         if (totalSecondsRemaining <= 0) {
-            clearInterval(timerInterval); // Stop the timer
-            // Call function when timer ends
-            onNextQuestion();
+            clearInterval(timerInterval);
+            moveToNextSection();
         }
-    }, 1000); // Update every second
+    }, 1000);
 }
+
+
 function checkOrientation() {
     if (window.innerWidth < window.innerHeight && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         alert("Please rotate your device to landscape mode for the best experience.");
@@ -476,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Check if the screen width is greater than a certain value (indicating it's not a mobile view)
         if (testactivated && window.innerWidth > 768) { // Adjust this value as needed
             chatContainer.style.marginLeft = isActive ? '20%' : '0';
-          
+
         } else {
             chatContainer.style.marginLeft = '0';
             skipButton.style.marginLeft = '0';
@@ -593,30 +495,31 @@ function submitAmountPaid() {
 }
 
 function asktesttt() {
-    clearMessageBoxes();
 
-    const genderSelect = document.getElementById("genderSelect");
-    if (genderSelect) {
-        genderSelect.parentNode.removeChild(genderSelect);
-    }
-    // Ask the user for consent using a confirm dialog
-    const hasTest = confirm('Do you want to start the test? Click OK for Yes, Cancel for No.');
+    setTimeout(() => {
+        const genderSelect = document.getElementById("genderSelect");
+        if (genderSelect) {
+            genderSelect.parentNode.removeChild(genderSelect);
+        }
+        // Ask the user for consent using a confirm dialog
+        const hasTest = confirm('Do you want to start the test? Click OK for Yes, Cancel for No.');
 
-    if (hasTest) {
-        // User has provided consent, proceed with further actions
-        // Call the function or perform the actions you need after consent
-        // ...
-        const reportId = storedReportId;
-        callApiToStartTest(reportId);
-        // Clear the message box after proceeding
+        if (hasTest) {
+            // User has provided consent, proceed with further actions
+            // Call the function or perform the actions you need after consent
+            // ...
+            const reportId = storedReportId;
+            callApiToStartTest(reportId);
+            // Clear the message box after proceeding
 
-    } else {
-        // User has not provided consent, inform them and prevent further actions
-        alert('We cannot proceed without your consent. Please check the consent box.');
-        // Optionally, you can reset the form or take other actions
-    }
+        } else {
+            // User has not provided consent, inform them and prevent further actions
+            alert('We cannot proceed without your consent. Please check the consent box.');
+	    askDobAfterGender();           
+ // Optionally, you can reset the form or take other actions
+        }
+    }, 0); // Ensure the confirm dialog is shown after the clearMessageBoxes function is done
 }
-
 let userData = {};
 function askDobAfterGender() {
     const genderSelect = document.getElementById("genderSelect");
@@ -669,7 +572,7 @@ function submitDobAfterGender() {
         dobInput.value = "";
         flatpickr("#dobInput").destroy();
 
-        clearMessageBoxes();
+        
 
         submitUserDataToDatabase(userData);
         if (storedTestCode === "PEXCGRD2312O1009" || storedTestCode === "PEXCGJD2312O1011" || storedTestCode === "PEXCGSD2312O1013") {
@@ -679,9 +582,7 @@ function submitDobAfterGender() {
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
         }
-        else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId === "E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
-            askCoreStream();
-        }
+
         else {
             // If false, call askCoreStream()
             asktesttt();
@@ -874,7 +775,7 @@ let skippedQuestions = [];
 let testactivated = false;
 console.log('skippedQuestions:',)
 function callApiToStartTest(reportId) {
-
+clearMessageBoxes();
     testactivated = true;
 
     const onSkipQuestion = function () {
@@ -882,42 +783,46 @@ function callApiToStartTest(reportId) {
         const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
         const questions = section.questions;
         const totalQuestions = questions.length;
+        sectionquestioncount = totalQuestions;
         currentQuestionIndex++;
 
         console.log(`Skipping Question. Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
 
         if (currentQuestionIndex < totalQuestions) {
-            
+
             updateUnsubmittedQuestionIndexes();
             console.log('Unsubmitted question indexes:', unsubmittedQuestionIndexes);
 
             const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
 
-            // Check if the current question index is not already in the skippedQuestions array
             if (!skippedQuestions.includes(currentQuestionIndex)) {
-                // Store the index of the skipped question
                 skippedQuestions.push(currentQuestionIndex);
                 console.log('Skipped Questions:', skippedQuestions);
-
-                // Show the next question in the same section
-                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
-            }
-        } else {
-            // Check if there are any skipped questions remaining
-            if (skippedQuestions.length > 0) {
-                // Store the index of the skipped question
-                skippedQuestions.push(currentQuestionIndex);
-                console.log('Skipped Questions:', skippedQuestions);
-                // Move to the next question index that is not completed
-                currentQuestionIndex = skippedQuestions[0]-1; // Get the index of the first skipped question
-                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
                 giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
             } else {
+                currentQuestionIndex = skippedQuestions[0] - 1;
+                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                
+		giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+		 alert("We are re-showing your skipped questions. You cannot skip the question 2 times. Please answer it.");
+            }
+
+        } else {
+            if (!skippedQuestions.includes(currentQuestionIndex)) {
+                skippedQuestions.push(currentQuestionIndex);
+            }
+            if (skippedQuestions.length > 0) {
+                console.log('Skipped Questions:', skippedQuestions);
+                currentQuestionIndex = skippedQuestions[0] - 1;
+                const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                console.log('currentQuestionIndex', currentQuestionIndex);
+            } else {
                 console.log("No more skipped questions.");
-                // Handle the case where there are no more skipped questions
             }
         }
     };
+
     userData.testProgress = testProgress;
 
     $.ajax({
@@ -926,16 +831,14 @@ function callApiToStartTest(reportId) {
         contentType: 'application/json',
         data: JSON.stringify({ ReportId: reportId }),
         success: function (response) {
-
             if (response.isValid) {
                 testactivated = true;
                 const skipButton = document.getElementById('skipButton');
-                skipButton.style.display = 'block'; 
+                skipButton.style.display = 'block';
                 skipButton.classList.add('skip-button');
                 const openBtn = document.getElementById('openbtn');
                 const isActive = openBtn.classList.contains('active');
 
-                // Add margin-left style to skipButton only if openBtn is active
                 skipButton.style.marginLeft = isActive ? '25% !important' : '0';
                 skipButton.addEventListener('click', onSkipQuestion);
 
@@ -946,56 +849,40 @@ function callApiToStartTest(reportId) {
                 questionOptionsAndAnswerss = response.questionOptionsAndAnswerss;
                 const sections = Object.keys(questionOptionsAndAnswerss);
 
-
-
                 const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
 
                 console.log(`Current Section Index: ${currentSectionIndex}, Total Sections: ${filteredSections.length}`);
 
-                // Call FetchAssessmentSubAttributes to filter sections
-                let isFirstQuestionPassed = false; // Initialize the boolean variable
+                let isFirstQuestionPassed = false;
 
                 FetchAssessmentSubAttributes(candidateId, sections, function () {
-                    // Check if filteredSections contains data
                     if (filteredSections.length >= 0) {
-                        // Iterate through filteredSections
                         for (const section of filteredSections) {
-                            // Check if the section exists in questionOptionsAndAnswerss
                             if (questionOptionsAndAnswerss.hasOwnProperty(section)) {
-                                // Access the section and its corresponding data
                                 const sectionData = questionOptionsAndAnswerss[section];
                                 const questions = sectionData.questions;
                                 const totalQuestions = questions.length;
 
-                                // Perform operations with sectionData as needed
                                 console.log(`Section: ${section}`, sectionData);
 
-                                // Check if the first question hasn't been passed yet
                                 if (!isFirstQuestionPassed) {
                                     showLeftContainer(totalQuestions, currentQuestionIndex);
-                                    // Call giveTest function for this section
+                                    addProgressBarToHeader(filteredSections.length);
                                     giveTest(sectionData.assessmentSubAttribute, sectionData.questions[0].question, sectionData.questions[0].optionsAndAnswerIds, onNextQuestion, 0, totalQuestions, sectionData.questions[0].questionId);
-                                    isFirstQuestionPassed = true; // Update the boolean variable
+                                    isFirstQuestionPassed = true;
                                 }
                             } else {
                                 console.log(`Section '${section}' not found in questionOptionsAndAnswerss`);
-                                // Handle the case where the section doesn't exist
                             }
                         }
                     } else {
                         console.log("filteredSections is empty");
-                        // Handle the case where filteredSections is empty
-                        const sections = Object.keys(questionOptionsAndAnswerss);
-                        // Now you can use sections as needed
                     }
                 });
 
-                // Function to handle moving to the next section
                 const moveToNextSection = () => {
-                  
+		   alert("Congratulations, you have completed the section. Please do the next section now.");
                     HeadingSection++;
-
-
                     submitUserDataToDatabase(userData);
 
                     let skippedQuestions = [];
@@ -1006,50 +893,42 @@ function callApiToStartTest(reportId) {
                         const nextSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
                         submittedQuestions = [];
                         const firstQuestionIndex = 0;
-                        // Index of the first question of the next section
                         giveTest(nextSection.assessmentSubAttribute, nextSection.questions[firstQuestionIndex].question, nextSection.questions[firstQuestionIndex].optionsAndAnswerIds, onNextQuestion, firstQuestionIndex, nextSection.questions.length);
                     } else {
-                       
                         submitUserDataToDatabase(userData);
-                        // No more sections, end the test
                         let testInProgress = false;
                         console.log('Length of SelectedOptions:', userData.SelectedOptions.length);
-                        userData.testProgress = "1";
+
                         createMessageBox("Thank you for taking the test");
                         createMessageBox("You can exit the page now");
                         gfg(5);
                     }
                 };
+
                 onNextQuestion = function () {
                     clearMessageBoxes();
                     const section = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
                     const questions = section.questions;
                     const totalQuestions = questions.length;
                     const firstSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
-                     currentQuestionIndex++;
+                    currentQuestionIndex++;
 
                     console.log(`Current Question Index: ${currentQuestionIndex}, Total Questions: ${totalQuestions}`);
 
                     if (currentQuestionIndex < totalQuestions && selectedOptionsLength != totalQuestions) {
-                        // Increment currentQuestionIndex only if it's within the bounds of the total number of questions
-                       
-
                         updateUnsubmittedQuestionIndexes();
                         console.log('Unsubmitted question indexes:', unsubmittedQuestionIndexes);
 
                         if (unsubmittedQuestionIndexes.length === 0) {
                             if (skippedQuestions.length > 0) {
-                                // Proceed with the first skipped question
                                 const firstSkippedIndex = skippedQuestions[0];
                                 currentQuestionIndex = firstSkippedIndex;
                             } else {
                                 console.log("No more questions to answer.");
 
-                                // Add the current question index to submittedQuestions
                                 submittedQuestions.push({ questionIndex: currentQuestionIndex });
                                 console.log(submittedQuestions);
 
-                                // All questions are submitted, proceed to mark the section as completed and call the API
                                 completedAssessmentSubAttributes.push(section.assessmentSubAttribute);
                                 console.log('Completed Assessment SubAttributes:', completedAssessmentSubAttributes);
 
@@ -1060,61 +939,45 @@ function callApiToStartTest(reportId) {
 
                                 questionData.push({ assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name });
 
-                                // Call the API to add the data for completed assessmentSubAttribute
-                         
-
-                                // Check if there are more sections
                                 const noSkippedQuestions = skippedQuestions.length === 0;
 
                                 if (noSkippedQuestions) {
                                     currentSectionIndex++;
-                                  
+                                    updateProgressBar(currentSectionIndex, filteredSections.length);
 
-                                    // All questions for the current section are submitted
                                     if (currentSectionIndex < filteredSections.length) {
-                                        // Move to the next section
                                         moveToNextSection();
                                     } else {
                                         submitUserDataToDatabase(userData);
-                                        // End of the test
-                                        userData.testProgress = "1"; // Update test progress
                                         console.log("Test completed");
                                         createMessageBox("Thank you for taking the test");
                                         createMessageBox("You can exit the page now");
                                         gfg(5);
                                     }
                                 } else {
-                                    // Move to the next question index that is not completed
-                                    currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                                    currentQuestionIndex = skippedQuestions[0] - 1;
                                     const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
                                     giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
                                 }
                             }
                         } else {
-                            // Get the first unsubmitted question index
                             const firstUnsubmittedIndex = unsubmittedQuestionIndexes[0];
                             console.log('First unsubmitted question index:', firstUnsubmittedIndex);
-
-                            // Set currentQuestionIndex to the first unsubmitted index
                             currentQuestionIndex = firstUnsubmittedIndex;
                         }
 
-                        // Get question data for the current question
                         const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
 
-                        // Remove the question index from skippedQuestions if it was previously skipped
                         const indexInSkipped = skippedQuestions.indexOf(currentQuestionIndex);
                         if (indexInSkipped !== -1) {
                             skippedQuestions.splice(indexInSkipped, 1);
                             console.log('Skipped Questions:', skippedQuestions);
                         }
 
-                        // Add the current question to submittedQuestions
                         submittedQuestions.push({ questionIndex: currentQuestionIndex });
 
                         console.log(currentQuestionIndex);
 
-                        // Display the current question
                         giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
                     } else {
                         {
@@ -1127,7 +990,6 @@ function callApiToStartTest(reportId) {
                             submittedQuestions.push({ questionIndex: currentQuestionIndex });
                             console.log(submittedQuestions);
 
-                            // All questions are submitted, proceed to mark the section as completed and call the API
                             completedAssessmentSubAttributes.push(section.assessmentSubAttribute);
                             console.log('Completed Assessment SubAttributes:', completedAssessmentSubAttributes);
 
@@ -1136,53 +998,74 @@ function callApiToStartTest(reportId) {
                             const adhar = userData.Adhar_No || "N/A";
                             const mobile = userData.Mobile_No || "N/A";
 
-                            questionData.push({ assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name });
-
-                            // Call the API to add the data for completed assessmentSubAttribute
-                          
-
-                            // Check if there are more sections
+                            questionData.push({
+                                assessmentSubAttribute: section.assessmentSubAttribute, email, adhar, mobile, name
+                            });
                             const noSkippedQuestions = skippedQuestions.length === 0;
 
                             if (noSkippedQuestions) {
                                 currentSectionIndex++;
+                                updateProgressBar(currentSectionIndex, filteredSections.length);
 
-                                // All questions for the current section are submitted
                                 if (HeadingSection < filteredSections.length) {
-                                    // Move to the next section
                                     moveToNextSection();
                                 } else {
-                                    // End of the test
-                                    userData.testProgress = "1"; // Update test progress
                                     console.log("Test completed");
                                     createMessageBox("Thank you for taking the test");
                                     createMessageBox("You can exit the page now");
                                     gfg(5);
                                 }
                             } else {
-                                // Move to the next question index that is not completed
-                                currentQuestionIndex = skippedQuestions[0] - 1; // Get the index of the first skipped question
+                                currentQuestionIndex = skippedQuestions[0] - 1;
                                 const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
                                 giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
                             }
                         }
                     }
                 };
-
-
-                // Start the test with the first section
-
+                addProgressBarToHeader(filteredSections.length);
+                updateProgressBar(currentSectionIndex, filteredSections.length);
             } else {
                 alert('Report ID is invalid or no data found. Please re-enter.');
             }
         },
     });
 
+    function updateProgressBar(currentIndex, totalSections) {
+        const sections = document.querySelectorAll('.progress-section');
+        sections.forEach((section, index) => {
+            if (index < currentIndex) {
+                section.style.backgroundColor = '#8a2be2';
+            } else {
+                section.style.backgroundColor = 'white';
+            }
+        });
+    }
+
+    function addProgressBarToHeader(totalSections) {
+        const header = document.querySelector('.header1');
+        let progressContainer = document.getElementById('progress-container');
+
+        if (!progressContainer) {
+            progressContainer = document.createElement('div');
+            progressContainer.id = 'progress-container';
+            progressContainer.style.display = 'flex'; // Ensure it's visible
+            header.appendChild(progressContainer);
+        }
+
+        progressContainer.innerHTML = '';
+        for (let i = 0; i < totalSections; i++) {
+            const section = document.createElement('div');
+            section.classList.add('progress-section');
+            progressContainer.appendChild(section);
+        }
+    }
+
+
 
     // Function to handle moving to the next question within the current section
 
 }
-
 let assessmentSubAttributesArray = [];
 let filteredSections = [];// Define an array to store assessment subattributes
 
@@ -1228,6 +1111,7 @@ function FetchCandidateId(email, adhar, mobile) {
 }
 
 function gfg(n) {
+   
     // Create the rating card HTML
     let html = `
         <div class="custom-modal">
@@ -1304,6 +1188,7 @@ function gfg(n) {
 }
 
 function submitRating(rating) {
+    userData.testProgress = "1"; 
     // Submit the rating to user data
     userData.rating = rating;
     console.log(userData);
@@ -1350,11 +1235,7 @@ function submitUserDataToDatabase(userData) {
 
 function askName() {
     highlightSignUpChatBox();
-<<<<<<< HEAD
     if (userData.name !== undefined && userData.name !== null && userData.name !== "0") {
-=======
-    if (userData.name !== undefined && userData.name !== null && userData.name !== "0" ) {
->>>>>>> e72f3df (Reset repository to HEAD and cleaned untracked files)
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Name", userData.name, false);
         askCountry();
@@ -1363,8 +1244,8 @@ function askName() {
         return;
     }
 
-    document.getElementById("dobInput").placeholder = "Enter your name (First Middle Last)";
-    createMessageBox("Great! Please enter your name (First Middle Last):");
+    document.getElementById("dobInput").placeholder = "Enter your first and last name";
+    createMessageBox("Great! Please enter your first and last name:");
 
     // Remove the event listener for the previous function if it exists
     document.getElementById("dobInput").removeEventListener("change", askTestCode);
@@ -1376,30 +1257,36 @@ function askName() {
 function submitName() {
     isAskTestCodeCalled = false;
 
-    const name = document.getElementById("dobInput").value;
+    const name = document.getElementById("dobInput").value.trim();
+    const nameParts = name.split(" ");
 
-    if (name && name.length >= 3 && !/\d/.test(name)) {
-        // Process the submitted name and proceed to the next step
-        userData.name = name;
-        displaySubmittedInput("Name", name, true);
+    if (nameParts.length >= 2) {
+        const firstName = nameParts[0];
+        const lastName = nameParts[nameParts.length - 1];
 
-        // Submit data to the server or handle the completion of the form
-        document.getElementById("dobInput").removeEventListener("change", submitName);
-        askLocation();
-        document.getElementById("dobInput").value = "";
-        console.log(userData);
-    } else {
-        // Handle the case where the name is not entered or doesn't meet the criteria
-        if (!name) {
-            alert('Please enter your name.');
-        } else if (name.length < 3) {
-            alert('First Name should have a minimum of 3 letters.');
-        } else if (/\d/.test(name)) {
-            alert('Numeric characters are not allowed in the name.');
+        if (firstName.length + lastName.length > 3 && !/\d/.test(firstName + lastName)) {
+            // Process the submitted name and proceed to the next step
+            userData.name = name;
+            displaySubmittedInput("Name", name, true);
+
+            // Submit data to the server or handle the completion of the form
+            document.getElementById("dobInput").removeEventListener("change", submitName);
+            askLocation();
+            document.getElementById("dobInput").value = "";
+            console.log(userData);
+        } else {
+            // Handle invalid name criteria
+            if (/\d/.test(firstName + lastName)) {
+                alert('Numeric characters are not allowed in the name.');
+            } else {
+                alert('The sum of the characters in the first and last names must be greater than 3.');
+            }
         }
+    } else {
+        // Handle the case where the user did not enter both first and last names
+        alert('Please enter your name as per your official documents');
     }
 }
-
 
 function askGender() {
 
@@ -1408,7 +1295,7 @@ function askGender() {
     if (organizationSelect) {
         organizationSelect.parentNode.removeChild(organizationSelect);
     }
-    if (userData.gender !== undefined && userData.gender !== null && userData.gender !=="0") {
+    if (userData.gender !== undefined && userData.gender !== null && userData.gender !== "0") {
         // Skip asking for input, directly move to the next step
         displaySubmittedInput("Gender", userData.gender, false);
         askDobAfterGender(); // Move on to the next step
@@ -1486,7 +1373,7 @@ function submitGender() {
         }
         else {
             // If false, call askCoreStream()
-            askDobAfterGender(); 
+            askDobAfterGender();
             console.log(userData);
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
@@ -1494,7 +1381,7 @@ function submitGender() {
         // Clear the input and move on to the next step (ask for Date of Birth)
         genderSelect.value = "";
 
-      
+
     } else {
         // Handle the case where the gender is not selected
         alert('Please select your gender.');
@@ -1515,11 +1402,10 @@ function askOrganization() {
     }
 
     // Remove the existing qualification select if it exists
-    const qualificationSelect = document.getElementById("qualificationSelect");
-    if (qualificationSelect) {
-        qualificationSelect.parentNode.removeChild(qualificationSelect);
+ const academicStreamSelect = document.getElementById("academicStreamSelect");
+    if (academicStreamSelect) {
+        academicStreamSelect.parentNode.removeChild(academicStreamSelect);
     }
-
     // ...
 
     if (userData.organization !== undefined && userData.organization !== null) {
@@ -1551,7 +1437,7 @@ function askOrganization() {
 
     // List of organization options
     const organizationOptions = [
-
+        "Vibe Fintech ",
         "Supreme Court",
         "Mgrow",
         "VIT",
@@ -1649,8 +1535,8 @@ function askLocation() {
 
 
     // Update placeholder and message
-    dobInput.placeholder = "Select your location";
-    createMessageBox("Please select your Location:");
+    dobInput.placeholder = "Select your Country";
+    createMessageBox("Please select your Country:");
 
     // Create select element for location
     const locationSelect = document.createElement("select");
@@ -1687,11 +1573,13 @@ function submitLocation() {
 
     if (location.toLowerCase() === "other") {
         // If "Other" is selected, ask for free text input
+	  userData.country = location;
+        displaySubmittedInput("Country", location, true);
         askOtherLocation();
     } else {
         // Process submitted location and proceed to the next step
         userData.country = location;
-        displaySubmittedInput("Location", location, true);
+        displaySubmittedInput("Country", location, true);
         locationSelect.removeEventListener("change", submitLocation);
         console.log(userData);
 
@@ -1702,12 +1590,16 @@ function submitLocation() {
         askCountry();
     }
 }
-
+function toProperCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
 function askOtherLocation() {
     const locationInput = document.getElementById("dobInput");
 
     locationInput.placeholder = "Enter another location";
-    createMessageBox("Great! Please enter another Location:");
+    createMessageBox("Great! Please enter your Country:");
 
     // Remove the event listener for the previous function if it exists
 
@@ -1715,7 +1607,6 @@ function askOtherLocation() {
     // Attach the event listener for submitOtherLocation
     locationInput.addEventListener("change", submitOtherLocation);
 }
-
 function submitOtherLocation() {
     const otherLocation = document.getElementById("dobInput").value;
     if (otherLocation) {
@@ -2031,7 +1922,7 @@ function submitQualification() {
                     // Check if storedTestCode is equal to "PEXCGR2312O1009"
                     if (!istextcodeInvalid) {
                         // If true, call askGender() instead of askCoreStream()
-                        askOrganization();
+                        askAcademicStream();
                         console.log(userData);
                         // Submit data to the server or handle the completion of the form
                         // You can call the next function or submit the entire form here
@@ -2055,6 +1946,81 @@ function submitQualification() {
         alert('Please select your qualification.');
     }
 }
+function askAcademicStream() {
+    scrollToBottom();
+    const genderSelect = document.getElementById("qualificationSelect");
+    const messageBox = document.getElementById("messageBox");
+
+    // Remove the existing gender select if it exists
+    if (qualificationSelect) {
+        genderSelect.parentNode.removeChild(qualificationSelect);
+    }
+
+    // Update placeholder and message
+    const dobInput = document.getElementById("dobInput");
+    dobInput.placeholder = "Select your academic stream";
+    createMessageBox("Great! Please select your Academic Stream:");
+
+    // Create a select element for academic stream
+    const academicStreamSelect = document.createElement("select");
+    academicStreamSelect.id = "academicStreamSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select your academic stream";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    academicStreamSelect.appendChild(placeholderOption);
+
+    // Fetch academic stream options from the server using an API endpoint
+    $.ajax({
+        type: 'GET',
+        url: '/api/Academic', // Replace with your actual API endpoint
+        contentType: 'application/json',
+        success: function (academicStreamOptions) {
+            // Log the response in the console
+            console.log('Response from server:', academicStreamOptions);
+
+            // Add academic stream options based on the data received
+            for (const academicStream of academicStreamOptions) {
+                const option = document.createElement("option");
+                option.value = academicStream.toLowerCase();
+                option.text = academicStream;
+                academicStreamSelect.appendChild(option);
+            }
+
+            // Replace the existing input with the new select element
+            dobInput.parentNode.insertBefore(academicStreamSelect, dobInput.nextSibling);
+            scrollToBottom();
+
+            // Attach the event listener for submitAcademicStream
+            academicStreamSelect.addEventListener("change", submitAcademicStream);
+            console.log(userData);
+        },
+        error: function () {
+            console.error('Error fetching academic stream options');
+            alert('Error fetching academic stream options. Please try again.');
+        },
+    });
+}
+
+function submitAcademicStream() {
+    scrollToBottom();
+    const academicStreamSelect = document.getElementById("academicStreamSelect");
+    const academicStream = academicStreamSelect.value;
+
+    if (academicStream) {
+        // Fetch the ID corresponding to the selected academic stream
+        displaySubmittedInput("Academic Stream", academicStream, true);
+        askOrganization();
+
+    } else {
+        // Handle the case where the academic stream is not selected
+        alert('Please select your academic stream.');
+    }
+}
+
 function askNextStep() {
     const messageBox = document.getElementById("messageBox");
 
@@ -2150,7 +2116,7 @@ function submitNextStep() {
 function askCoreStream() {
     const genderSelect = document.getElementById("genderSelect");
     const messageBox = document.getElementById("messageBox");
-   
+
 
     // Remove the existing country select if it exists
     if (genderSelect) {
@@ -2193,7 +2159,7 @@ function askCoreStream() {
 
             // Replace the existing input with the new select element
             dobInput.parentNode.insertBefore(coreStreamSelect, dobInput.nextSibling);
-
+	    scrollToBottom();
             // Attach the event listener for submitCoreStream
             coreStreamSelect.addEventListener("change", submitCoreStream);
             console.log(userData);
@@ -2216,7 +2182,7 @@ function submitCoreStream() {
             .then(data => {
                 if (data) {
                     // Process the submitted core stream and ID, and proceed to the next step
-                    userData.coreStream = { name: coreStream, id: data };
+                    userData.coreStream = coreStream;
                     displaySubmittedInput("Core Stream", coreStream, true);
                     coreStreamSelect.removeEventListener("change", submitCoreStream);
                     console.log(userData);
@@ -2270,6 +2236,7 @@ function askSpecialization(coreStreamId) {
                 item1: specialization,
                 item2: specialization.toLowerCase()
             }));
+	    scrollToBottom();
 
             // Call the checkboxselect function to display checkboxes
             checkboxselect(mappedOptions, askInterest);
@@ -2388,7 +2355,7 @@ function askInterest() {
 
         // ... Add more options as needed
     ];
-
+ scrollToBottom();
     // Add interest options
     for (const interest of interestOptions) {
         const option = document.createElement("option");
@@ -2448,11 +2415,11 @@ function fetchNameAndPhoneFromURL() {
         userData.phoneNumber = phone;
 
         userData.name = name;
- 	userData.Mobile_No = phone;
+        userData.Mobile_No = phone;
 
         // Return an object containing the name and phone number
         return {
-	    name: name,
+            name: name,
             phone: phone
         };
     } else {
@@ -2563,7 +2530,7 @@ function askIndustry() {
         "Engineering and Capital Goods",
         // ... Add more options as needed
     ];
-
+    scrollToBottom();
     // Map industry options to the format expected by checkboxselect
     const mappedOptions = staticIndustryOptions.map(industry => ({
         item1: industry,
@@ -2576,13 +2543,16 @@ function askIndustry() {
 
 
 function displaySubmittedInput(type, value, isUserMessage = true) {
-    // Assuming you have an element to display messages with class "chat-container"
     const chatContainer = document.querySelector(".chat-container");
+    const properCaseValue = toProperCase(value);
 
     // Create a new message element
     const messageElement = document.createElement("div");
     messageElement.classList.add(isUserMessage ? "user-message" : "system-message");
-    messageElement.innerHTML = `<p><strong>${type}:</strong> ${value}</p>`;
+    messageElement.innerHTML = `
+      <p><strong>${type}:</strong> <span id="${type.toLowerCase()}-value">${properCaseValue}</span>
+        <button id="edit-${type.toLowerCase()}">Edit</button></p>
+    `;
 
     // Append the message to the chat container
     chatContainer.appendChild(messageElement);
@@ -2590,7 +2560,259 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
     // Add a line break
     let lineBreak = document.createElement("hr");
     chatContainer.appendChild(lineBreak);
+
+    // Style the edit button
+    const editButton = document.getElementById(`edit-${type.toLowerCase()}`);
+    styleButton(editButton);
+
+    // Attach event listener to the edit button
+    editButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
+    scrollToBottom();
 }
+
+function styleButton(button) {
+    button.style.backgroundColor = "#d19cff";
+    button.style.border = "none";
+    button.style.color = "white";
+    button.style.padding = "10px 20px";
+    button.style.textAlign = "center";
+    button.style.textDecoration = "none";
+    button.style.display = "inline-block";
+    button.style.fontSize = "10px";
+    button.style.margin = "4px 2px";
+    button.style.cursor = "pointer";
+    button.style.borderRadius = "15px";
+}
+
+function editSubmittedInput(type, messageElement) {
+    if (type.toLowerCase() === "core stream") {
+        editCoreStream(messageElement);
+    } else if (type.toLowerCase() === "interest") {
+        editInterest(messageElement);
+    } else if (type.toLowerCase() === "location") {
+        editLocation(messageElement);
+    } else {
+        const currentValue = document.getElementById(`${type.toLowerCase()}-value`).textContent;
+
+        // Create an input field with the current value
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.value = currentValue;
+        inputField.id = `edit-${type.toLowerCase()}-input`;
+
+        // Replace the span with the input field
+        const valueSpan = document.getElementById(`${type.toLowerCase()}-value`);
+        valueSpan.parentNode.replaceChild(inputField, valueSpan);
+
+        // Change the edit button to a save button
+        const editButton = document.getElementById(`edit-${type.toLowerCase()}`);
+        editButton.textContent = "Save";
+        editButton.id = `save-${type.toLowerCase()}`;
+        styleButton(editButton);
+        editButton.addEventListener("click", () => saveEditedInput(type, messageElement));
+    }
+}
+
+function editCoreStream(messageElement) {
+    const currentValue = document.getElementById("core stream-value").textContent;
+
+    // Create a select element for core stream
+    const coreStreamSelect = document.createElement("select");
+    coreStreamSelect.id = "edit-coreStreamSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select your core stream";
+    placeholderOption.disabled = true;
+    coreStreamSelect.appendChild(placeholderOption);
+
+    // Fetch core stream options from the server using an API endpoint
+    $.ajax({
+        type: 'GET',
+        url: '/api/Core', // Replace with your actual API endpoint
+        contentType: 'application/json',
+        success: function (coreStreamOptions) {
+            // Add core stream options based on the data received
+            for (const coreStream of coreStreamOptions) {
+                const option = document.createElement("option");
+                option.value = coreStream.toLowerCase();
+                option.text = coreStream;
+                coreStreamSelect.appendChild(option);
+            }
+
+            // Set the current value as selected
+            coreStreamSelect.value = currentValue.toLowerCase();
+
+            // Replace the span with the select element
+            const valueSpan = document.getElementById("core stream-value");
+            valueSpan.parentNode.replaceChild(coreStreamSelect, valueSpan);
+
+            // Change the edit button to a save button
+            const editButton = document.getElementById("edit-core stream");
+            editButton.textContent = "Save";
+            editButton.id = "save-core stream";
+            styleButton(editButton);
+            editButton.addEventListener("click", () => saveEditedInput("Core Stream", messageElement));
+        },
+        error: function () {
+            console.error('Error fetching core stream options');
+            alert('Error fetching core stream options. Please try again.');
+        },
+    });
+}
+function editLocation(messageElement) {
+    const currentValue = document.getElementById("location-value").textContent;
+
+    // Create a select element for location
+    const locationSelect = document.createElement("select");
+    locationSelect.id = "edit-locationSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select your Country";
+    placeholderOption.disabled = true;
+    locationSelect.appendChild(placeholderOption);
+
+    // List of locations
+    const locations = ["India", "Other"];
+
+    // Add location options
+    for (const location of locations) {
+        const option = document.createElement("option");
+        option.value = location.toLowerCase();
+        option.text = location;
+        locationSelect.appendChild(option);
+    }
+
+    // Set the current value as selected
+    locationSelect.value = currentValue.toLowerCase();
+
+    // Replace the span with the select element
+    const valueSpan = document.getElementById("location-value");
+    valueSpan.parentNode.replaceChild(locationSelect, valueSpan);
+
+    // Change the edit button to a save button
+    const editButton = document.getElementById("edit-location");
+    editButton.textContent = "Save";
+    editButton.id = "save-location";
+    styleButton(editButton);
+    editButton.addEventListener("click", () => saveEditedInput("Location", messageElement));
+}
+
+
+function editInterest(messageElement) {
+    const currentValue = document.getElementById("interest-value").textContent;
+
+    // Create a select element for interest
+    const interestSelect = document.createElement("select");
+    interestSelect.id = "edit-interestSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select your interests";
+    placeholderOption.disabled = true;
+    interestSelect.appendChild(placeholderOption);
+
+    // List of interest options
+    const interestOptions = [
+        "I want a Job. I will not study further", "10th/Matriculation", "12th/Higher Secondary", "Graduate Certificate/Diploma", "Certification", "Bachelors", "Masters", "M.Phil", "Doctorate", "Post-Doctorate"
+    ];
+
+    // Add interest options
+    for (const interest of interestOptions) {
+        const option = document.createElement("option");
+        option.value = interest.toLowerCase();
+        option.text = interest;
+        interestSelect.appendChild(option);
+    }
+
+    // Set the current value as selected
+    interestSelect.value = currentValue.toLowerCase();
+
+    // Replace the span with the select element
+    const valueSpan = document.getElementById("interest-value");
+    valueSpan.parentNode.replaceChild(interestSelect, valueSpan);
+
+    // Change the edit button to a save button
+    const editButton = document.getElementById("edit-interest");
+    editButton.textContent = "Save";
+    editButton.id = "save-interest";
+    styleButton(editButton);
+    editButton.addEventListener("click", () => saveEditedInput("Interest", messageElement));
+}
+
+function saveEditedInput(type, messageElement) {
+    if (type.toLowerCase() === "core stream") {
+        const coreStreamSelect = document.getElementById("edit-coreStreamSelect");
+        const newValue = coreStreamSelect.options[coreStreamSelect.selectedIndex].text;
+        const newElement = document.createElement("span");
+        newElement.id = "core stream-value";
+        newElement.textContent = newValue;
+
+        coreStreamSelect.parentNode.replaceChild(newElement, coreStreamSelect);
+
+        // Change the save button back to an edit button
+        const saveButton = document.getElementById("save-core stream");
+        saveButton.textContent = "Edit";
+        saveButton.id = "edit-core stream";
+        styleButton(saveButton);
+        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
+    } else if (type.toLowerCase() === "interest") {
+        const interestSelect = document.getElementById("edit-interestSelect");
+        const newValue = interestSelect.options[interestSelect.selectedIndex].text;
+        const newElement = document.createElement("span");
+        newElement.id = "interest-value";
+        newElement.textContent = newValue;
+
+        interestSelect.parentNode.replaceChild(newElement, interestSelect);
+
+        // Change the save button back to an edit button
+        const saveButton = document.getElementById("save-interest");
+        saveButton.textContent = "Edit";
+        saveButton.id = "edit-interest";
+        styleButton(saveButton);
+        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
+    } else if (type.toLowerCase() === "location") {
+        const locationSelect = document.getElementById("edit-locationSelect");
+        const newValue = locationSelect.options[locationSelect.selectedIndex].text;
+        const newElement = document.createElement("span");
+        newElement.id = "location-value";
+        newElement.textContent = newValue;
+
+        locationSelect.parentNode.replaceChild(newElement, locationSelect);
+
+        // Change the save button back to an edit button
+        const saveButton = document.getElementById("save-location");
+        saveButton.textContent = "Edit";
+        saveButton.id = "edit-location";
+        styleButton(saveButton);
+        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
+    } else {
+        const inputField = document.getElementById(`edit-${type.toLowerCase()}-input`);
+        const newValue = inputField.value;
+        const newElement = document.createElement("span");
+        newElement.id = `${type.toLowerCase()}-value`;
+        newElement.textContent = newValue;
+
+        inputField.parentNode.replaceChild(newElement, inputField);
+
+        // Change the save button back to an edit button
+        const saveButton = document.getElementById(`save-${type.toLowerCase()}`);
+        saveButton.textContent = "Edit";
+        saveButton.id = `edit-${type.toLowerCase()}`;
+        styleButton(saveButton);
+        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
+    }
+}
+function normalizeKey(key) {
+    return key.toLowerCase().replace(/ /g, "_");
+}
+
+
+
 
 let isAskTestCodeCalled = false;
 let istextcodeInvalid = false;
@@ -2662,7 +2884,7 @@ function verifyTestCode(testCode) {
                 const reportId = response.reportId;  // Assuming the response contains the ReportId
                 console.log(`Test code  is valid. Corresponding Report ID is: ${reportId}`);
 
-                
+
                 // Log the entire response for further inspection
                 console.log('Server Response:', response);
 
@@ -2715,16 +2937,301 @@ function askemail() {
 
     currentStep = 2; // Set the step to 2 for email input
 }
+function askemail11() {
+    document.getElementById("dobInput").value = "";
+    document.getElementById("dobInput").placeholder = "Enter your email address";
+    createMessageBox("Please enter your email to get your report:");
+
+
+    document.querySelector(".astro-button-container").style.display = "none";
+
+   // Set the step to 2 for email input
+}
+
+const countryCodes = [
+    { name: "India", code: "+91", length: 10 },
+    { name: "Afghanistan", code: "+93", length: 9 },
+    { name: "Albania", code: "+355", length: 9 },
+    { name: "Algeria", code: "+213", length: 9 },
+    { name: "American Samoa", code: "+1-684", length: 7 },
+    { name: "Andorra, Principality of", code: "+376", length: 6 },
+    { name: "Angola", code: "+244", length: 9 },
+    { name: "Anguilla", code: "+1-264", length: 7 },
+    { name: "Antarctica", code: "+672", length: 6 },
+    { name: "Antigua and Barbuda", code: "+1-268", length: 7 },
+    { name: "Argentina", code: "+54", length: 10 },
+    { name: "Armenia", code: "+374", length: 8 },
+    { name: "Aruba", code: "+297", length: 7 },
+    { name: "Australia", code: "+61", length: 9 },
+    { name: "Austria", code: "+43", length: 10 },
+    { name: "Azerbaijan", code: "+994", length: 9 },
+    { name: "Bahamas, Commonwealth of The", code: "+1-242", length: 7 },
+    { name: "Bahrain, Kingdom of", code: "+973", length: 8 },
+    { name: "Bangladesh", code: "+880", length: 10 },
+    { name: "Barbados", code: "+1-246", length: 7 },
+    { name: "Belarus", code: "+375", length: 9 },
+    { name: "Belgium", code: "+32", length: 9 },
+    { name: "Belize", code: "+501", length: 7 },
+    { name: "Benin", code: "+229", length: 8 },
+    { name: "Bermuda", code: "+1-441", length: 7 },
+    { name: "Bhutan, Kingdom of", code: "+975", length: 8 },
+    { name: "Bolivia", code: "+591", length: 8 },
+    { name: "Bosnia and Herzegovina", code: "+387", length: 8 },
+    { name: "Botswana", code: "+267", length: 7 },
+    { name: "Bouvet Island", code: "+47", length: 8 },
+    { name: "Brazil", code: "+55", length: 11 },
+    { name: "British Indian Ocean Territory", code: "+246", length: 7 },
+    { name: "Brunei", code: "+673", length: 7 },
+    { name: "Bulgaria", code: "+359", length: 9 },
+    { name: "Burkina Faso", code: "+226", length: 8 },
+    { name: "Burundi", code: "+257", length: 8 },
+    { name: "Cambodia", code: "+855", length: 9 },
+    { name: "Cameroon", code: "+237", length: 9 },
+    { name: "Canada", code: "+1", length: 10 },
+    { name: "Cape Verde", code: "+238", length: 7 },
+    { name: "Cayman Islands", code: "+1-345", length: 7 },
+    { name: "Central African Republic", code: "+236", length: 8 },
+    { name: "Chad", code: "+235", length: 8 },
+    { name: "Chile", code: "+56", length: 9 },
+    { name: "China", code: "+86", length: 11 },
+    { name: "Christmas Island", code: "+61", length: 9 },
+    { name: "Cocos (Keeling) Islands", code: "+61", length: 9 },
+    { name: "Colombia", code: "+57", length: 10 },
+    { name: "Comoros, Union of the", code: "+269", length: 7 },
+    { name: "Congo, Democratic Republic of the", code: "+243", length: 9 },
+    { name: "Congo, Republic of the", code: "+242", length: 9 },
+    { name: "Cook Islands", code: "+682", length: 5 },
+    { name: "Costa Rica", code: "+506", length: 8 },
+    { name: "Cote D'Ivoire", code: "+225", length: 8 },
+    { name: "Croatia", code: "+385", length: 9 },
+    { name: "Cuba", code: "+53", length: 8 },
+    { name: "Cyprus", code: "+357", length: 8 },
+    { name: "Czech Republic", code: "+420", length: 9 },
+    { name: "Denmark", code: "+45", length: 8 },
+    { name: "Djibouti", code: "+253", length: 6 },
+    { name: "Dominica", code: "+1-767", length: 7 },
+    { name: "Dominican Republic", code: "+1-809", length: 10 },
+    { name: "East Timor", code: "+670", length: 7 },
+    { name: "Ecuador", code: "+593", length: 9 },
+    { name: "Egypt", code: "+20", length: 10 },
+    { name: "El Salvador", code: "+503", length: 8 },
+    { name: "Equatorial Guinea", code: "+240", length: 9 },
+    { name: "Eritrea", code: "+291", length: 7 },
+    { name: "Estonia", code: "+372", length: 8 },
+    { name: "Ethiopia", code: "+251", length: 9 },
+    { name: "Falkland Islands", code: "+500", length: 5 },
+    { name: "Faroe Islands", code: "+298", length: 6 },
+    { name: "Fiji", code: "+679", length: 7 },
+    { name: "Finland", code: "+358", length: 9 },
+    { name: "France", code: "+33", length: 9 },
+    { name: "French Guiana", code: "+594", length: 9 },
+    { name: "French Polynesia", code: "+689", length: 6 },
+    { name: "French Southern Territories", code: "+262", length: 9 },
+    { name: "Gabon", code: "+241", length: 7 },
+    { name: "Gambia, The", code: "+220", length: 7 },
+    { name: "Georgia", code: "+995", length: 9 },
+    { name: "Germany", code: "+49", length: 10 },
+    { name: "Ghana", code: "+233", length: 9 },
+    { name: "Gibraltar", code: "+350", length: 8 },
+    { name: "Great Britain (United Kingdom)", code: "+44", length: 10 },
+    { name: "Greece", code: "+30", length: 10 },
+    { name: "Greenland", code: "+299", length: 6 },
+    { name: "Grenada", code: "+1-473", length: 7 },
+    { name: "Guadeloupe", code: "+590", length: 9 },
+    { name: "Guam", code: "+1-671", length: 7 },
+    { name: "Guatemala", code: "+502", length: 8 },
+    { name: "Guinea", code: "+224", length: 8 },
+    { name: "Guinea-Bissau", code: "+245", length: 7 },
+    { name: "Guyana", code: "+592", length: 7 },
+    { name: "Haiti", code: "+509", length: 8 },
+    { name: "Heard Island and McDonald Islands", code: "+672", length: 6 },
+    { name: "Holy See (Vatican City State)", code: "+379", length: 11 },
+    { name: "Honduras", code: "+504", length: 7 },
+    { name: "Hong Kong", code: "+852", length: 8 },
+    { name: "Hungary", code: "+36", length: 9 },
+    { name: "Iceland", code: "+354", length: 9 },
+    { name: "Indonesia", code: "+62", length: 10 },
+    { name: "Iran, Islamic Republic of", code: "+98", length: 10 },
+    { name: "Iraq", code: "+964", length: 10 },
+    { name: "Ireland", code: "+353", length: 9 },
+    { name: "Israel", code: "+972", length: 9 },
+    { name: "Italy", code: "+39", length: 10 },
+    { name: "Jamaica", code: "+1-876", length: 7 },
+    { name: "Japan", code: "+81", length: 10 },
+    { name: "Jordan (Former Transjordan)", code: "+962", length: 9 },
+    { name: "Kazakhstan", code: "+7", length: 10 },
+    { name: "Kenya", code: "+254", length: 9 },
+    { name: "Kiribati", code: "+686", length: 8 },
+    { name: "Korea", code: "+850", length: 9 },
+    { name: "Korea, Republic of (South Korea)", code: "+82", length: 10 },
+    { name: "Kuwait", code: "+965", length: 8 },
+    { name: "Kyrgyzstan (Kyrgyz Republic)", code: "+996", length: 9 },
+    { name: "Lao People's Democratic Republic (Laos)", code: "+856", length: 8 },
+    { name: "Latvia", code: "+371", length: 8 },
+    { name: "Lebanon", code: "+961", length: 8 },
+    { name: "Lesotho", code: "+266", length: 8 },
+    { name: "Liberia", code: "+231", length: 8 },
+    { name: "Libya", code: "+218", length: 9 },
+    { name: "Liechtenstein", code: "+423", length: 7 },
+    { name: "Lithuania", code: "+370", length: 8 },
+    { name: "Luxembourg", code: "+352", length: 8 },
+    { name: "Macau", code: "+853", length: 8 },
+    { name: "Macedonia, The Former Yugoslav Republic of", code: "+389", length: 8 },
+    { name: "Madagascar", code: "+261", length: 9 },
+    { name: "Malawi", code: "+265", length: 8 },
+    { name: "Malaysia", code: "+60", length: 9 },
+    { name: "Maldives", code: "+960", length: 7 },
+    { name: "Mali", code: "+223", length: 8 },
+    { name: "Malta", code: "+356", length: 8 },
+    { name: "Marshall Islands", code: "+692", length: 7 },
+    { name: "Martinique", code: "+596", length: 9 },
+    { name: "Mauritania", code: "+222", length: 7 },
+    { name: "Mauritius", code: "+230", length: 8 },
+    { name: "Mayotte", code: "+262", length: 9 },
+    { name: "Mexico", code: "+52", length: 10 },
+    { name: "Micronesia, Federated States of", code: "+691", length: 7 },
+    { name: "Moldova, Republic of", code: "+373", length: 8 },
+    { name: "Monaco", code: "+377", length: 9 },
+    { name: "Mongolia", code: "+976", length: 8 },
+    { name: "Montserrat", code: "+1-664", length: 7 },
+    { name: "Morocco", code: "+212", length: 9 },
+    { name: "Mozambique", code: "+258", length: 9 },
+    { name: "Myanmar, Union of (Former Burma)", code: "+95", length: 9 },
+    { name: "Namibia", code: "+264", length: 9 },
+    { name: "Nauru", code: "+674", length: 7 },
+    { name: "Nepal", code: "+977", length: 9 },
+    { name: "Netherlands", code: "+31", length: 9 },
+    { name: "Netherlands Antilles", code: "+599", length: 8 },
+    { name: "New Caledonia", code: "+687", length: 6 },
+    { name: "New Zealand", code: "+64", length: 9 },
+    { name: "Nicaragua", code: "+505", length: 8 },
+    { name: "Niger", code: "+227", length: 8 },
+    { name: "Nigeria", code: "+234", length: 10 },
+    { name: "Niue", code: "+683", length: 4 },
+    { name: "Norfolk Island", code: "+672", length: 5 },
+    { name: "Northern Mariana Islands", code: "+1-670", length: 7 },
+    { name: "Norway", code: "+47", length: 8 },
+    { name: "Oman, Sultanate of", code: "+968", length: 8 },
+    { name: "Pakistan", code: "+92", length: 10 },
+    { name: "Palau", code: "+680", length: 7 },
+    { name: "Palestinian State (Proposed)", code: "+970", length: 8 },
+    { name: "Panama", code: "+507", length: 8 },
+    { name: "Papua New Guinea", code: "+675", length: 7 },
+    { name: "Paraguay", code: "+595", length: 9 },
+    { name: "Peru", code: "+51", length: 9 },
+    { name: "Philippines", code: "+63", length: 10 },
+    { name: "Pitcairn Island", code: "+64", length: 6 },
+    { name: "Poland", code: "+48", length: 9 },
+    { name: "Portugal", code: "+351", length: 9 },
+    { name: "Puerto Rico", code: "+1-787", length: 7 },
+    { name: "Qatar, State of", code: "+974", length: 8 },
+    { name: "Reunion (French)", code: "+262", length: 9 },
+    { name: "Romania", code: "+40", length: 10 },
+    { name: "Russia", code: "+7", length: 10 },
+    { name: "Rwanda (Rwandese Republic)", code: "+250", length: 9 },
+    { name: "Saint Helena", code: "+290", length: 5 },
+    { name: "Saint Kitts and Nevis", code: "+1-869", length: 7 },
+    { name: "Saint Lucia", code: "+1-758", length: 7 },
+    { name: "Saint Pierre and Miquelon", code: "+508", length: 6 },
+    { name: "Saint Vincent and the Grenadines", code: "+1-784", length: 7 },
+    { name: "Samoa", code: "+685", length: 7 },
+    { name: "San Marino", code: "+378", length: 10 },
+    { name: "Sao Tome and Principe", code: "+239", length: 7 },
+    { name: "Saudi Arabia", code: "+966", length: 9 },
+    { name: "Serbia, Republic of", code: "+381", length: 9 },
+    { name: "Senegal", code: "+221", length: 9 },
+    { name: "Seychelles", code: "+248", length: 7 },
+    { name: "Sierra Leone", code: "+232", length: 8 },
+    { name: "Singapore", code: "+65", length: 8 },
+    { name: "Slovakia", code: "+421", length: 9 },
+    { name: "Slovenia", code: "+386", length: 9 },
+    { name: "Solomon Islands", code: "+677", length: 7 },
+    { name: "Somalia", code: "+252", length: 7 },
+    { name: "South Africa", code: "+27", length: 9 },
+    { name: "South Georgia and the South Sandwich Islands", code: "+500", length: 5 },
+    { name: "Spain", code: "+34", length: 9 },
+    { name: "Sri Lanka", code: "+94", length: 9 },
+    { name: "Sudan", code: "+249", length: 9 },
+    { name: "Suriname", code: "+597", length: 7 },
+    { name: "Svalbard (Spitzbergen) and Jan Mayen Islands", code: "+47", length: 5 },
+    { name: "Swaziland, Kingdom of", code: "+268", length: 8 },
+    { name: "Sweden", code: "+46", length: 9 },
+    { name: "Switzerland", code: "+41", length: 9 },
+    { name: "Syria (Syrian Arab Republic)", code: "+963", length: 9 },
+    { name: "Taiwan (Former Formosa)", code: "+886", length: 9 },
+    { name: "Tajikistan", code: "+992", length: 9 },
+    { name: "Tanzania", code: "+255", length: 9 },
+    { name: "Thailand (Former Siam)", code: "+66", length: 9 },
+    { name: "Togo (Former French Togoland)", code: "+228", length: 8 },
+    { name: "Tokelau", code: "+690", length: 4 },
+    { name: "Tonga", code: "+676", length: 5 },
+    { name: "Trinidad and Tobago", code: "+1-868", length: 7 },
+    { name: "Tromelin Island", code: "+262", length: 9 },
+    { name: "Tunisia", code: "+216", length: 8 },
+    { name: "Turkey", code: "+90", length: 10 },
+    { name: "Turkmenistan", code: "+993", length: 8 },
+    { name: "Turks and Caicos Islands", code: "+1-649", length: 7 },
+    { name: "Tuvalu", code: "+688", length: 5 },
+    { name: "Uganda, Republic of", code: "+256", length: 9 },
+    { name: "Ukraine", code: "+380", length: 9 },
+    { name: "United Arab Emirates", code: "+971", length: 9 },
+    { name: "United Kingdom (Great Britain / UK)", code: "+44", length: 10 },
+    { name: "United States", code: "+1", length: 10 },
+    { name: "United States Minor Outlying Islands", code: "+1", length: 10 },
+    { name: "Uruguay", code: "+598", length: 8 },
+    { name: "Uzbekistan", code: "+998", length: 9 },
+    { name: "Vanuatu (Former New Hebrides)", code: "+678", length: 7 },
+    { name: "Vatican City State (Holy See)", code: "+39-06-698", length: 11 },
+    { name: "Venezuela", code: "+58", length: 10 },
+    { name: "Vietnam", code: "+84", length: 9 },
+    { name: "Virgin Islands, British", code: "+1-284", length: 7 },
+    { name: "Virgin Islands, United States ", code: "+1-340", length: 7 },
+    { name: "Wallis and Futuna Islands", code: "+681", length: 6 },
+    { name: "Western Sahara", code: "+212", length: 9 },
+    { name: "Yemen", code: "+967", length: 9 },
+    { name: "Yugoslavia", code: "+381", length: 9 },
+    { name: "Zaire", code: "+243", length: 9 },
+    { name: "Zambia", code: "+260", length: 9 },
+    { name: "Zimbabwe", code: "+263", length: 9 }
+];
+
+function createCountryCodeSelect() {
+    const countryCodeSelect = document.createElement("select");
+    countryCodeSelect.id = "countryCodeSelect";
+
+    // Add placeholder option
+    const placeholderOption = document.createElement("option");
+    placeholderOption.value = "";
+    placeholderOption.text = "Select your country code";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    countryCodeSelect.appendChild(placeholderOption);
+
+    // Add country code options
+    countryCodes.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country.code;
+        option.text = `${country.name} (${country.code})`;
+        option.dataset.length = country.length;
+        countryCodeSelect.appendChild(option);
+    });
+
+    return countryCodeSelect;
+}
 
 function askPhone() {
-
     document.getElementById("dobInput").placeholder = "Enter your phone number";
-    createMessageBox("Great! Let's start with your phone number. Please enter your phone number");
+    createMessageBox("Great! Let's start with your phone number. Please select your country code and enter your phone number:");
+
+    const dobInput = document.getElementById("dobInput");
+    const countryCodeSelect = createCountryCodeSelect();
+
+    // Insert the country code select before the dobInput
+    dobInput.parentNode.insertBefore(countryCodeSelect, dobInput);
 
     document.querySelector(".astro-button-container").style.display = "none";
     currentStep = 3; // Set the step to 3 for phone input
 }
-
 function askadhar() {
     document.getElementById("dobInput").placeholder = "Enter your Adhar number";
     createMessageBox("Great! Let's start with your Adhar number. Please enter your Adhar number:");
@@ -2748,19 +3255,22 @@ function handleMultipleSubmit() {
     // Validate and set userData based on placeholder
     let isValidInput = false;
     let inputType = "";
-
-    if (placeholder.includes("phone number")) {
+      if (placeholder.includes("phone number")) {
         const phoneNumber = input.value;
+        const countryCode = countryCodeSelect.value;
         inputType = "Phone Number";
-        if (isValidPhoneNumber(phoneNumber)) {
-            userData.Mobile_No = phoneNumber;
+        if (isValidPhoneNumber(phoneNumber, countryCode)) {
+            const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+            userData.Mobile_No = fullPhoneNumber;
 
-            isValidInput = true;
-            displaySubmittedInput(inputType, phoneNumber, true);
+            displaySubmittedInput(inputType, fullPhoneNumber, true);
+            countryCodeSelect.remove(); // Remove the country code select element
+            askemail11();
         } else {
-            alert('Invalid phone number. Please enter a 10-digit number.');
+            alert('Invalid phone number or country code. Please select a country code and enter a valid number.');
         }
-    } else if (placeholder.includes("adhar number")) {
+    }
+     else if (placeholder.includes("adhar number")) {
         const adharNumber = input.value;
         inputType = "Aadhar Number";
         if (isValidAdharNumber(adharNumber)) {
@@ -2921,11 +3431,13 @@ function submitnewPassword() {
     }
 }
 
-function isValidPhoneNumber(phoneNumber) {
-    // Check if the phone number is a 10-digit number
-    return /^\d{10}$/.test(phoneNumber);
+function isValidPhoneNumber(phoneNumber, countryCode) {
+    const selectedCountry = countryCodes.find(country => country.code === countryCode);
+    if (!selectedCountry) return false;
+    const expectedLength = selectedCountry.length;
+    const phoneNumberPattern = new RegExp(`^\\d{${expectedLength}}$`);
+    return phoneNumberPattern.test(phoneNumber);
 }
-
 function isValidAdharNumber(adharNumber) {
     // Check if the Aadhar number is a 12-digit number
     return /^\d{12}$/.test(adharNumber);
@@ -3475,8 +3987,6 @@ function handleUserInput() {
     document.querySelector(".astro-button-container").style.display = "none";
     // Add logic to handle user input, you can call other functions as needed
 }
-
-
 let sunsign;
 let month; // Declare month globally
 let day; // Declare day globally
