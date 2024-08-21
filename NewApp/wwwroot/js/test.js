@@ -768,13 +768,15 @@ let submittedQuestions = [];
 let questionData = [];
 let questionOptionsAndAnswerss;
 let questionOptionsAndAnswers
-
+let timestamp_end = "";
+ let timestamp_start = "";
 
 let currentQuestionIndex = 0;
 let skippedQuestions = [];
 let testactivated = false;
 console.log('skippedQuestions:',)
 function callApiToStartTest(reportId) {
+    userData.timestamp_start = new Date().toISOString();
 clearMessageBoxes();
     testactivated = true;
 
@@ -1188,6 +1190,9 @@ function gfg(n) {
 }
 
 function submitRating(rating) {
+    userData.timestamp_end = new Date().toISOString();
+    console.log(userData);
+
     userData.testProgress = "1"; 
     // Submit the rating to user data
     userData.rating = rating;
@@ -1345,7 +1350,16 @@ function askGender() {
     genderSelect.addEventListener("change", submitGender);
     console.log(userData);
 }
-
+const higherSecondaryOrAbove = [
+    "12th/higher secondary",
+    "bachelors",
+    "masters",
+    "doctorate",
+    "post-doctorate",
+    "m.phil",
+    "graduate certificate/diploma",
+    "certification"
+];
 
 function submitGender() {
     const genderSelect = document.getElementById("genderSelect");
@@ -1361,8 +1375,11 @@ function submitGender() {
 
         console.log(userData);
 
-        if (storedTestCode === "PEXCGRD2312O1009" || storedTestCode === "PEXCGJD2312O1011" || storedTestCode === "PEXCGSD2312O1013") {
-            // If true, call askGender() instead of askCoreStream()
+   if (storedTestCode === "PEXCGRD2312O1009" ||
+            storedTestCode === "PEXCGJD2312O1011" ||
+            storedTestCode === "PEXCGSD2312O1013" ||
+            (userData.qualification && higherSecondaryOrAbove.includes(userData.qualification.toLowerCase()))) {
+            // If true, call askCoreStream() instead of askGender()
             askCoreStream();
             console.log(userData);
             // Submit data to the server or handle the completion of the form
@@ -2011,6 +2028,7 @@ function submitAcademicStream() {
     const academicStream = academicStreamSelect.value;
 
     if (academicStream) {
+	 userData.academicStream = academicStream;
         // Fetch the ID corresponding to the selected academic stream
         displaySubmittedInput("Academic Stream", academicStream, true);
         askOrganization();
@@ -2087,13 +2105,11 @@ function submitNextStep() {
 
     // Clear the dropdown menu
     nextStepSelect.value = "";
-
-    // Handle the next step based on user's choice
-    if ((below10th === "1234" && selectedNextStep === "iwantajob") ||
+ if ((below10th === "1234" && selectedNextStep === "iwantajob") ||
         (userData.qualification.toLowerCase() === "10th/matriculation" && selectedNextStep === "iwantajob") ||
         (userData.qualification.toLowerCase() === "12th/higher secondary" && selectedNextStep === "iwantajob")) {
-        storedReportId = "F3BC64D6-BFE5-49CC-9D9F-3F9BD5296637";
-        storedTestCode = "PEXCGSD2312O1013";
+        storedReportId = "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
+        storedTestCode = "PEXCGR2312O1009";
         userData.storedTestCode = storedTestCode;
 
         askOrganization();
@@ -2105,14 +2121,15 @@ function submitNextStep() {
         askOrganization();
     } else if (selectedNextStep === "iwanttostudy") {
         // Example: call a function to handle study-related tasks
-        storedTestCode = "PEXCGJD2312O1011";
+        storedTestCode = "PEXCGR2312O1009";
         userData.storedTestCode = storedTestCode;
-        storedReportId = "E198C384-58DC-403D-8D2D-854F9C4E6A7F";
+        storedReportId = "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
         askOrganization();
     }
 
     console.log(storedReportId);
 }
+    // Handle the next step based on user's choice
 function askCoreStream() {
     const genderSelect = document.getElementById("genderSelect");
     const messageBox = document.getElementById("messageBox");
@@ -2558,8 +2575,6 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
     chatContainer.appendChild(messageElement);
 
     // Add a line break
-    let lineBreak = document.createElement("hr");
-    chatContainer.appendChild(lineBreak);
 
     // Style the edit button
     const editButton = document.getElementById(`edit-${type.toLowerCase()}`);
@@ -3532,8 +3547,6 @@ function createMessageBox(title) {
     document.querySelector(".chat-container").appendChild(newMessageBox);
 
     // Add a line break
-    let lineBreak = document.createElement("hr");
-    document.querySelector(".chat-container").appendChild(lineBreak);
 }
 
 function clearMessageBoxes() {

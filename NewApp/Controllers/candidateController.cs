@@ -167,7 +167,7 @@ namespace NewApp.Controllers
 
 
 
-
+	string storedtestcodee = "";
         int candidateidd = 0;
         [HttpPost("submit")]
         public async Task<IActionResult> SubmitUser([FromBody] CandidateDetails candidate)
@@ -229,6 +229,8 @@ namespace NewApp.Controllers
                         existingCandidate.govJobs = candidate.govJobs;
                         existingCandidate.armedForcesJobs = candidate.armedForcesJobs;
                         existingCandidate.coreStream = candidate.coreStream;
+			
+			storedtestcodee = existingCandidate.storedTestCode;
                       
                         _context.Candidates.Update(existingCandidate);
 
@@ -236,12 +238,11 @@ namespace NewApp.Controllers
                     else
                     {
                         // Ensure unique values in new candidate's SelectedOptions and SelectedOptionTimestamps
-                        candidate.SelectedOptions = string.Join(",", candidate.SelectedOptions.Split(',').Distinct());
-
+                        candidate.SelectedOptions = string.Join(",", candidate.SelectedOptions.Split(',').Distinct());	
 
                         _context.Candidates.Add(candidate);
                     }
-
+		  
                     List<string> selectedOptionsList = GetSelectedOptionsList(candidateidd, candidate.name, candidate.SelectedOptions, candidate.testProgress, candidate.rating, candidate.dob, candidate.mathScience);
 
                     if (candidate.testProgress != "0")
@@ -594,7 +595,8 @@ namespace NewApp.Controllers
                 throw;
             }
         }
-        private async Task GetTop5Motivations(string SelectedOptions, int candidateId)
+
+	 private async Task GetTop5Motivations(string SelectedOptions, int candidateId)
         {
             try
             {
@@ -625,6 +627,12 @@ namespace NewApp.Controllers
 
                 // Get exactly 3 motivations (if available) to send to AddToResultTable
                 var motivationsToSend = top5Motivations.Take(3).ToList();
+                var motivationTypeMapping = new Dictionary<string, string>
+        {
+            { "Creativity/Independence", "extrinsic" },
+            { "Service/Functional Excellence", "extrinsic" },
+            // Default to "intrinsic" if not explicitly extrinsic
+        };
 
                 Dictionary<string, List<string>> motivationToSuggestions = new Dictionary<string, List<string>>
         {
@@ -641,7 +649,9 @@ namespace NewApp.Controllers
                 for (int i = 0; i < motivationsToSend.Count; i++)
                 {
                     string motivation = motivationsToSend[i];
+                    string typeOfMotivation = motivationTypeMapping.ContainsKey(motivation) ? motivationTypeMapping[motivation] : "intrinsic";
                     AddToResultTable("StreamJobRole", $"top5Motivations{i + 1}", motivation, candidateId, "");
+                    AddToResultTable("StreamJobRole", $"typeOfMotivation{i + 1}", typeOfMotivation, candidateId, "");
 
                     // Get suggestions for the current motivation
                     if (motivationToSuggestions.ContainsKey(motivation))
@@ -923,58 +933,37 @@ namespace NewApp.Controllers
 };
 
     var assessmentResults = _context.CandidateSelectedOptions
-            .Where(c => c.candidate_id == candidateId)
-            .GroupBy(c => new { c.candidate_id, c.candidate_name, c.AssessmentSubAttributeId, c.AssessmentSubAttribute, c.CountofQuestiontoDisplay })
-            .Select(g => new
-            {
-                candidate_id = g.Key.candidate_id,
-                candidate_name = g.Key.candidate_name,
-                AssessmentSubAttributeId = g.Key.AssessmentSubAttributeId,
-                AssessmentSubAttribute = g.Key.AssessmentSubAttribute,
-                sumofmarks = g.Sum(c => c.maxmarks),
-                CountofQuestiontoDisplay = g.Key.CountofQuestiontoDisplay,
-                total_marks = new[] {
-                    "3FF4087B-F429-403E-97DF-728FF3908212", "310594A1-EDE4-406E-AEF2-BF2F5673A50F", "DD2B0C9C-0E3C-47E1-9A0E-4CBF4CEF3733", "72128D6A-65A3-4EE4-A100-C4D238CB8DBC",
-                    "D29F579D-A526-4A36-B3E6-9E167E0E63CB", "66BC31EE-1DA1-4D7C-9760-24B92BF77FEE", "941C4297-2DFC-47A2-8E04-518397BEC4B0", "3F7D1B78-B3F4-47B2-9644-16BA92448EAB",
-                    "94695DAD-CFCE-4DD1-ABE9-D21D97862977", "1E44BAA0-5E58-4AA8-BB2A-2984D9BA7339", "39878094-3EE3-46E5-A454-C87E9D3BAC06", "246EF52C-A8D1-4123-B484-44D7A08BDF2D",
-                    "9F82C4CA-2A91-40B3-BBFD-4E3835A82F5A", "80B7BFE2-F1AA-42A2-B603-77BD843BD985", "911B2029-4BB0-4A0B-9F65-2A3FC9B9512C", "585C2875-E838-497D-9823-C3B8538957FC",
-                    "AB0D3C3E-7266-4428-97B6-B2D9C26D7D64", "7995E60C-6A68-448A-AA05-814EF8D0F847", "F7F74CD9-A098-45DB-A4B5-43CC21582278", "8504732E-DD08-4ED2-A9E9-F2D8ED35E6A8",
-                    "A7AF3B8D-B8DD-4358-BA71-46F2C4DC5EF9", "508DC172-DA29-469F-B353-391995799A38", "E37B82D6-01B8-44E6-AA08-245B5EDCEAD1", "0434DA6B-AA3F-493A-9206-F2B93A824FBD",
-                    "4F84318B-BE58-4E31-B9D9-CBC5C40E779A", "7F6D1495-9D09-4549-B82C-0E08871E7730", "CD4759EF-CEE7-4769-A940-894571FDA4E0", "FBC6DEA7-A284-4E07-B49C-8ED12E4B8D70",
-                    "569E6876-4D05-4566-A43B-94A8E28D3EEA", "DA1339AB-8AAB-4D46-B789-EF785E991A1C", "9B518D9C-755A-4D0A-A010-665BB4B52C8F", "A3961DAA-5271-4A2B-B779-74AC956E82BC",
-                    "671F43B8-0379-4721-9BEC-4D3598E2BB55", "89B32E9A-2F4E-48F0-B0A8-1967C9CADD20", "2140835F-6F90-4112-A6CE-2F837F4A4ABD", "625E7090-9828-4E61-B4F8-4AAB863B5714",
-                    "F41123F4-37AC-4EC5-AB4C-BEE1715408BD", "F7BA38BA-EFA4-472F-A70D-23F1D537E206", "294F49B4-B02E-4C80-ACF1-AF060DE1382C", "2DEB1EA6-060D-4D5C-BE43-C945004A08B4",
-                    "36E8D2D9-75BF-49C6-8028-B538E954AD5A", "CE33B73B-CAE9-4011-B631-9CC8A922DFD3", "51B65867-5243-4846-A205-BD940E299C69", "A29808AF-E025-4756-803D-274FF0E3EE42",
-                    "4E0BCCA3-E4F8-48D9-BACB-8D7AAA9BB209", "D5EEB76E-597E-4482-BFC9-D9D0D5BCC15C", "3CBFAF9C-D9B5-4FD3-AE29-E3AF9FCE7A33", "AA8CD5EC-062B-4745-A29D-167E1228920E",
-                    "0ABBA87C-C943-475E-A67F-CC1B199D98E2", "7C2AE8FA-F950-4BEB-876C-DF548AD82ACB", "03CFCA9E-3F37-4445-BE22-85DF99BD1F1E", "A171535D-0266-4AD3-A361-0D70D1426F2F",
-                    "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60","A42DF8E3-404A-42D9-872D-ABAFB46C4D51",
-                    "2C090191-C836-47BD-AE36-A660D55B3872","013D5373-3B62-4592-A59A-67DF8599CE9B","EB12C328-C637-485F-9C56-2BCE18FBC72A"
-                }.Contains(g.Key.AssessmentSubAttributeId) ? g.Key.CountofQuestiontoDisplay * 5 : g.Key.CountofQuestiontoDisplay * 4,
-                percentage = (g.Sum(c => c.maxmarks) / (new[] {
-                    "3FF4087B-F429-403E-97DF-728FF3908212", "310594A1-EDE4-406E-AEF2-BF2F5673A50F", "DD2B0C9C-0E3C-47E1-9A0E-4CBF4CEF3733", "72128D6A-65A3-4EE4-A100-C4D238CB8DBC",
-                    "D29F579D-A526-4A36-B3E6-9E167E0E63CB", "66BC31EE-1DA1-4D7C-9760-24B92BF77FEE", "941C4297-2DFC-47A2-8E04-518397BEC4B0", "3F7D1B78-B3F4-47B2-9644-16BA92448EAB",
-                    "94695DAD-CFCE-4DD1-ABE9-D21D97862977", "1E44BAA0-5E58-4AA8-BB2A-2984D9BA7339", "39878094-3EE3-46E5-A454-C87E9D3BAC06", "246EF52C-A8D1-4123-B484-44D7A08BDF2D",
-                    "9F82C4CA-2A91-40B3-BBFD-4E3835A82F5A", "80B7BFE2-F1AA-42A2-B603-77BD843BD985", "911B2029-4BB0-4A0B-9F65-2A3FC9B9512C", "585C2875-E838-497D-9823-C3B8538957FC",
-                    "AB0D3C3E-7266-4428-97B6-B2D9C26D7D64", "7995E60C-6A68-448A-AA05-814EF8D0F847", "F7F74CD9-A098-45DB-A4B5-43CC21582278", "8504732E-DD08-4ED2-A9E9-F2D8ED35E6A8",
-                    "A7AF3B8D-B8DD-4358-BA71-46F2C4DC5EF9", "508DC172-DA29-469F-B353-391995799A38", "E37B82D6-01B8-44E6-AA08-245B5EDCEAD1", "0434DA6B-AA3F-493A-9206-F2B93A824FBD",
-                    "4F84318B-BE58-4E31-B9D9-CBC5C40E779A", "7F6D1495-9D09-4549-B82C-0E08871E7730", "CD4759EF-CEE7-4769-A940-894571FDA4E0", "FBC6DEA7-A284-4E07-B49C-8ED12E4B8D70",
-                    "569E6876-4D05-4566-A43B-94A8E28D3EEA", "DA1339AB-8AAB-4D46-B789-EF785E991A1C", "9B518D9C-755A-4D0A-A010-665BB4B52C8F", "A3961DAA-5271-4A2B-B779-74AC956E82BC",
-                    "671F43B8-0379-4721-9BEC-4D3598E2BB55", "89B32E9A-2F4E-48F0-B0A8-1967C9CADD20", "2140835F-6F90-4112-A6CE-2F837F4A4ABD", "625E7090-9828-4E61-B4F8-4AAB863B5714",
-                    "F41123F4-37AC-4EC5-AB4C-BEE1715408BD", "F7BA38BA-EFA4-472F-A70D-23F1D537E206", "294F49B4-B02E-4C80-ACF1-AF060DE1382C", "2DEB1EA6-060D-4D5C-BE43-C945004A08B4",
-                    "36E8D2D9-75BF-49C6-8028-B538E954AD5A", "CE33B73B-CAE9-4011-B631-9CC8A922DFD3", "51B65867-5243-4846-A205-BD940E299C69", "A29808AF-E025-4756-803D-274FF0E3EE42",
-                    "4E0BCCA3-E4F8-48D9-BACB-8D7AAA9BB209", "D5EEB76E-597E-4482-BFC9-D9D0D5BCC15C", "3CBFAF9C-D9B5-4FD3-AE29-E3AF9FCE7A33", "AA8CD5EC-062B-4745-A29D-167E1228920E",
-                    "0ABBA87C-C943-475E-A67F-CC1B199D98E2", "7C2AE8FA-F950-4BEB-876C-DF548AD82ACB", "03CFCA9E-3F37-4445-BE22-85DF99BD1F1E", "A171535D-0266-4AD3-A361-0D70D1426F2F",
-                    "A6B7F6BD-EC7D-4C5C-AD22-A25B7390E77D", "D4011B41-7FB3-4C6C-9720-9E74BC9471A0", "29581FF7-F7DE-429E-8572-94208DD8FC60","A42DF8E3-404A-42D9-872D-ABAFB46C4D51",
-                     "2C090191-C836-47BD-AE36-A660D55B3872","013D5373-3B62-4592-A59A-67DF8599CE9B","EB12C328-C637-485F-9C56-2BCE18FBC72A"
-                }.Contains(g.Key.AssessmentSubAttributeId) ? g.Key.CountofQuestiontoDisplay * 5 : g.Key.CountofQuestiontoDisplay * 4)) * 100
-            }).AsEnumerable() // Fetch data into memory
-    .OrderBy(g =>
-    {
-        var index = Array.IndexOf(desiredSequence, g.AssessmentSubAttribute);
-        return index == -1 ? int.MaxValue : index;
-    })
-    .ToList();                // Aggregate data for assessment results
-
+     .Where(c => c.candidate_id == candidateId)
+     .GroupBy(c => new
+     {
+         c.candidate_id,
+         candidate_name = c.candidate_name ?? string.Empty,
+         AssessmentSubAttributeId = c.AssessmentSubAttributeId ?? string.Empty,
+         AssessmentSubAttribute = c.AssessmentSubAttribute ?? string.Empty,
+         CountofQuestiontoDisplay = (int?)c.CountofQuestiontoDisplay ?? 0,
+         maxmarks = (int?)c.maxmarks ?? 0
+     })
+     .Select(g => new
+     {
+         candidate_id = g.Key.candidate_id,
+         candidate_name = g.Key.candidate_name,
+         AssessmentSubAttributeId = g.Key.AssessmentSubAttributeId,
+         AssessmentSubAttribute = g.Key.AssessmentSubAttribute,
+         sumofmarks = g.Sum(c => (int?)c.maxmarks ?? 0),
+         CountofQuestiontoDisplay = g.Key.CountofQuestiontoDisplay,
+         maxMarks = g.Key.maxmarks,
+         total_marks = g.Key.CountofQuestiontoDisplay * g.Key.maxmarks,
+         percentage = (g.Key.CountofQuestiontoDisplay * g.Key.maxmarks) == 0 ? 0
+                     : (g.Sum(c => (int?)c.maxmarks ?? 0) / (double)(g.Key.CountofQuestiontoDisplay * g.Key.maxmarks)) * 100
+     })
+     .AsEnumerable() // Fetch data into memory
+     .OrderBy(g =>
+     {
+         var index = Array.IndexOf(desiredSequence, g.AssessmentSubAttribute);
+         return index == -1 ? int.MaxValue : index; // Use int.MaxValue for non-existing items to place them at the end
+     })
+     .ThenBy(g => Guid.NewGuid()) // Randomize order of non-existing items
+     .ToList(); 
 
                 var bechcomenData = _context.bechcomen
                     .Select(b => new {
@@ -1471,11 +1460,22 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
 
             return false;
         }
-        private void AddToResultTable(string tableName, string fieldName, object value, int candidateId, string testName)
+
+	 private void AddToResultTable(string tableName, string fieldName, object value, int candidateId, string testName)
         {
             try
             {
-                // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
+                if (string.IsNullOrWhiteSpace(testName))
+                {
+                    // Retrieve the test name based on storedTestCode if possible
+                    testName = GetTestName(storedtestcodee); // Implement this method to get the test name
+                }
+
+                // Ensure testName is not null or empty
+                testName = testName ?? "Unknown Test";
+                // Provide a default value if testName is still null
+
+
                 var resultEntry = new Result
                 {
                     CandidateId = candidateId,
@@ -1484,6 +1484,8 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                     Value = value != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToString()) : "NULL", // Convert to proper case or "NULL"
                     ReportName = testName
                 };
+                // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
+         
 
                 // Add the entry to the Result table
                 _context.Result.Add(resultEntry);

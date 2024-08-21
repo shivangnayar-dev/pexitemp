@@ -73,7 +73,10 @@ namespace NewApp.Models
         public string armedForcesJobs { get; set; } = "0";
 
         public string coreStream { get; set; } = "0";
-     
+	  public string academicStream { get; set; } = "0";     
+	  public string  timestamp_start { get; set; }= "0";
+        public string timestamp_end { get; set; } = "0";
+
 
     }
 

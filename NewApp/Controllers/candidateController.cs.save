@@ -850,7 +850,7 @@ private async Task<string> GenerateReport(int candidateId)
     if (rating > 0)
     {
         // Split the selectedOptions string into a list of distinct options
-        optionsList = selectedOptions.Split(',').Distinct().ToList();
+.        optionsList = selectedOptions.Split(',').Distinct().ToList();
 
 
 
@@ -1465,11 +1465,23 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
 
             return false;
         }
-        private void AddToResultTable(string tableName, string fieldName, object value, int candidateId, string testName)
+
+	 private void AddToResultTable(string tableName, string fieldName, object value, int candidateId, string testName)
         {
             try
             {
-                // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
+                if (string.IsNullOrWhiteSpace(testName))
+                {
+                    // Retrieve the test name based on storedTestCode if possible
+                    testName = GetTestName(storedtestcodee); // Implement this method to get the test name
+                }
+
+                // Ensure testName is not null or empty
+                testName = testName ?? "Unknown Test";
+                // Provide a default value if testName is still null
+                string purposeOfReport = GetPurposeOfReport(testName, candidateId);
+
+
                 var resultEntry = new Result
                 {
                     CandidateId = candidateId,
@@ -1478,6 +1490,8 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                     Value = value != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToString()) : "NULL", // Convert to proper case or "NULL"
                     ReportName = testName
                 };
+                // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
+         
 
                 // Add the entry to the Result table
                 _context.Result.Add(resultEntry);
@@ -1488,6 +1502,26 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                 _logger.LogError($"Error adding data to result table: {ex.Message}");
             }
         }
+        private string GetPurposeOfReport(string testName, int candidateId)
+        {
+            // Define the mapping of test names to their purposes
+            var testPurposes = new Dictionary<string, string>
+    {
+        { "CareerGraph Stream Selector", "Streams of Study .. For Jobs in the Future" },
+        { "CareerGraph Role Strength", "Jobs to focus … Today and in the Future" }
+        // Add more mappings as needed
+    };
+
+            // Retrieve the purpose based on the test name
+            testPurposes.TryGetValue(testName, out string purposeOfReport);
+
+            // Add purpose of the report to the Result table
+            AddToResultTable("AssessmentResult", "PurposeOfReport", purposeOfReport, candidateId, testName);
+
+            return purposeOfReport ?? "Unknown Purpose"; // Provide a default value if purpose is not found
+        }
+
+
         private string GetTestName(string storedTestCode)
         {
             // Fetch the corresponding name from the TestCode class based on storedTestCode
