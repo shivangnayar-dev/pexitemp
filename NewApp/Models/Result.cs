@@ -23,7 +23,8 @@ namespace NewApp.Models
         public string ReportName { get; set; }
 
 
-
+  public string timestamp_start { get; set; }
+        public string timestamp_end { get; set; }
 
 
     }

@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Check if the screen width is greater than a certain value (indicating it's not a mobile view)
         if (testactivated && window.innerWidth > 768) { // Adjust this value as needed
-            chatContainer.style.marginLeft = isActive ? '20%' : '0';
+            chatContainer.style.marginLeft = isActive ? '0' : '0';
 
         } else {
             chatContainer.style.marginLeft = '0';
@@ -385,7 +385,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
 
 function askTransactionId() {
     const genderSelect = document.getElementById("genderSelect");
@@ -1375,26 +1374,14 @@ function submitGender() {
 
         console.log(userData);
 
-   if (storedTestCode === "PEXCGRD2312O1009" ||
-            storedTestCode === "PEXCGJD2312O1011" ||
-            storedTestCode === "PEXCGSD2312O1013" ||
-            (userData.qualification && higherSecondaryOrAbove.includes(userData.qualification.toLowerCase()))) {
-            // If true, call askCoreStream() instead of askGender()
-            askCoreStream();
-            console.log(userData);
-            // Submit data to the server or handle the completion of the form
-            // You can call the next function or submit the entire form here
-        }
-        else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId === "E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
-            askCoreStream();
-        }
-        else {
+  
+       
             // If false, call askCoreStream()
             askDobAfterGender();
             console.log(userData);
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
-        }
+        
         // Clear the input and move on to the next step (ask for Date of Birth)
         genderSelect.value = "";
 
@@ -1853,7 +1840,7 @@ function askQualification() {
 
     // Update placeholder and message
     const dobInput = document.getElementById("dobInput");
-    dobInput.placeholder = "Select your qualification";
+    dobInput.placeholder = "Select your highest qualification";
     createMessageBox("Great! Please select your Qualification:");
 
     // Create a select element for qualification
@@ -1863,7 +1850,7 @@ function askQualification() {
     // Add placeholder option
     const placeholderOption = document.createElement("option");
     placeholderOption.value = "";
-    placeholderOption.text = "Select your qualification";
+    placeholderOption.text = "Select your highest qualification";
     placeholderOption.disabled = true;
     placeholderOption.selected = true;
     qualificationSelect.appendChild(placeholderOption);
@@ -1918,6 +1905,9 @@ function submitQualification() {
 
         const openToArmedForces = window.confirm("Are you open to Armed Forces Jobs? Click 'OK' if yes and 'Cancel' if no.");
         userData.armedForcesJobs = openToArmedForces ? "Yes" : "No";
+	  const openToSports = window.confirm("Do you want to take a career in sports ? Click 'OK' if yes and 'Cancel' if no.");
+        userData.SportsJobs = openToSports ? "Yes" : "No";
+
         // Fetch the ID corresponding to the selected qualification
         fetch(`/api/QualificationTyp/GetIdByName?name=${encodeURIComponent(qualification)}`)
             .then(response => response.json())
@@ -2031,7 +2021,28 @@ function submitAcademicStream() {
 	 userData.academicStream = academicStream;
         // Fetch the ID corresponding to the selected academic stream
         displaySubmittedInput("Academic Stream", academicStream, true);
-        askOrganization();
+
+        if (storedTestCode === "PEXCGRD2312O1009" ||
+            storedTestCode === "PEXCGJD2312O1011" ||
+            storedTestCode === "PEXCGSD2312O1013" ||
+            (userData.qualification && higherSecondaryOrAbove.includes(userData.qualification.toLowerCase()))) {
+            // If true, call askCoreStream() instead of askGender()
+            askCoreStream();
+            console.log(userData);
+            // Submit data to the server or handle the completion of the form
+            // You can call the next function or submit the entire form here
+        }
+        else if (storedReportId === "76DD3251-3A3F-48DE-8D0D-CBAE60047743" || storedReportId === "E198C384-58DC-403D-8D2D-854F9C4E6A7F") {
+            askCoreStream();
+        }
+        else {
+            // If false, call askCoreStream()
+            askOrganization();
+            console.log(userData);
+            // Submit data to the server or handle the completion of the form
+            // You can call the next function or submit the entire form here
+        }
+ 
 
     } else {
         // Handle the case where the academic stream is not selected
@@ -2131,13 +2142,13 @@ function submitNextStep() {
 }
     // Handle the next step based on user's choice
 function askCoreStream() {
-    const genderSelect = document.getElementById("genderSelect");
+    const academicStreamSelect = document.getElementById("academicStreamSelect");
     const messageBox = document.getElementById("messageBox");
 
 
     // Remove the existing country select if it exists
-    if (genderSelect) {
-        genderSelect.parentNode.removeChild(genderSelect);
+    if (academicStreamSelect) {
+        academicStreamSelect.parentNode.removeChild(academicStreamSelect);
     }
 
     // Update placeholder and message
@@ -2567,14 +2578,28 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
     const messageElement = document.createElement("div");
     messageElement.classList.add(isUserMessage ? "user-message" : "system-message");
     messageElement.innerHTML = `
-      <p><strong>${type}:</strong> <span id="${type.toLowerCase()}-value">${properCaseValue}</span>
+      <p>${properCaseValue}
         <button id="edit-${type.toLowerCase()}">Edit</button></p>
     `;
 
-    // Append the message to the chat container
-    chatContainer.appendChild(messageElement);
+    // Create a wrapper to align the message to the right
+    const messageWrapper = document.createElement("div");
+    messageWrapper.style.display = "flex";
+  
+    messageWrapper.appendChild(messageElement);
 
-    // Add a line break
+    // Append the wrapper to the chat container
+    chatContainer.appendChild(messageWrapper);
+
+    // Style the user message to look like a reply
+    if (isUserMessage) {
+        messageElement.style.backgroundColor = "#f1f1f1"; // Light grey background
+        messageElement.style.border = "1px solid #ccc"; // Light border
+        messageElement.style.borderRadius = "15px"; // Rounded corners
+        messageElement.style.padding = "10px"; // Padding for some space inside
+        messageElement.style.margin = "10px 0"; // Margin between messages
+        messageElement.style.maxWidth = "60%"; // Limit the width
+    }
 
     // Style the edit button
     const editButton = document.getElementById(`edit-${type.toLowerCase()}`);
@@ -2866,22 +2891,25 @@ let storedTestCode = "";
 
 function submitTestCode() {
     isAskTestCodeCalled = false;
-    const testCode = document.getElementById("dobInput").value;
+    const inputElement = document.getElementById("dobInput");
+    let testCode = inputElement.value.trim(); // Trim leading and trailing spaces
+
     if (testCode) {
         // Log the test code before verification
         console.log('submitTestCode - Test code before verification:', testCode);
 
         storedTestCode = testCode;
         userData.storedTestCode = storedTestCode;
-        // Assuming you have a function to verify the test code against the database
+
+        // Verify the test code against the database
         verifyTestCode(testCode);
-        document.getElementById("dobInput").removeEventListener("change", submitTestCode);
+
+        inputElement.removeEventListener("change", submitTestCode);
     } else {
         // Handle the case where the test code is not entered
         alert('Please enter the test code.');
     }
 }
-
 function verifyTestCode(testCode) {
     isAskTestCodeCalled = false;
     // Log the test code being sent in the AJAX call

@@ -76,7 +76,7 @@ namespace NewApp.Models
 	  public string academicStream { get; set; } = "0";     
 	  public string  timestamp_start { get; set; }= "0";
         public string timestamp_end { get; set; } = "0";
-
+    public string SportsJobs { get; set; } = "0";
 
     }
 

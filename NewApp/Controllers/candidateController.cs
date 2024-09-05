@@ -168,9 +168,12 @@ namespace NewApp.Controllers
 
 
 	string storedtestcodee = "";
+        string timestart = "";
+        string timeend = "";
         int candidateidd = 0;
         [HttpPost("submit")]
         public async Task<IActionResult> SubmitUser([FromBody] CandidateDetails candidate)
+
 
 
 
@@ -229,8 +232,16 @@ namespace NewApp.Controllers
                         existingCandidate.govJobs = candidate.govJobs;
                         existingCandidate.armedForcesJobs = candidate.armedForcesJobs;
                         existingCandidate.coreStream = candidate.coreStream;
-			
-			storedtestcodee = existingCandidate.storedTestCode;
+                        existingCandidate.academicStream = candidate.academicStream;
+                        existingCandidate.timestamp_start = candidate.timestamp_start;
+                        existingCandidate.timestamp_end = candidate.timestamp_end;
+
+			   existingCandidate.mathStats = candidate.mathStats;
+                        existingCandidate.SportsJobs = candidate.SportsJobs;
+                        timestart = existingCandidate.timestamp_start;
+                        timeend = existingCandidate.timestamp_end;
+
+                        storedtestcodee = existingCandidate.storedTestCode;
                       
                         _context.Candidates.Update(existingCandidate);
 
@@ -278,29 +289,35 @@ namespace NewApp.Controllers
                         string body;
 
                         // Determine recipient email based on candidate's organization
+
+
+
+			   // Determine recipient email based on candidate's organization
+                        List<string> recipientEmails = new List<string>
+                {
+                    "subhashini@pexitics.com",
+                    "shivangnayar22@gmail.com"
+                };
+
                         switch (candidate.organization.ToLower())
                         {
-
-   			      case "vibe fintech":
-    			    recipientEmail = "vikram@vibefintech.com, subhashini@pexitics.com, shivangnayar22@gmail.com";
-    			    break;
-  			  case "supreme court":
-       			 recipientEmail = "purushottam.st@gmail.com, subhashini@pexitics.com, shivangnayar22@gmail.com";
-       			 break;
-   			 default:
-       			 recipientEmail = "subhashini@pexitics.com, shivangnayar22@gmail.com";
-      			  break;
-                            
-
-
+                            case "vibe fintech":
+                                recipientEmails.Add("vikram@vibefintech.com");
+                                break;
+                            case "supreme court":
+                                recipientEmails.Add("purushottam.st@gmail.com");
+                                break;
+                        }
+                        if (!string.IsNullOrWhiteSpace(candidate.email_address))
+                        {
+                            recipientEmails.Add(candidate.email_address);
                         }
 
                         // Prepare email message body
-			 body = $"Dear Candidate,\n\nYour report is ready.\n\nOrganization: {candidate.organization}\nName: {candidate.name}\n\nPlease click here to view your report: <a href=\"{fileUrl}\">Click Here</a>\n\nThank you for taking the test with {candidate.organization}.";
+                        body = $"Dear Candidate,\n\nYour report is ready.\n\nOrganization: {candidate.organization}\nName: {candidate.name}\n\nPlease click here to view your report: <a href=\"{fileUrl}\">Click Here</a>\n\nThank you for taking the test with {candidate.organization}.";
 
                         // Send email
-                        await SendEmailAsync(new List<string> { recipientEmail }, subject, body);
-
+                        await SendEmailAsync(recipientEmails, subject, body);
                         await _context.SaveChangesAsync();
 
                         // Return the URL
@@ -1191,6 +1208,14 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                             var Grade = filteredBenchmarkEntry.Grade;
                             var Comments2 = filteredBenchmarkEntry.Comments2;
 
+			    if (averagePercentage == 100)
+                            {
+                                averagePercentage = 95;
+                            }
+                            else if (averagePercentage == 0)
+                            {
+                                averagePercentage = 5;
+                            }
 
                             AddToResultTable("AssessmentResult", $"reportSubAttributeName{i}", reportSubAttribute, candidateId, "");
                             AddToResultTable("AssessmentResult", $"reportSubAttributeValue{i}", averagePercentage.ToString(), candidateId, "");
@@ -1366,7 +1391,11 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
             try
             {
                 var testName = GetTestName(storedTestCode);
+
+		   AddToResultTable("Details","ReportName", testName, candidateId, "");
                 // Define a list of tables from which data needs to be fetched
+
+
                 List<string> tables = new List<string> { "CandidateDetails"};
 
                 foreach (var tableName in tables)
@@ -1482,7 +1511,9 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                     TableName = tableName,
                     FieldName = fieldName,
                     Value = value != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToString()) : "NULL", // Convert to proper case or "NULL"
-                    ReportName = testName
+                    ReportName = testName,
+                    timestamp_start = timestart,
+                    timestamp_end = timeend
                 };
                 // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
          
