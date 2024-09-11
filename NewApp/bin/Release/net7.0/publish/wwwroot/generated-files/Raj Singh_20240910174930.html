@@ -8,19 +8,12 @@
 </head>
 <style type="text/css">
     @media print {
-
-
-        .matrix-table th, .matrix-table td {
-            padding: 6px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            font-size: 16px;
-        }
         .page {
             width: 100%;
-            padding: 5px;
+            padding: 20px;
             box-sizing: border-box;
-         
+            border-left: 10px solid #6A1B9A; /* Purple margin */
+            border-right: 10px solid #6A1B9A;
             margin-bottom: 20px;
             page-break-after: always;
             min-height: 95vh; /* Ensures a new page starts after each .page */
@@ -143,7 +136,8 @@
         width: 100%;
         padding: 20px;
         box-sizing: border-box;
-    
+        border-left: 10px solid #6A1B9A; /* Purple margin */
+        border-right: 10px solid #6A1B9A;
         margin-bottom: 20px;
         page-break-after: always; /* Ensures a new page starts after each .page */
     }
@@ -577,15 +571,15 @@
                 <table>
                     <tr>
                         <td> Name</td>
-                        <td> {{name}}</td>
+                        <td> Raj Singh</td>
                     </tr>
                     <tr>
                         <td> Age</td>
-                        <td> {{age}} years</td>
+                        <td> 22 years</td>
                     </tr>
                     <tr>
                         <td> Location</td>
-                        <td> {{country}}</td>
+                        <td> India</td>
                     </tr>
                 </table>
             </div>
@@ -602,22 +596,22 @@
             </div>
 
             <div class="content-section">
-                <p><strong>Name of Report:</strong> {{ReportName}}</p>
+                <p><strong>Name of Report:</strong> CareerGraph Role Strength</p>
                 <p><strong>Purpose of Report:</strong> <span id="report-purpose"></span></p>
 
 
                 <p> <strong> Specialisation you may want to pursue:</strong> </p>
-                <p>{{selectedSpecializations1}}</p>
-                <p>{{selectedSpecializations2}}</p>
-                <p>{{selectedSpecializations3}}</p>
-                <p>{{selectedSpecializations4}}</p>
-                <p>{{selectedSpecializations5}}</p>
+                <p>computer science</p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
                 <p> <strong> Industries You Like:</strong> </p>
-                <p> {{selectedIndustries1}}</p>
-                <p>{{selectedIndustries2}}</p>
-                <p>{{selectedIndustries3}}</p>
-                <p>{{selectedIndustries4}}</p>
-                <p>{{selectedIndustries5}}</p>
+                <p> tourism and hospitality</p>
+                <p>science and technology</p>
+                <p>it & ites</p>
+                <p>banking</p>
+                <p>engineering and capital goods</p>
             </div>
 
             <div class="notes-section">
@@ -639,15 +633,15 @@
                     "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful." - Albert Schweitzer
                 </div>
                 <p>Temperament is like the blueprint of who we are from the moment we're born. It shapes how we react to things and what we're naturally drawn to. Think of it as the foundation of your personality, influenced by both your genes and early experiences. But as we go through life, things like how we're raised, the culture we're part of, and the people we're around, all play a part in shaping and refining our temperament. Even though it changes over time, those core traits stick with us, guiding how we see the world and how we handle different situations. Understanding our temperament helps us understand ourselves better and grow as individuals.</p>
-                <p id="text">{{TempramentComments}}</p>
+                <p id="text">You present a tough persona while your temperament is caring and a gentle approach to humanity. This temperament suits careers that require high energy but also a humane approach and imagination. You may try jobs that are closer to your home town, so that it allows you to serve humanity with being close to the family would be highly satisfying for you.</p>
             </div>
 
             <div class="career-choices">
                 <h3>Career Choices for your Temperament:</h3>
                 <ul>
-                    <li>{{careerChoice1}}</li>
-                    <li>{{careerChoice2}}</li>
-                    <li>{{careerChoice3}}</li>
+                    <li>Research/Teaching</li>
+                    <li>Hospitality/Nursing</li>
+                    <li>Back office jobs</li>
                 </ul>
             </div>
         </div>
@@ -661,25 +655,10 @@
 
             <div class="motivation-section">
                 <ol>
-                    <li> Core motivation: {{top5Motivations1}}</li>
-                    <li> Primary Motivation: {{top5Motivations2}}</li>
-                    <li> Primary Motivation: {{top5Motivations3}}</li>
+                    <li> Core motivation: Creative/Independence</li>
+                    <li> Primary Motivation: Power/Wealth creation</li>
+                    <li> Primary Motivation: Social Acceptance</li>
                 </ol>
-                <br />
-                <div class="temperament-section">
-                 
-                    <p>
-                        Different people are motivated by different things. Some want to be liked and
-                        accepted by others, so they work hard to fit in and be recognized. Others value
-                        their independence and creativity, preferring to do things their own way and
-                        express themselves freely. Then there are those who strive for excellence in what
-                        they do, aiming to make a positive impact and be the best they can be. Finally,
-                        some are driven by the desire for power and wealth, wanting to achieve success
-                        and control their own destiny. Figuring out what motivates you can help you set
-                        goals and find satisfaction in your work and life.
-                    </p>
-                  
-                </div>
             </div>
             <!-- Image Section -->
             <div class="image-section">
@@ -735,221 +714,221 @@
                         <!-- Behavior Attributes -->
                         <tr>
                             <td>Creativity</td>
-                            <td class="you" data-you="{{reportSubAttributeValue3}}" data-peer="68">{{reportSubAttributeValue3}}%</td>
+                            <td class="you" data-you="50" data-peer="68">50%</td>
                             <td>68%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue3}}" data-peer="68"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue3}}" data-peer="68"></div>
+                                    <div class="trend-you" data-you="50" data-peer="68"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="68"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Emotional Stability</td>
-                            <td class="you" data-you="{{reportSubAttributeValue2}}" data-peer="47">{{reportSubAttributeValue2}}%</td>
+                            <td class="you" data-you="50" data-peer="47">50%</td>
                             <td>47%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue2}}" data-peer="47"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue2}}" data-peer="47"></div>
+                                    <div class="trend-you" data-you="50" data-peer="47"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="47"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Fight vs. Flight</td>
-                            <td class="you" data-you="{{reportSubAttributeValue5}}" data-peer="52">{{reportSubAttributeValue5}}%</td>
+                            <td class="you" data-you="67" data-peer="52">67%</td>
                             <td>52%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue5}}" data-peer="52"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue5}}" data-peer="52"></div>
+                                    <div class="trend-you" data-you="67" data-peer="52"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="52"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Morality</td>
-                            <td class="you" data-you="{{reportSubAttributeValue1}}" data-peer="54">{{reportSubAttributeValue1}}%</td>
+                            <td class="you" data-you="50" data-peer="54">50%</td>
                             <td>54%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue1}}" data-peer="54"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue1}}" data-peer="54"></div>
+                                    <div class="trend-you" data-you="50" data-peer="54"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="54"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Openness to Learning</td>
-                            <td class="you" data-you="{{reportSubAttributeValue4}}" data-peer="61">{{reportSubAttributeValue4}}%</td>
+                            <td class="you" data-you="67" data-peer="61">67%</td>
                             <td>61%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue4}}" data-peer="61"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue4}}" data-peer="61"></div>
+                                    <div class="trend-you" data-you="67" data-peer="61"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="61"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="total-label">Behaviour Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_Behaviour}}%</td>
+                            <td class="total" colspan="3">56%</td>
                         </tr>
                         <!-- Cognitive Attributes -->
                         <tr>
                             <td>Comprehension</td>
-                            <td class="you" data-you="{{reportSubAttributeValue6}}" data-peer="55">{{reportSubAttributeValue6}}%</td>
+                            <td class="you" data-you="5" data-peer="55">5%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue6}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue6}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="5" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="5" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Logical thinking</td>
-                            <td class="you" data-you="{{reportSubAttributeValue9}}" data-peer="49">{{reportSubAttributeValue9}}%</td>
+                            <td class="you" data-you="5" data-peer="49">5%</td>
                             <td>49%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue9}}" data-peer="49"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue9}}" data-peer="49"></div>
+                                    <div class="trend-you" data-you="5" data-peer="49"></div>
+                                    <div class="trend-peer" data-you="5" data-peer="49"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Numeracy</td>
-                            <td class="you" data-you="{{reportSubAttributeValue10}}" data-peer="62">{{reportSubAttributeValue10}}%</td>
+                            <td class="you" data-you="12" data-peer="62">12%</td>
                             <td>62%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue10}}" data-peer="62"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue10}}" data-peer="62"></div>
+                                    <div class="trend-you" data-you="12" data-peer="62"></div>
+                                    <div class="trend-peer" data-you="12" data-peer="62"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Resourcefulness</td>
-                            <td class="you" data-you="{{reportSubAttributeValue8}}" data-peer="55">{{reportSubAttributeValue8}}%</td>
+                            <td class="you" data-you="50" data-peer="55">50%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue8}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue8}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="50" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Situational Judgment</td>
-                            <td class="you" data-you="{{reportSubAttributeValue11}}" data-peer="49">{{reportSubAttributeValue11}}%</td>
+                            <td class="you" data-you="38" data-peer="49">38%</td>
                             <td>49%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue11}}" data-peer="49"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue11}}" data-peer="49"></div>
+                                    <div class="trend-you" data-you="38" data-peer="49"></div>
+                                    <div class="trend-peer" data-you="38" data-peer="49"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Communication</td>
-                            <td class="you" data-you="{{reportSubAttributeValue7}}" data-peer="61">{{reportSubAttributeValue7}}%</td>
+                            <td class="you" data-you="12" data-peer="61">12%</td>
                             <td>61%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue7}}" data-peer="61"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue7}}" data-peer="61"></div>
+                                    <div class="trend-you" data-you="12" data-peer="61"></div>
+                                    <div class="trend-peer" data-you="12" data-peer="61"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="total-label">Cognitive Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_Cognitive}}%</td>
+                            <td class="total" colspan="3">27%</td>
                         </tr>
                         <!-- Leadership Attributes -->
                         <tr>
                             <td>Decision Making</td>
-                            <td class="you" data-you="{{reportSubAttributeValue16}}" data-peer="57">{{reportSubAttributeValue16}}%</td>
+                            <td class="you" data-you="50" data-peer="57">50%</td>
                             <td>57%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue16}}" data-peer="57"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue16}}" data-peer="57"></div>
+                                    <div class="trend-you" data-you="50" data-peer="57"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="57"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Openness</td>
-                            <td class="you" data-you="{{reportSubAttributeValue18}}" data-peer="55">{{reportSubAttributeValue18}}%</td>
+                            <td class="you" data-you="67" data-peer="55">67%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue18}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue18}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="67" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Vision Approach</td>
-                            <td class="you" data-you="{{reportSubAttributeValue17}}" data-peer="50">{{reportSubAttributeValue17}}%</td>
+                            <td class="you" data-you="50" data-peer="50">50%</td>
                             <td>50%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue17}}" data-peer="50"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue17}}" data-peer="50"></div>
+                                    <div class="trend-you" data-you="50" data-peer="50"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="50"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="total-label">Leadership Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_Leadership}}%</td>
+                            <td class="total" colspan="3">55%</td>
                         </tr>
 
                         <!-- People Attributes -->
                         <tr>
                             <td>Handling Conflict</td>
-                            <td class="you" data-you="{{reportSubAttributeValue12}}" data-peer="47">{{reportSubAttributeValue12}}%</td>
+                            <td class="you" data-you="50" data-peer="47">50%</td>
                             <td>47%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue12}}" data-peer="47"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue12}}" data-peer="47"></div>
+                                    <div class="trend-you" data-you="50" data-peer="47"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="47"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Negotiation</td>
-                            <td class="you" data-you="{{reportSubAttributeValue15}}" data-peer="46">{{reportSubAttributeValue15}}%</td>
+                            <td class="you" data-you="67" data-peer="46">67%</td>
                             <td>46%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue15}}" data-peer="46"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue15}}" data-peer="46"></div>
+                                    <div class="trend-you" data-you="67" data-peer="46"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="46"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Self Esteem</td>
-                            <td class="you" data-you="{{reportSubAttributeValue13}}" data-peer="56">{{reportSubAttributeValue13}}%</td>
+                            <td class="you" data-you="50" data-peer="56">50%</td>
                             <td>56%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue13}}" data-peer="56"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue13}}" data-peer="56"></div>
+                                    <div class="trend-you" data-you="50" data-peer="56"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="56"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Team Management</td>
-                            <td class="you" data-you="{{reportSubAttributeValue14}}" data-peer="48">{{reportSubAttributeValue14}}%</td>
+                            <td class="you" data-you="95" data-peer="48">95%</td>
                             <td>48%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue14}}" data-peer="48"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue14}}" data-peer="48"></div>
+                                    <div class="trend-you" data-you="95" data-peer="48"></div>
+                                    <div class="trend-peer" data-you="95" data-peer="48"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="total-label"> People Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_People}}%</td>
+                            <td class="total" colspan="3">62%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -979,45 +958,45 @@
                     <tbody>
                         <tr>
                             <td>Handling Conflict</td>
-                            <td class="you" data-you="{{reportSubAttributeValue12}}" data-peer="48">{{reportSubAttributeValue12}}%</td>
+                            <td class="you" data-you="50" data-peer="48">50%</td>
                             <td>48%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue12}}" data-peer="48"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue12}}" data-peer="48"></div>
+                                    <div class="trend-you" data-you="50" data-peer="48"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="48"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Negotiation</td>
-                            <td class="you" data-you="{{reportSubAttributeValue15}}" data-peer="51">{{reportSubAttributeValue15}}%</td>
+                            <td class="you" data-you="67" data-peer="51">67%</td>
                             <td>51%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue15}}" data-peer="51"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue15}}" data-peer="51"></div>
+                                    <div class="trend-you" data-you="67" data-peer="51"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="51"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Self Esteem</td>
-                            <td class="you" data-you="{{reportSubAttributeValue13}}" data-peer="55">{{reportSubAttributeValue13}}%</td>
+                            <td class="you" data-you="50" data-peer="55">50%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue13}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue13}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="50" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Team Management</td>
-                            <td class="you" data-you="{{reportSubAttributeValue14}}" data-peer="49">{{reportSubAttributeValue14}}%</td>
+                            <td class="you" data-you="95" data-peer="49">95%</td>
                             <td>49%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue14}}" data-peer="49"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue14}}" data-peer="49"></div>
+                                    <div class="trend-you" data-you="95" data-peer="49"></div>
+                                    <div class="trend-peer" data-you="95" data-peer="49"></div>
                                 </div>
                             </td>
                         </tr>
@@ -1025,7 +1004,7 @@
 
                         <tr>
                             <td class="total-label"> People Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_People}}%</td>
+                            <td class="total" colspan="3">62%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1034,10 +1013,10 @@
             <div class="attributes-section">
                 <div class="attribute-box">
                     <h3> People Attributes</h3>
-                    <p> {{Comment12}}</p>
-                    <p> {{Comment13}}</p>
-                    <p> {{Comment14}}</p>
-                    <p> {{Comment15}}</p>
+                    <p> You're pretty good at negotiating and handling conflict. Keep building on those strengths.</p>
+                    <p> You're self-motivated, but don't hesitate to take action.</p>
+                    <p> You're confident in managing teams and meeting their expectations.</p>
+                    <p> You seem confident in persuading others and reaching agreements, but there's room for improvement.</p>
                 </div>
             </div>
         </div>
@@ -1058,41 +1037,41 @@
                     <tbody>
                         <tr>
                             <td>Decision Making</td>
-                            <td class="you" data-you="{{reportSubAttributeValue16}}" data-peer="56">{{reportSubAttributeValue16}}%</td>
+                            <td class="you" data-you="50" data-peer="56">50%</td>
                             <td>56%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue16}}" data-peer="56"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue16}}" data-peer="56"></div>
+                                    <div class="trend-you" data-you="50" data-peer="56"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="56"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Openness</td>
-                            <td class="you" data-you="{{reportSubAttributeValue18}}" data-peer="53">{{reportSubAttributeValue18}}%</td>
+                            <td class="you" data-you="67" data-peer="53">67%</td>
                             <td>53%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue18}}" data-peer="53"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue18}}" data-peer="53"></div>
+                                    <div class="trend-you" data-you="67" data-peer="53"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="53"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Vision Approach</td>
-                            <td class="you" data-you="{{reportSubAttributeValue17}}" data-peer="52">{{reportSubAttributeValue17}}%</td>
+                            <td class="you" data-you="50" data-peer="52">50%</td>
                             <td>52%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue17}}" data-peer="52"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue17}}" data-peer="52"></div>
+                                    <div class="trend-you" data-you="50" data-peer="52"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="52"></div>
                                 </div>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="total-label"> Leadership Total</td>
-                            <td class="total" colspan="3"> {{matrixTotal_Leadership}}%</td>
+                            <td class="total" colspan="3"> 55%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1101,9 +1080,9 @@
             <div class="attributes-section">
                 <div class="attribute-box">
                     <h3> Leadership Attributes</h3>
-                    <p> {{Comment16}}</p>
-                    <p> {{Comment17}}</p>
-                    <p> {{Comment18}}</p>
+                    <p> You're confident in making decisions, but sometimes get stuck choosing between options.</p>
+                    <p> Work on improving your confidence in making decisions for the future.</p>
+                    <p> You adapt well to new environments but could be more actively involved. Try to engage more.</p>
 
                 </div>
             </div>
@@ -1132,74 +1111,74 @@
                     <tbody>
                         <tr>
                             <td>Comprehension</td>
-                            <td class="you" data-you="{{reportSubAttributeValue6}}" data-peer="55">{{reportSubAttributeValue6}}%</td>
+                            <td class="you" data-you="5" data-peer="55">5%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue6}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue6}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="5" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="5" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Logical thinking</td>
-                            <td class="you" data-you="{{reportSubAttributeValue9}}" data-peer="51">{{reportSubAttributeValue9}}%</td>
+                            <td class="you" data-you="5" data-peer="51">5%</td>
                             <td>51%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue9}}" data-peer="51"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue9}}" data-peer="51"></div>
+                                    <div class="trend-you" data-you="5" data-peer="51"></div>
+                                    <div class="trend-peer" data-you="5" data-peer="51"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Numeracy</td>
-                            <td class="you" data-you="{{reportSubAttributeValue9}}" data-peer="61">{{reportSubAttributeValue9}}%</td>
+                            <td class="you" data-you="5" data-peer="61">5%</td>
                             <td>61%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue9}}" data-peer="61"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue9}}" data-peer="61"></div>
+                                    <div class="trend-you" data-you="5" data-peer="61"></div>
+                                    <div class="trend-peer" data-you="5" data-peer="61"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Resourcefulness</td>
-                            <td class="you" data-you="{{reportSubAttributeValue8}}" data-peer="55">{{reportSubAttributeValue8}}%</td>
+                            <td class="you" data-you="50" data-peer="55">50%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue8}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue8}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="50" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Situational Judgment</td>
-                            <td class="you" data-you="{{reportSubAttributeValue11}}" data-peer="49">{{reportSubAttributeValue11}}%</td>
+                            <td class="you" data-you="38" data-peer="49">38%</td>
                             <td>49%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue11}}" data-peer="49"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue11}}" data-peer="49"></div>
+                                    <div class="trend-you" data-you="38" data-peer="49"></div>
+                                    <div class="trend-peer" data-you="38" data-peer="49"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Communication</td>
-                            <td class="you" data-you="{{reportSubAttributeValue7}}" data-peer="60">{{reportSubAttributeValue7}}%</td>
+                            <td class="you" data-you="12" data-peer="60">12%</td>
                             <td>60%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue7}}" data-peer="60"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue7}}" data-peer="60"></div>
+                                    <div class="trend-you" data-you="12" data-peer="60"></div>
+                                    <div class="trend-peer" data-you="12" data-peer="60"></div>
                                 </div>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="total-label"> Cognitive Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_Cognitive}}%</td>
+                            <td class="total" colspan="3">27%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1210,13 +1189,13 @@
             <div class="attributes-section">
                 <div class="attribute-box">
                     <h3> Cognitive Attributes</h3>
-                    <p> {{Comment6}}</p>
-                    <p> {{Comment7}}</p>
-                    <p> {{Comment8}}</p>
+                    <p> You may need to work on your English comprehension and speaking skills to improve.</p>
+                    <p> You need to boost your confidence when speaking in public or expressing ideas.</p>
+                    <p> While you're proactive in problem-solving, you may struggle at times. Try more problem-solving exercises.</p>
 
-                    <p> {{Comment9}}</p>
-                    <p> {{Comment10}}</p>
-                    <p> {{Comment11}}</p>
+                    <p> Using logical thinking to make decisions is crucial for success. Practice more logical reasoning tests.</p>
+                    <p> You need to work on your basic math skills and applying them in real-life situations.</p>
+                    <p> You gather information well but may take a bit longer to analyze facts and make judgments.</p>
 
                 </div>
             </div>
@@ -1245,79 +1224,77 @@
                     <tbody>
                         <tr>
                             <td>Creativity</td>
-                            <td class="you" data-you="{{reportSubAttributeValue3}}" data-peer="66">{{reportSubAttributeValue3}}%</td>
+                            <td class="you" data-you="50" data-peer="66">50%</td>
                             <td>66%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue3}}" data-peer="66"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue3}}" data-peer="66"></div>
+                                    <div class="trend-you" data-you="50" data-peer="66"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="66"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Emotional Stability</td>
-                            <td class="you" data-you="{{reportSubAttributeValue2}}" data-peer="49">{{reportSubAttributeValue2}}%</td>
+                            <td class="you" data-you="50" data-peer="49">50%</td>
                             <td>49%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue2}}" data-peer="49"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue2}}" data-peer="49"></div>
+                                    <div class="trend-you" data-you="50" data-peer="49"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="49"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Fight vs. Flight</td>
-                            <td class="you" data-you="{{reportSubAttributeValue5}}" data-peer="51">{{reportSubAttributeValue5}}%</td>
+                            <td class="you" data-you="67" data-peer="51">67%</td>
                             <td>51%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue5}}" data-peer="51"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue5}}" data-peer="51"></div>
+                                    <div class="trend-you" data-you="67" data-peer="51"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="51"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Morality</td>
-                            <td class="you" data-you="{{reportSubAttributeValue1}}" data-peer="55">{{reportSubAttributeValue1}}%</td>
+                            <td class="you" data-you="50" data-peer="55">50%</td>
                             <td>55%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue1}}" data-peer="55"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue1}}" data-peer="55"></div>
+                                    <div class="trend-you" data-you="50" data-peer="55"></div>
+                                    <div class="trend-peer" data-you="50" data-peer="55"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Openness to Learning</td>
-                            <td class="you" data-you="{{reportSubAttributeValue4}}" data-peer="60">{{reportSubAttributeValue4}}%</td>
+                            <td class="you" data-you="67" data-peer="60">67%</td>
                             <td>60%</td>
                             <td class="trend">
                                 <div class="trend-bar">
-                                    <div class="trend-you" data-you="{{reportSubAttributeValue4}}" data-peer="60"></div>
-                                    <div class="trend-peer" data-you="{{reportSubAttributeValue4}}" data-peer="60"></div>
+                                    <div class="trend-you" data-you="67" data-peer="60"></div>
+                                    <div class="trend-peer" data-you="67" data-peer="60"></div>
                                 </div>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="total-label"> Behaviour Total</td>
-                            <td class="total" colspan="3">{{matrixTotal_Behaviour}}%</td>
+                            <td class="total" colspan="3">56%</td>
                         </tr>
                     </tbody>
                 </table>
 
             </div>
-        </div>
-        <div class="page">
             <!-- Behaviour Attributes Description -->
             <div class="attributes-section">
                 <div class="attribute-box">
                     <h3> Behaviour Attributes</h3>
-                    <p> {{Comment1}}</p>
-                    <p> {{Comment2}}</p>
-                    <p> {{Comment3}}</p>
-                    <p> {{Comment4}}</p>
-                    <p> {{Comment5}}</p>
+                    <p> You might struggle with morality in tough situations. Try to do more good.</p>
+                    <p> You need to work on staying calm under stress. Don't stress out too much!</p>
+                    <p> You're average when it comes to being open to new ideas and innovation. Try to be more creative!</p>
+                    <p> Keep learning new tools and resources regularly.</p>
+                    <p> You seem unsure when making tough decisions. Work on that.</p>
                 </div>
             </div>
 
@@ -1346,38 +1323,38 @@
                     <tbody>
                         <tr>
                             <td> Highest Qualification</td>
-                            <td> {{qualification}}</td>
+                            <td> bachelors</td>
 
                         </tr>
                         <tr>
                             <td> Academic Area</td>
 
-                            <td>{{academicStream}}</td>
+                            <td>sciences</td>
                         </tr>
                         <tr>
                             <td> Core Stream</td>
 
-                            <td> {{coreStream}}</td>
+                            <td> engineering</td>
                         </tr>
                         <tr>
                             <td> Secondary Stream</td>
 
-                            <td> {{selectedSpecializations}}</td>
+                            <td> computer science</td>
                         </tr>
                         <tr>
                             <td> Maths</td>
-                            <td> {{mathStats}}</td>
+                            <td> Yes</td>
 
                         </tr>
                         <tr>
                             <td> Science</td>
-                            <td> {{science}}</td>
+                            <td> Yes</td>
 
                         </tr>
                         <tr>
                             <td> Broad Area of Occupation</td>
                             <td> </td>
-                            <td>{{BenchMarkOrganisation}}</td>
+                            <td>Product, Operations, Research, Administration, and others</td>
 
                         </tr>
                     </tbody>
@@ -1400,29 +1377,29 @@
                             <td> Job Roles</td>
                             <td> </td>
                             <td>
-                                {{Suggestedjobrole1}}<br>
-                                {{Suggestedjobrole2}}<br>
-                                {{Suggestedjobrole3}}<br>
-                                {{Suggestedjobrole4}}<br>
-                                {{Suggestedjobrole5}}
+                                Product Manager<br>
+                                Operations Manager<br>
+                                Research Scientist<br>
+                                <br>
+                                
                             </td>
                         </tr>
                         <tr>
                             <td> Industries</td>
-                            <td> {{selectedIndustries1}} {{selectedIndustries2}} {{selectedIndustries3}} {{selectedIndustries4}} {{selectedIndustries5}}</td>
+                            <td> tourism and hospitality science and technology it & ites banking engineering and capital goods</td>
 
-                            <td> {{IIAFitment1}}, {{IIAFitment2}},{{IIAFitment3}}</td>
+                            <td> Architecture & Construction, Government & Admin,Finance & Accounts</td>
                         </tr>
                         <tr>
                             <td> Sub Industries</td>
                             <td> </td>
 
-                            <td> {{IIAFitment1sub1}}, {{IIAFitment1sub2}}, {{IIAFitment1sub3}}, {{IIAFitment1sub4}},{{IIAFitment1sub5}},{{IIAFitment2sub1}},{{IIAFitment2sub2}},{{IIAFitment2sub3}},{{IIAFitment2sub4}},{{IIAFitment2sub5}},{{IIAFitment3sub1}},{{IIAFitment3sub2}},{{IIAFitment3sub3}},{{IIAFitment3sub4}},{{IIAFitment3sub5}}</td>
+                            <td> REAL ESTATE, CEMENT, INFRASTRUCTURE, ROADS,TOURISM AND HOSPITALITY,FINANCIAL SERVICES,BANKING,INSURANCE,SERVICES,EDUCATION AND TRAINING,RAILWAYS,ROADS,BANKING,OIL AND GAS,PORTS</td>
                         </tr>
                         <tr>
                             <td> Types of Jobs for Maximum Success</td>
                             <td> </td>
-                            <td> {{motivationSuggestion1}}, {{motivationSuggestion2}}, {{motivationSuggestion3}}</td>
+                            <td> Entrepreneurship, Govt. job, Large MNC / Manufacturing firm</td>
 
                         </tr>
                     </tbody>
@@ -1430,9 +1407,9 @@
 
                 <div class="notes-section">
 
-                    <p> You are open to a Gvernment job: {{govJobs}}</p>
-                    <p> You are open to a Armed forces job: {{armedForcesJobs}}</p>
-                    <p> You are open to a Sports career: {{SportsJobs}}</p>
+                    <p> You are open to a Gvernment job: Yes</p>
+                    <p> You are open to a Armed forces job: Yes</p>
+                    <p> You are open to a Sports career: No</p>
                 </div>
             </div>
 
@@ -1444,13 +1421,13 @@
 
             <div class="title-bar"> FAQ</div>
             <div class="motivation">
-                <strong> Core Motivation:</strong> {{top5Motivations1}}
+                <strong> Core Motivation:</strong> Creative/Independence
             </div>
             <div class="motivation">
-                <strong> Primary Motivation:</strong> {{top5Motivations2}}
+                <strong> Primary Motivation:</strong> Power/Wealth creation
             </div>
             <div class="motivation">
-                <strong> Primary Motivation:</strong> {{top5Motivations3}}
+                <strong> Primary Motivation:</strong> Social Acceptance
             </div>
 
 
@@ -1483,28 +1460,28 @@
                 <h3> To find out the best employers for you</h3>
                 <p> <strong> Which are the best employers in India for:</strong> </p>
                 <ul>
-                    <li> {{IIAFitment1}}</li>
-                    <li> {{IIAFitment2}}</li>
-                    <li> {{IIAFitment3}}</li>
+                    <li> Architecture & Construction</li>
+                    <li> Government & Admin</li>
+                    <li> Finance & Accounts</li>
                 </ul>
                 <p> <strong> Note:</strong> The Sub industries include:</p>
-                <p> {{IIAFitment1sub1}}, {{IIAFitment1sub2}}, {{IIAFitment1sub3}}, {{IIAFitment1sub4}}, {{IIAFitment1sub5}}</p>
+                <p> REAL ESTATE, CEMENT, INFRASTRUCTURE, ROADS, TOURISM AND HOSPITALITY</p>
             </div>
 
             <div class="section">
                 <h3> More about the job roles</h3>
                 <p> <strong> What is the average salary for the jobs mentioned in USD and INR:</strong> </p>
-                <p> {{Suggestedjobrole1}}</p>
-                <p>{{Suggestedjobrole2}}</p>
-                <p>{{Suggestedjobrole3}}</p>
+                <p> Product Manager</p>
+                <p>Operations Manager</p>
+                <p>Research Scientist</p>
             </div>
 
             <div class="section">
                 <h3> To Know more about the Core stream and jobs recommended</h3>
                 <p> <strong> What is the Job not affected by AI?</strong> </p>
-                <p> {{Suggestedjobrole1}}</p>
-                <p>{{Suggestedjobrole2}}</p>
-                <p>{{Suggestedjobrole3}}</p>
+                <p> Product Manager</p>
+                <p>Operations Manager</p>
+                <p>Research Scientist</p>
             </div>
 
             <div class="section">
@@ -1535,13 +1512,12 @@
                 <p> <strong> WhatsApp / Call:</strong> 7349662320 (India)</p>
                 <p> <strong> Email:</strong> <a href="mailto:career.tests.ai@gmail.com"> career.tests.ai@gmail.com</a> </p>
             </div>
-            <div class="footer">
-                <p>&copy;2025 <a href="https://careertests.in/">careertests.in</a>. All Rights Reserved.</p>
-            </div>
         </div>
 
     </div>
-  
+    <div class="footer">
+        <p>&copy;2025 <a href="https://careertests.in/">careertests.in</a>. All Rights Reserved.</p>
+    </div>
 
 </body>
 </html>
@@ -1583,7 +1559,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const motivationSuggestions = [
-        "{{top5Motivations1}}",
+        "Creative/Independence",
     ];
 
     const govtJobKeywords = ["Security", "Power/Wealth creation"];
@@ -1623,7 +1599,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const reportName = "{{ReportName}}";
+    const reportName = "CareerGraph Role Strength";
     const reportPurposeElement = document.getElementById("report-purpose");
 
     if (reportName === "Careergraph Role Strength") {
@@ -1641,6 +1617,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .join(' ');
     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        var p = document.getElementById('text');
+        var text = p.textContent;
+        p.textContent = toProperCase(text);
+    });
 </script>
 
 

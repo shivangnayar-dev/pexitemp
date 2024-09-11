@@ -1,14 +1,17 @@
-      function dontLeave() {
+let preventLeave = true;
 
-                    return "Are you sure you want to quit? The test is not completed.";
-                }
+function dontLeave() {
+    return "Are you sure you want to quit? The test is not completed.";
+}
 
-                // Add the event listener to window
-                window.addEventListener("beforeunload", function (event) {
-                    const message = dontLeave();
-                    event.returnValue = message; // For most browsers
-                    return message; // For some browsers
-                });
+// Add the event listener to window
+window.addEventListener("beforeunload", function (event) {
+    if (preventLeave) {
+        const message = dontLeave();
+        event.returnValue = message; // For most browsers
+        return message; // For some browsers
+    }
+});
 
 let currentSectionIndex = 0;
 let HeadingSection = 0;
@@ -377,8 +380,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Check if the screen width is greater than a certain value (indicating it's not a mobile view)
         if (testactivated && window.innerWidth > 768) { // Adjust this value as needed
-            chatContainer.style.marginLeft = isActive ? '0' : '0';
-
+ 	chatContainer.style.left = isActive ? '20%' : '0';
         } else {
             chatContainer.style.marginLeft = '0';
             skipButton.style.marginLeft = '0';
@@ -882,7 +884,7 @@ clearMessageBoxes();
                 });
 
                 const moveToNextSection = () => {
-		   alert("Congratulations, you have completed the section. Please do the next section now.");
+		  
                     HeadingSection++;
                     submitUserDataToDatabase(userData);
 
@@ -891,6 +893,7 @@ clearMessageBoxes();
 
                     console.log(`Current Section Index: ${currentSectionIndex}, Total Sections: ${filteredSections.length}`);
                     if (currentSectionIndex < filteredSections.length) {
+                        alert("Congratulations, you have completed the section. Please do the next section now.");
                         const nextSection = questionOptionsAndAnswerss[filteredSections[currentSectionIndex]];
                         submittedQuestions = [];
                         const firstQuestionIndex = 0;
@@ -1189,6 +1192,8 @@ function gfg(n) {
 }
 
 function submitRating(rating) {
+  let preventLeave = false;
+
     userData.timestamp_end = new Date().toISOString();
     console.log(userData);
 

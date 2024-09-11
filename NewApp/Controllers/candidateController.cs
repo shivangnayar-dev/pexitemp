@@ -459,69 +459,81 @@ namespace NewApp.Controllers
             return htmlTemplate;
         }
 
-        private async Task<string> GenerateReport(int candidateId)
+private async Task<string> GenerateReport(int candidateId)
+{
+    try
+    {
+        string logMessage;
+
+        logMessage = $"Starting report generation for candidate ID: {candidateId}";
+        _logger.LogInformation(logMessage);
+        Console.WriteLine(logMessage);
+
+        // Fetch candidate results
+        var candidateResults = await GetCandidateResultsAsync(candidateId);
+        if (candidateResults == null)
         {
-            try
-            {
-                string logMessage;
-
-                logMessage = $"Starting report generation for candidate ID: {candidateId}";
-                _logger.LogInformation(logMessage);
-                Console.WriteLine(logMessage);
-
-                // Fetch candidate results
-                var candidateResults = await GetCandidateResultsAsync(candidateId);
-                if (candidateResults == null)
-                {
-                    logMessage = "Candidate results are null.";
-                    _logger.LogError(logMessage);
-                    Console.WriteLine(logMessage);
-                    return string.Empty;
-                }
-
-                logMessage = "Candidate results fetched successfully.";
-                _logger.LogInformation(logMessage);
-                Console.WriteLine(logMessage);
-
-                // Define the path to the HTML template
-                string templatePath = "/root/NewApp/pexibackup/NewApp/Result1.html";
-                logMessage = $"Template path: {templatePath}";
-                _logger.LogInformation(logMessage);
-                Console.WriteLine(logMessage);
-
-                // Read the HTML template
-                string htmlTemplate;
-                if (System.IO.File.Exists(templatePath))
-                {
-                    htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
-                    logMessage = "HTML template read successfully.";
-                    _logger.LogInformation(logMessage);
-                    Console.WriteLine(logMessage);
-                }
-                else
-                {
-                    logMessage = $"Template file not found at {templatePath}";
-                    _logger.LogError(logMessage);
-                    Console.WriteLine(logMessage);
-                    return string.Empty;
-                }
-
-                // Insert candidate data into the template
-                string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
-                logMessage = "Candidate data inserted into HTML template successfully.";
-                _logger.LogInformation(logMessage);
-                Console.WriteLine(logMessage);
-
-                return modifiedHtml;
-            }
-            catch (Exception ex)
-            {
-                string logMessage = $"Error generating report for candidate ID: {candidateId}. Exception: {ex.Message}";
-                _logger.LogError(logMessage);
-                Console.WriteLine(logMessage);
-                return string.Empty; // Return an empty string or handle error as needed
-            }
+            logMessage = "Candidate results are null.";
+            _logger.LogError(logMessage);
+            Console.WriteLine(logMessage);
+            return string.Empty;
         }
+
+        logMessage = "Candidate results fetched successfully.";
+        _logger.LogInformation(logMessage);
+        Console.WriteLine(logMessage);
+
+        // Determine the path to the HTML template based on testcode
+        var candidate = await _context.Candidates.FindAsync(candidateId); // Assuming the candidate's testcode is stored in the Candidates table
+        string templatePath;
+        
+        if (candidate != null && candidate.storedTestCode == "PEX4IT2312H1003")
+        {
+            templatePath = "/root/NewApp/pexibackup/NewApp/Result2.html";
+        }
+        else
+        {
+            templatePath = "/root/NewApp/pexibackup/NewApp/Result1.html";
+        }
+
+        logMessage = $"Template path: {templatePath}";
+        _logger.LogInformation(logMessage);
+        Console.WriteLine(logMessage);
+
+        // Read the HTML template
+        string htmlTemplate;
+        if (System.IO.File.Exists(templatePath))
+        {
+            htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+            logMessage = "HTML template read successfully.";
+            _logger.LogInformation(logMessage);
+            Console.WriteLine(logMessage);
+        }
+        else
+        {
+            logMessage = $"Template file not found at {templatePath}";
+            _logger.LogError(logMessage);
+            Console.WriteLine(logMessage);
+            return string.Empty;
+        }
+
+        // Insert candidate data into the template
+        string modifiedHtml = InsertCandidateDataIntoHtml(htmlTemplate, candidateResults);
+        logMessage = "Candidate data inserted into HTML template successfully.";
+        _logger.LogInformation(logMessage);
+        Console.WriteLine(logMessage);
+
+        return modifiedHtml;
+    }
+    catch (Exception ex)
+    {
+        string logMessage = $"Error generating report for candidate ID: {candidateId}. Exception: {ex.Message}";
+        _logger.LogError(logMessage);
+        Console.WriteLine(logMessage);
+        return string.Empty; // Return an empty string or handle error as needed
+    }
+}
+
 
 
 
@@ -1503,18 +1515,19 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
                 // Ensure testName is not null or empty
                 testName = testName ?? "Unknown Test";
                 // Provide a default value if testName is still null
-
-
-                var resultEntry = new Result
+		  var resultEntry = new Result
                 {
                     CandidateId = candidateId,
                     TableName = tableName,
                     FieldName = fieldName,
-                    Value = value != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToString()) : "NULL", // Convert to proper case or "NULL"
+                    Value = value != null ? value.ToString() : "NULL", // Use original value or "NULL"
                     ReportName = testName,
                     timestamp_start = timestart,
                     timestamp_end = timeend
                 };
+
+
+
                 // Assuming you have a Result table with appropriate columns for tableName, fieldName, and value
          
 
