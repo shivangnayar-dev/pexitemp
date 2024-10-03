@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/root/NewApp/pexibackup/NewApp/NewApp.csproj": {}
+    "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj": {}
   },
   "projects": {
-    "/root/NewApp/pexibackup/NewApp/NewApp.csproj": {
+    "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/root/NewApp/pexibackup/NewApp/NewApp.csproj",
+        "projectUniqueName": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
         "projectName": "NewApp",
-        "projectPath": "/root/NewApp/pexibackup/NewApp/NewApp.csproj",
-        "packagesPath": "/root/.nuget/packages/",
-        "outputPath": "/root/NewApp/pexibackup/NewApp/obj/",
+        "projectPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
+        "packagesPath": "/Users/shivangnayar/.nuget/packages/",
+        "outputPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/root/.nuget/NuGet/NuGet.Config"
+          "/Users/shivangnayar/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "/usr/local/share/dotnet/sdk/7.0.311/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -57,6 +59,10 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "Quartz.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[3.13.0, )"
             }
           },
           "imports": [
@@ -78,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.119/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.311/RuntimeIdentifierGraph.json"
         }
       }
     }

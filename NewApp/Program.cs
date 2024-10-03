@@ -1,18 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using NewApp.Models;
 using DinkToPdf;
 using DinkToPdf.Contracts;
-
+using Microsoft.EntityFrameworkCore;
+using NewApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHostedService<PexiticsscoreEmailService>();
 
 builder.Configuration.AddJsonFile("appsettings.json");
 var configuration = builder.Configuration;
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
 builder.Services.AddDbContext<CandidateDbContext>(options =>
 {
     var connectionString = configuration.GetConnectionString("DefaultConnection");
-   var serverVersion = ServerVersion.AutoDetect(connectionString);
+    var serverVersion = ServerVersion.AutoDetect(connectionString);
 
     options.UseMySql(connectionString, serverVersion);
 });
@@ -27,10 +28,12 @@ builder.Services.AddCors(options =>
                                       .AllowAnyMethod());
 });
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -195,3 +195,6 @@
 /Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/Debug/net7.0/NewApp.pdb
 /Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/Debug/net7.0/NewApp.genruntimeconfig.cache
 /Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/Debug/net7.0/ref/NewApp.dll
+/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/bin/Debug/net7.0/Quartz.dll
+/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/bin/Debug/net7.0/Quartz.Extensions.DependencyInjection.dll
+/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/bin/Debug/net7.0/Quartz.Extensions.Hosting.dll

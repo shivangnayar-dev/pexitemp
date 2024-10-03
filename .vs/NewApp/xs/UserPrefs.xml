@@ -1,7 +1,15 @@
 ﻿<Properties StartupConfiguration="{04DBDFAF-213F-4F8E-B933-A4E5BC335E5D}|https">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="NewApp/Program.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.NewApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/Controllers/candidateController.cs" relfile="NewApp/Controllers/candidateController.cs" line="970" column="1" />
+      <Breakpoint file="/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/Controllers/candidateController.cs" relfile="NewApp/Controllers/candidateController.cs" line="1072" column="1" />
+      <Breakpoint file="/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/Controllers/PexiticsscoreEmailService.cs" relfile="NewApp/Controllers/PexiticsscoreEmailService.cs" line="13" column="1" />
+      <Breakpoint file="/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/Controllers/PexiticsscoreEmailService.cs" relfile="NewApp/Controllers/PexiticsscoreEmailService.cs" line="43" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="NewApp/Controllers/PexiticsscoreEmailService.cs">
     <Files>
       <File FileName="NewApp/wwwroot/js/test.js" />
       <File FileName="NewApp/Models/ApplicationDbContext.cs" />
@@ -17,7 +25,7 @@
       <File FileName="NewApp/Models/ShortSignUp.cs" />
       <File FileName="NewApp/Models/ReportSubAttributeDbContext.cs" />
       <File FileName="NewApp/Controllers/QualificationTypController.cs" />
-      <File FileName="NewApp/Program.cs" Line="107" Column="1" />
+      <File FileName="NewApp/Program.cs" />
       <File FileName="NewApp/Controllers/TestCodeController.cs" />
       <File FileName="NewApp/wwwroot/js/site.js" />
       <File FileName="NewApp/Models/SubmittedQuestionData.cs" />
@@ -40,8 +48,8 @@
       <File FileName="NewApp/Models/QuestionDbContext.cs" />
       <File FileName="NewApp/Models/BenchmarkModel.cs" />
       <File FileName="NewApp/Models/ApplicationUser.cs" />
-      <File FileName="NewApp/Models/LoginViewModel.cs" Line="1" Column="1" />
-      <File FileName="NewApp/Controllers/candidateController.cs" Line="263" Column="39" />
+      <File FileName="NewApp/Models/LoginViewModel.cs" />
+      <File FileName="NewApp/Controllers/candidateController.cs" />
       <File FileName="NewApp/Views/_ViewImports.cshtml" />
       <File FileName="NewApp/Views/_ViewStart.cshtml" />
       <File FileName="NewApp/Views/Shared/_Layout.cshtml" />
@@ -80,6 +88,20 @@
       <File FileName="NewApp/Models/TemperamentTableDbContext.cs" />
       <File FileName="NewApp/Models/SpecializationDbContext.cs" />
       <File FileName="NewApp/wwwroot/site.js" />
+      <File FileName="NewApp/Models/Specialization.cs" />
+      <File FileName="NewApp/Views/Home/Result1.html" />
+      <File FileName="NewApp/Result1.html" />
+      <File FileName="NewApp/Properties/launchSettings.json" />
+      <File FileName="../../../.nuget/packages/ironpdf/2024.9.3/readme.txt" />
+      <File FileName="NewApp/Controllers/QuestionDataController.cs" />
+      <File FileName="NewApp/bin/Release/net7.0/publish/wwwroot/js/EmptyJS.js" />
+      <File FileName="NewApp/Models/DatabaseTableDbContext.cs" />
+      <File FileName="NewApp/Models/ErrorViewModel.cs" />
+      <File FileName="NewApp/bin/Release/net7.0/publish/wwwroot/js/testt.js" />
+      <File FileName="NewApp/wwwroot/js/site.js.save" />
+      <File FileName="NewApp/Controllers/PexiticsscoreEmailService.cs" Line="197" Column="12" />
+      <File FileName="NewApp/Models/pexiticsscore.cs" />
+      <File FileName="NewApp/Models/pexiticsscoreDbContext.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -89,9 +111,6 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.NewApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

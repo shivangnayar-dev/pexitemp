@@ -26,12 +26,12 @@ public class PexiticsscoreEmailService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            // Calculate delay until next 6 AM IST
-            var delay = CalculateDelayUntilNext6AMIST();
+            // Calculate delay until next 12:30 AM IST
+            var delay = CalculateDelayUntilNext1230AMIST();
 
-            _logger.LogInformation($"Waiting for {delay.TotalHours} hours until 6 AM IST to send the email.");
+            _logger.LogInformation($"Waiting for {delay.TotalHours} hours until 12:30 AM IST to send the email.");
 
-            // Wait until 6 AM IST
+            // Wait until 12:30 AM IST
             await Task.Delay(delay, stoppingToken);
 
             try
@@ -50,19 +50,20 @@ public class PexiticsscoreEmailService : BackgroundService
         }
     }
 
-    private TimeSpan CalculateDelayUntilNext6AMIST()
+    private TimeSpan CalculateDelayUntilNext1230AMIST()
     {
         DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _indianTimeZone);
-        DateTime next6AM = now.Date.AddHours(6); // Today's 6 AM IST
+        DateTime next1230AM = now.Date.AddHours(0).AddMinutes(27); // Today's 12:30 AM IST
 
-        if (now > next6AM)
+        if (now > next1230AM)
         {
-            // If 6 AM has passed today, calculate the delay for tomorrow's 6 AM
-            next6AM = next6AM.AddDays(1);
+            // If 12:30 AM has passed today, calculate the delay for tomorrow's 12:30 AM
+            next1230AM = next1230AM.AddDays(1);
         }
 
-        return next6AM - now;
+        return next1230AM - now;
     }
+
 
     private async Task<string> GetCombinedDataAsSideBySideCsvAsync()
     {
