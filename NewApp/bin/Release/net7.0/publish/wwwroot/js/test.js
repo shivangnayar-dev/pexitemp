@@ -1,18 +1,3 @@
-let preventLeave = true;
-
-function dontLeave() {
-    return "Are you sure you want to quit? The test is not completed.";
-}
-
-// Add the event listener to window
-window.addEventListener("beforeunload", function (event) {
-    if (preventLeave) {
-        const message = dontLeave();
-        event.returnValue = message; // For most browsers
-        return message; // For some browsers
-    }
-});
-
 let currentSectionIndex = 0;
 let HeadingSection = 0;
 console.log('HeadingSection', HeadingSection);
@@ -189,9 +174,10 @@ function closeModal() {
 }
 let timerInterval; // Declare timer interval variable globally
 let totalSecondsRemaining; // Declare total seconds remaining globally
+
 function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId) {
     const maxQuestionsPerSection = totalQuestions;
-    console.log(maxQuestionsPerSection)// Dynamically set maxQuestionsPerSection
+    console.log(maxQuestionsPerSection); // Dynamically set maxQuestionsPerSection
     const currentSectionIndex = Math.floor(currentQuestionIndex / maxQuestionsPerSection);
 
     let questionGridContainer = document.querySelector('.question-grid-container');
@@ -286,16 +272,21 @@ function showLeftContainer(totalQuestions, currentQuestionIndex, storedReportId)
         timerContainer = document.createElement('div');
         timerContainer.className = 'timer-container';
         document.querySelector('.left-container').insertBefore(timerContainer, questionGridContainer);
-
-        totalSecondsRemaining = maxQuestionsPerSection >= 20 ? 60 * 60 : 20 * 60;
-        startTimer(timerContainer);
     }
+
+    // Reset the timer for the section
+    totalSecondsRemaining = 1200; // Set timer to 20 minutes (1200 seconds)
+    startTimer(timerContainer); // Start the timer for the section
 }
 
 function startTimer(timerContainer) {
+    // Clear previous timer elements if any
+    timerContainer.innerHTML = '';
+
+    // Create minute and second elements
     let minutesElement = document.createElement('div');
     minutesElement.className = 'minutes';
-    minutesElement.textContent = '00';
+    minutesElement.textContent = '20'; // Start from 20 minutes
     timerContainer.appendChild(minutesElement);
 
     let separatorElement = document.createElement('div');
@@ -305,9 +296,13 @@ function startTimer(timerContainer) {
 
     let secondsElement = document.createElement('div');
     secondsElement.className = 'seconds';
-    secondsElement.textContent = '00';
+    secondsElement.textContent = '00'; // Set timer to start from 20:00
     timerContainer.appendChild(secondsElement);
 
+    // Clear any existing interval before starting a new one
+    clearInterval(timerInterval);
+
+    // Start a new interval
     timerInterval = setInterval(function () {
         totalSecondsRemaining--;
 
@@ -317,11 +312,12 @@ function startTimer(timerContainer) {
         minutesElement.textContent = minutes < 10 ? '0' + minutes : minutes;
         secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
 
+        // If time runs out, move to the next section
         if (totalSecondsRemaining <= 0) {
-            clearInterval(timerInterval);
-            moveToNextSection();
+            clearInterval(timerInterval); // Clear the interval
+            moveToNextSection(); // Move to the next section
         }
-    }, 1000);
+    }, 1000); // Decrease time every second
 }
 
 
@@ -380,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Check if the screen width is greater than a certain value (indicating it's not a mobile view)
         if (testactivated && window.innerWidth > 768) { // Adjust this value as needed
- 	chatContainer.style.left = isActive ? '20%' : '0';
+            chatContainer.style.left = isActive ? '20%' : '0';
         } else {
             chatContainer.style.marginLeft = '0';
             skipButton.style.marginLeft = '0';
@@ -516,13 +512,14 @@ function asktesttt() {
         } else {
             // User has not provided consent, inform them and prevent further actions
             alert('We cannot proceed without your consent. Please check the consent box.');
-	    askDobAfterGender();           
- // Optionally, you can reset the form or take other actions
+            askDobAfterGender();
+            // Optionally, you can reset the form or take other actions
         }
     }, 0); // Ensure the confirm dialog is shown after the clearMessageBoxes function is done
 }
 let userData = {};
 function askDobAfterGender() {
+
     const genderSelect = document.getElementById("genderSelect");
     if (genderSelect) {
         genderSelect.parentNode.removeChild(genderSelect);
@@ -543,8 +540,6 @@ function askDobAfterGender() {
         }
     });
 }
-
-
 function submitDobAfterGender() {
     highlightBasicInfoChatBox();
 
@@ -558,9 +553,14 @@ function submitDobAfterGender() {
         // Calculate age
         const age = calculateAge(formattedDob);
 
+        // Check for age limits
         if (age < 10) {
-            // Display alert and prevent further processing
+            // Display alert and prevent further processing if age is less than 10
             alert('Sorry, you must be at least 10 years old to proceed.');
+            return;
+        } else if (age > 80) {
+            // Display alert and prevent further processing if age is more than 80
+            alert('Sorry, the age limit is 80 years.');
             return;
         }
 
@@ -573,25 +573,17 @@ function submitDobAfterGender() {
         dobInput.value = "";
         flatpickr("#dobInput").destroy();
 
-        
-
         submitUserDataToDatabase(userData);
+
         if (storedTestCode === "PEXCGRD2312O1009" || storedTestCode === "PEXCGJD2312O1011" || storedTestCode === "PEXCGSD2312O1013") {
-            // If true, call askGender() instead of askCoreStream()
+            // If test code matches, call askTransactionId()
             askTransactionId();
             console.log(userData);
-            // Submit data to the server or handle the completion of the form
-            // You can call the next function or submit the entire form here
-        }
-
-        else {
-            // If false, call askCoreStream()
+        } else {
+            // If test code doesn't match, call askCoreStream()
             asktesttt();
             console.log(userData);
-            // Submit data to the server or handle the completion of the form
-            // You can call the next function or submit the entire form here
         }
-
 
         dobInput.removeEventListener("change", askDobAfterGender);
         dobInput.removeEventListener("change", submitDobAfterGender);
@@ -603,18 +595,23 @@ function submitDobAfterGender() {
     }
 }
 
-function calculateAge(birthDate) {
-    const currentDate = new Date();
-    const birthDateObj = new Date(birthDate);
-    let age = currentDate.getFullYear() - birthDateObj.getFullYear();
-    const monthDiff = currentDate.getMonth() - birthDateObj.getMonth();
+// Helper function to calculate age from the formatted date of birth
+function calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
 
-    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDateObj.getDate())) {
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
         age--;
     }
 
     return age;
 }
+
+
+
+
 function createMessageBoxq(question, currentQuestionIndex, totalQuestions) {
     let newMessageBox = document.createElement("div");
     newMessageBox.className = "message-box my-messagee";
@@ -770,15 +767,16 @@ let questionData = [];
 let questionOptionsAndAnswerss;
 let questionOptionsAndAnswers
 let timestamp_end = "";
- let timestamp_start = "";
+let timestamp_start = "";
 
 let currentQuestionIndex = 0;
 let skippedQuestions = [];
 let testactivated = false;
 console.log('skippedQuestions:',)
 function callApiToStartTest(reportId) {
+    let preventLeave = true;
     userData.timestamp_start = new Date().toISOString();
-clearMessageBoxes();
+    clearMessageBoxes();
     testactivated = true;
 
     const onSkipQuestion = function () {
@@ -805,9 +803,9 @@ clearMessageBoxes();
             } else {
                 currentQuestionIndex = skippedQuestions[0] - 1;
                 const [questionId, currentQuestion] = questionOptionsAndAnswers[currentQuestionIndex];
-                
-		giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
-		 alert("We are re-showing your skipped questions. You cannot skip the question 2 times. Please answer it.");
+
+                giveTest(section.assessmentSubAttribute, questions[currentQuestionIndex].question, questions[currentQuestionIndex].optionsAndAnswerIds, onNextQuestion, currentQuestionIndex, totalQuestions, questionId);
+                alert("We are re-showing your skipped questions. You cannot skip the question 2 times. Please answer it.");
             }
 
         } else {
@@ -884,7 +882,7 @@ clearMessageBoxes();
                 });
 
                 const moveToNextSection = () => {
-		  
+
                     HeadingSection++;
                     submitUserDataToDatabase(userData);
 
@@ -1115,7 +1113,7 @@ function FetchCandidateId(email, adhar, mobile) {
 }
 
 function gfg(n) {
-   
+
     // Create the rating card HTML
     let html = `
         <div class="custom-modal">
@@ -1192,12 +1190,12 @@ function gfg(n) {
 }
 
 function submitRating(rating) {
-  let preventLeave = false;
+    let preventLeave = false;
 
     userData.timestamp_end = new Date().toISOString();
     console.log(userData);
 
-    userData.testProgress = "1"; 
+    userData.testProgress = "1";
     // Submit the rating to user data
     userData.rating = rating;
     console.log(userData);
@@ -1206,6 +1204,13 @@ function submitRating(rating) {
     // Remove the modal from the DOM
     let modal = document.querySelector('.custom-modal');
     modal.parentNode.removeChild(modal);
+    let confirmation = confirm("Thank you for your feedback! You can exit or close the page now. Press OK to close the page or Cancel to stay.");
+
+    // If user presses OK, close the page
+    if (confirmation) {
+        window.close();
+    }
+
 
     // You can remove this line if not needed
     // You can add code here to further process the submitted rating
@@ -1298,6 +1303,14 @@ function submitName() {
 }
 
 function askGender() {
+    const qualificationSelectt = document.getElementById("qualificationSelect");
+    const messageBox = document.getElementById("messageBox");
+
+    // Remove the existing gender select if it exists
+    if (qualificationSelect) {
+        qualificationSelectt.parentNode.removeChild(qualificationSelect);
+    }
+
 
     const messageBoxx = document.getElementById("messageBoxx");
     const organizationSelect = document.getElementById("organizationSelect");
@@ -1379,14 +1392,14 @@ function submitGender() {
 
         console.log(userData);
 
-  
-       
-            // If false, call askCoreStream()
-            askDobAfterGender();
-            console.log(userData);
-            // Submit data to the server or handle the completion of the form
-            // You can call the next function or submit the entire form here
-        
+
+
+        // If false, call askCoreStream()
+        askDobAfterGender();
+        console.log(userData);
+        // Submit data to the server or handle the completion of the form
+        // You can call the next function or submit the entire form here
+
         // Clear the input and move on to the next step (ask for Date of Birth)
         genderSelect.value = "";
 
@@ -1411,7 +1424,7 @@ function askOrganization() {
     }
 
     // Remove the existing qualification select if it exists
- const academicStreamSelect = document.getElementById("academicStreamSelect");
+    const academicStreamSelect = document.getElementById("academicStreamSelect");
     if (academicStreamSelect) {
         academicStreamSelect.parentNode.removeChild(academicStreamSelect);
     }
@@ -1446,6 +1459,8 @@ function askOrganization() {
 
     // List of organization options
     const organizationOptions = [
+
+        "Pexitics",
         "Vibe Fintech ",
         "Supreme Court",
         "Mgrow",
@@ -1582,7 +1597,7 @@ function submitLocation() {
 
     if (location.toLowerCase() === "other") {
         // If "Other" is selected, ask for free text input
-	  userData.country = location;
+        userData.country = location;
         displaySubmittedInput("Country", location, true);
         askOtherLocation();
     } else {
@@ -1600,7 +1615,7 @@ function submitLocation() {
     }
 }
 function toProperCase(str) {
-    return str.replace(/\w\S*/g, function(txt){
+    return str.replace(/\w\S*/g, function (txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
@@ -1896,22 +1911,26 @@ function submitQualification() {
     const qualification = qualificationSelect.value;
 
     if (qualification) {
-        const confirmed = window.confirm("Are you pursuing this qualification? Click 'OK' if yes and 'Cancel' if no.");
-        userData.pursuing = confirmed ? "Yes" : "No";
+        // Check if the test code contains "PEXCGR" before asking the additional questions
+        if (storedTestCode && storedTestCode.includes("PEXCGR")) {
+            const confirmed = window.confirm("Are you pursuing this qualification? Click 'OK' if yes and 'Cancel' if no.");
+            userData.pursuing = confirmed ? "Yes" : "No";
 
-        const studiedMathStats = window.confirm("Have you studied Math / Statistics as part of this qualification? Click 'OK' if yes and 'Cancel' if no.");
-        userData.mathStats = studiedMathStats ? "Yes" : "No";
+            const studiedMathStats = window.confirm("Have you studied Math / Statistics as part of this qualification? Click 'OK' if yes and 'Cancel' if no.");
+            userData.mathStats = studiedMathStats ? "Yes" : "No";
 
-        const studiedScience = window.confirm("Have you studied Science as part of this qualification? Click 'OK' if yes and 'Cancel' if no.");
-        userData.science = studiedScience ? "Yes" : "No";
+            const studiedScience = window.confirm("Have you studied Science as part of this qualification? Click 'OK' if yes and 'Cancel' if no.");
+            userData.science = studiedScience ? "Yes" : "No";
 
-        const openToGovJobs = window.confirm("Are you open to Government Jobs? Click 'OK' if yes and 'Cancel' if no.");
-        userData.govJobs = openToGovJobs ? "Yes" : "No";
+            const openToGovJobs = window.confirm("Are you open to Government Jobs? Click 'OK' if yes and 'Cancel' if no.");
+            userData.govJobs = openToGovJobs ? "Yes" : "No";
 
-        const openToArmedForces = window.confirm("Are you open to Armed Forces Jobs? Click 'OK' if yes and 'Cancel' if no.");
-        userData.armedForcesJobs = openToArmedForces ? "Yes" : "No";
-	  const openToSports = window.confirm("Do you want to take a career in sports ? Click 'OK' if yes and 'Cancel' if no.");
-        userData.SportsJobs = openToSports ? "Yes" : "No";
+            const openToArmedForces = window.confirm("Are you open to Armed Forces Jobs? Click 'OK' if yes and 'Cancel' if no.");
+            userData.armedForcesJobs = openToArmedForces ? "Yes" : "No";
+
+            const openToSports = window.confirm("Do you want to take a career in sports? Click 'OK' if yes and 'Cancel' if no.");
+            userData.SportsJobs = openToSports ? "Yes" : "No";
+        }
 
         // Fetch the ID corresponding to the selected qualification
         fetch(`/api/QualificationTyp/GetIdByName?name=${encodeURIComponent(qualification)}`)
@@ -1921,7 +1940,7 @@ function submitQualification() {
                     // Process the submitted qualification and ID, and proceed to the next step
                     userData.qualification = qualification;
                     if (userData.qualification === "below 10th") {
-                        below10th = "1234"
+                        below10th = "1234";
                     }
                     console.log(below10th);
                     displaySubmittedInput("Qualification", qualification, true);
@@ -1930,20 +1949,20 @@ function submitQualification() {
 
                     // Clear the dropdown menu
                     qualificationSelect.value = "";
-                    console.log(istextcodeInvalid);
-                    // Check if storedTestCode is equal to "PEXCGR2312O1009"
-                    if (!istextcodeInvalid) {
-                        // If true, call askGender() instead of askCoreStream()
+
+                    // Check if storedTestCode contains "PEX4ITP" or "HLSHLS"
+                    if (storedTestCode.includes("PEX4ITP") || storedTestCode.includes("PEXHLS")) {
+                        // If true, call askIndustry()
+                        askGender();
+                        console.log(userData);
+                    } else if (storedTestCode.includes("PEXCGR")) {
+                        // If test code contains "PEXCGR", call askAcademicStream()
                         askAcademicStream();
                         console.log(userData);
-                        // Submit data to the server or handle the completion of the form
-                        // You can call the next function or submit the entire form here
                     } else {
-                        // If false, call askCoreStream()
+                        // If none of the conditions are met, call askNextStep()
                         askNextStep();
                         console.log(userData);
-                        // Submit data to the server or handle the completion of the form
-                        // You can call the next function or submit the entire form here
                     }
                 } else {
                     // Handle the case where the ID is not found for the selected qualification
@@ -1953,11 +1972,13 @@ function submitQualification() {
             .catch(error => {
                 console.error('Error fetching qualification ID:', error);
             });
+
     } else {
         // Handle the case where the qualification is not selected
         alert('Please select your qualification.');
     }
 }
+
 function askAcademicStream() {
     scrollToBottom();
     const genderSelect = document.getElementById("qualificationSelect");
@@ -2023,7 +2044,7 @@ function submitAcademicStream() {
     const academicStream = academicStreamSelect.value;
 
     if (academicStream) {
-	 userData.academicStream = academicStream;
+        userData.academicStream = academicStream;
         // Fetch the ID corresponding to the selected academic stream
         displaySubmittedInput("Academic Stream", academicStream, true);
 
@@ -2047,7 +2068,7 @@ function submitAcademicStream() {
             // Submit data to the server or handle the completion of the form
             // You can call the next function or submit the entire form here
         }
- 
+
 
     } else {
         // Handle the case where the academic stream is not selected
@@ -2121,7 +2142,7 @@ function submitNextStep() {
 
     // Clear the dropdown menu
     nextStepSelect.value = "";
- if ((below10th === "1234" && selectedNextStep === "iwantajob") ||
+    if ((below10th === "1234" && selectedNextStep === "iwantajob") ||
         (userData.qualification.toLowerCase() === "10th/matriculation" && selectedNextStep === "iwantajob") ||
         (userData.qualification.toLowerCase() === "12th/higher secondary" && selectedNextStep === "iwantajob")) {
         storedReportId = "76DD3251-3A3F-48DE-8D0D-CBAE60047743";
@@ -2145,7 +2166,7 @@ function submitNextStep() {
 
     console.log(storedReportId);
 }
-    // Handle the next step based on user's choice
+// Handle the next step based on user's choice
 function askCoreStream() {
     const academicStreamSelect = document.getElementById("academicStreamSelect");
     const messageBox = document.getElementById("messageBox");
@@ -2192,7 +2213,7 @@ function askCoreStream() {
 
             // Replace the existing input with the new select element
             dobInput.parentNode.insertBefore(coreStreamSelect, dobInput.nextSibling);
-	    scrollToBottom();
+            scrollToBottom();
             // Attach the event listener for submitCoreStream
             coreStreamSelect.addEventListener("change", submitCoreStream);
             console.log(userData);
@@ -2269,7 +2290,7 @@ function askSpecialization(coreStreamId) {
                 item1: specialization,
                 item2: specialization.toLowerCase()
             }));
-	    scrollToBottom();
+            scrollToBottom();
 
             // Call the checkboxselect function to display checkboxes
             checkboxselect(mappedOptions, askInterest);
@@ -2388,7 +2409,7 @@ function askInterest() {
 
         // ... Add more options as needed
     ];
- scrollToBottom();
+    scrollToBottom();
     // Add interest options
     for (const interest of interestOptions) {
         const option = document.createElement("option");
@@ -2542,6 +2563,13 @@ function checkboxselectIndustries(optionsData, onNextQuestion) {
 let Indusry = false;
 
 function askIndustry() {
+    const genderSelect = document.getElementById("qualificationSelect");
+    const messageBox = document.getElementById("messageBox");
+
+    // Remove the existing gender select if it exists
+    if (qualificationSelect) {
+        genderSelect.parentNode.removeChild(qualificationSelect);
+    }
 
     const dobInput = document.getElementById("dobInput");
     const interestSelect = document.getElementById("interestSelect");
@@ -2590,7 +2618,7 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
     // Create a wrapper to align the message to the right
     const messageWrapper = document.createElement("div");
     messageWrapper.style.display = "flex";
-  
+
     messageWrapper.appendChild(messageElement);
 
     // Append the wrapper to the chat container
@@ -2932,7 +2960,10 @@ function verifyTestCode(testCode) {
                 const reportId = response.reportId;  // Assuming the response contains the ReportId
                 console.log(`Test code  is valid. Corresponding Report ID is: ${reportId}`);
 
-
+                if (testCode === "PEXHLS2312S1004") {
+                    userData.organisation = "Pexitics";
+                    console.log('Organisation set to Pexitics');
+                }
                 // Log the entire response for further inspection
                 console.log('Server Response:', response);
 
@@ -2993,7 +3024,7 @@ function askemail11() {
 
     document.querySelector(".astro-button-container").style.display = "none";
 
-   // Set the step to 2 for email input
+    // Set the step to 2 for email input
 }
 
 const countryCodes = [
@@ -3303,7 +3334,7 @@ function handleMultipleSubmit() {
     // Validate and set userData based on placeholder
     let isValidInput = false;
     let inputType = "";
-      if (placeholder.includes("phone number")) {
+    if (placeholder.includes("phone number")) {
         const phoneNumber = input.value;
         const countryCode = countryCodeSelect.value;
         inputType = "Phone Number";
@@ -3318,7 +3349,7 @@ function handleMultipleSubmit() {
             alert('Invalid phone number or country code. Please select a country code and enter a valid number.');
         }
     }
-     else if (placeholder.includes("adhar number")) {
+    else if (placeholder.includes("adhar number")) {
         const adharNumber = input.value;
         inputType = "Aadhar Number";
         if (isValidAdharNumber(adharNumber)) {

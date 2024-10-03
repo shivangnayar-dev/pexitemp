@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "I5WbKjplHyvjP+iqApzl/dur42XAN4zteOJJ+zCX3Wc=",
+  "Hash": "9CWqV9bVhTh18nx8EQHgwsizE590IC9Hl311+hmci5Q=",
   "Source": "NewApp",
   "BasePath": "_content/NewApp",
   "Mode": "Default",
@@ -1018,6 +1018,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/js/test.js"
+    },
+    {
+      "Identity": "/root/NewApp/pexibackup/NewApp/wwwroot/js/test.js.save",
+      "SourceId": "NewApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/root/NewApp/pexibackup/NewApp/wwwroot/",
+      "BasePath": "_content/NewApp",
+      "RelativePath": "js/test.js.save",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/test.js.save"
     },
     {
       "Identity": "/root/NewApp/pexibackup/NewApp/wwwroot/js/testt.js",

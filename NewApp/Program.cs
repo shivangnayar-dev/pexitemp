@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using NewApp.Models;
+using DinkToPdf;
+using DinkToPdf.Contracts;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.json");
 var configuration = builder.Configuration;
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 builder.Services.AddDbContext<CandidateDbContext>(options =>
 {
     var connectionString = configuration.GetConnectionString("DefaultConnection");

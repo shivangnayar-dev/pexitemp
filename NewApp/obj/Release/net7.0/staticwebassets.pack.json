@@ -233,6 +233,10 @@
       "PackagePath": "staticwebassets/js/test.js"
     },
     {
+      "Id": "/root/NewApp/pexibackup/NewApp/wwwroot/js/test.js.save",
+      "PackagePath": "staticwebassets/js/test.js.save"
+    },
+    {
       "Id": "/root/NewApp/pexibackup/NewApp/wwwroot/js/testt.js",
       "PackagePath": "staticwebassets/js/testt.js"
     },
