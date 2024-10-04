@@ -15,23 +15,23 @@ public class PexiticsscoreEmailService : BackgroundService
     private readonly ILogger<PexiticsscoreEmailService> _logger;
     private readonly TimeZoneInfo _indianTimeZone;
 
-    public PexiticsscoreEmailService(IServiceProvider serviceProvider, ILogger<PexiticsscoreEmailService> logger)
+  public PexiticsscoreEmailService(IServiceProvider serviceProvider, ILogger<PexiticsscoreEmailService> logger)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
         _indianTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kolkata"); // Get IST Time Zone
     }
 
-   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            // Calculate delay until next 6:00 AM IST
-            var delay = CalculateDelayUntilNext6AMIST();
+            // Calculate delay until next 11:24 PM IST
+            var delay = CalculateDelayUntilNext1124PMIST();
 
-            _logger.LogInformation($"Waiting for {delay.TotalHours} hours until 6:00 AM IST to send the email.");
+            _logger.LogInformation($"Waiting for {delay.TotalHours} hours until 11:24 PM IST to send the email.");
 
-            // Wait until 6:00 AM IST
+            // Wait until 11:24 PM IST
             await Task.Delay(delay, stoppingToken);
 
             try
@@ -50,18 +50,18 @@ public class PexiticsscoreEmailService : BackgroundService
         }
     }
 
-    private TimeSpan CalculateDelayUntilNext6AMIST()
+    private TimeSpan CalculateDelayUntilNext1124PMIST()
     {
         DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _indianTimeZone);
-        DateTime next6AM = now.Date.AddHours(6); // Today's 6:00 AM IST
+        DateTime next1124PM = now.Date.AddHours(23).AddMinutes(50); // Today's 11:24 PM IST
 
-        if (now > next6AM)
+        if (now > next1124PM)
         {
-            // If 6:00 AM has passed today, calculate the delay for tomorrow's 6:00 AM
-            next6AM = next6AM.AddDays(1);
+            // If 11:24 PM has passed today, calculate the delay for tomorrow's 11:24 PM
+            next1124PM = next1124PM.AddDays(1);
         }
 
-        return next6AM - now;
+        return next1124PM - now;
     }
 
 

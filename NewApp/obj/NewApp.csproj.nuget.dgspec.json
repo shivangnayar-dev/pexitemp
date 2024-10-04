@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj": {}
+    "/root/pexibackup/NewApp/NewApp.csproj": {}
   },
   "projects": {
-    "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj": {
+    "/root/pexibackup/NewApp/NewApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
+        "projectUniqueName": "/root/pexibackup/NewApp/NewApp.csproj",
         "projectName": "NewApp",
-        "projectPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/NewApp.csproj",
-        "packagesPath": "/Users/shivangnayar/.nuget/packages/",
-        "outputPath": "/Users/shivangnayar/Projects/pexitest/pexibackup/NewApp/obj/",
+        "projectPath": "/root/pexibackup/NewApp/NewApp.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/root/pexibackup/NewApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/shivangnayar/.nuget/NuGet/NuGet.Config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
-          "/usr/local/share/dotnet/sdk/7.0.311/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -84,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.311/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.119/RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -495,11 +495,11 @@ private async Task<string> GenerateReport(int candidateId)
 if (candidate != null && 
     (candidate.storedTestCode == "PEX4IT2312H1003" || candidate.storedTestCode == "PEX4ITP2312H1003" || candidate.storedTestCode == "PEXHLS2312S1004"))
 {
-    templatePath = "/root/NewApp/pexibackup/NewApp/Result2.html";
+    templatePath = "/root/pexibackup/NewApp/Result2.html";
 }
 else
 {
-    templatePath = "/root/NewApp/pexibackup/NewApp/Result1.html";
+    templatePath = "/root/pexibackup/NewApp/Result1.html";
 }
 
         logMessage = $"Template path: {templatePath}";
