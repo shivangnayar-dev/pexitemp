@@ -53,7 +53,7 @@ public class PexiticsscoreEmailService : BackgroundService
     private TimeSpan CalculateDelayUntilNext1124PMIST()
     {
         DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _indianTimeZone);
-        DateTime next1124PM = now.Date.AddHours(23).AddMinutes(50); // Today's 11:24 PM IST
+        DateTime next1124PM = now.Date.AddHours(24).AddMinutes(4); // Today's 11:24 PM IST
 
         if (now > next1124PM)
         {
