@@ -317,7 +317,10 @@ namespace NewApp.Controllers
                         {
                             recipientEmails.Add(candidate.email_address);
                         }
-
+			    if (storedtestcodee == "PEXHLS2312S1004")
+                {
+                    recipientEmails.Add("abhijit@edugeist.com");
+                }
                         // Prepare email message body
                         body = $"Dear Candidate,\n\nYour report is ready.\n\nOrganization: {candidate.organization}\nName: {candidate.name}\n\nPlease click here to view your report: <a href=\"{fileUrl}\">Click Here</a>\n\nThank you for taking the test with {candidate.organization}.";
 
@@ -1321,42 +1324,66 @@ foreach (var reportSubAttribute in reportSubAttributeToPercentageMap.Keys)
 
                         matrixToReportSubAttributes[matrix][reportSubAttribute] = averagePercentage;
                         // Fetch all Benchmark entries corresponding to the reportSubAttribute
-                        var benchmarkEntries = _context.bechcomen
-                            .Where(b => b.ReportSubattribute == reportSubAttribute)
-                            .ToList(); // Execute the query to retrieve data from the database
+		     var benchmarkEntries = _context.bechcomen
+       .Where(b => b.ReportSubattribute == reportSubAttribute)
+       .ToList(); // Execute the query to retrieve data from the database
 
                         // Filter the benchmark entries based on the percentage range
                         var filteredBenchmarkEntries = benchmarkEntries
                             .Where(b => IsPercentageInRange(averagePercentage, b.Score))
                             .ToList(); // Execute the filtering in memory
 
-                        // Update AssessmentResults with the score from the benchmark entry
-                        foreach (var filteredBenchmarkEntry in filteredBenchmarkEntries)
+                        // Check if there are no valid entries in filteredBenchmarkEntries
+                        if (!filteredBenchmarkEntries.Any() || filteredBenchmarkEntries.All(b => b.Score == "0"))
                         {
-                            var percentage = (decimal)averagePercentage;
-                            var Score = filteredBenchmarkEntry.Score;
-                            var Grade = filteredBenchmarkEntry.Grade;
-                            var Comments2 = filteredBenchmarkEntry.Comments2;
+                            // Create a default AssessmentResult with default values
+                            var defaultScore = 0; // Default score
+                            var defaultGrade = "0"; // Default grade (assuming Grade is a string)
+                            var defaultComments = "No comments"; // Default comments
 
-			    if (averagePercentage == 100)
-                            {
-                                averagePercentage = 95;
-                            }
-                            else if (averagePercentage == 0)
-                            {
-                                averagePercentage = 5;
-                            }
-
+                            // Handle the default case by adding a single entry with defaults
                             AddToResultTable("AssessmentResult", $"reportSubAttributeName{i}", reportSubAttribute, candidateId, "");
                             AddToResultTable("AssessmentResult", $"reportSubAttributeValue{i}", averagePercentage.ToString(), candidateId, "");
-                            AddToResultTable("AssessmentResult", $"Score{i}", Score.ToString(), candidateId, "");
-                            AddToResultTable("AssessmentResult", $"Grade{i}", Grade.ToString(), candidateId, "");
-                            AddToResultTable("AssessmentResult", $"Comment{i}", Comments2.ToString(), candidateId, "");
+                            AddToResultTable("AssessmentResult", $"Score{i}", defaultScore.ToString(), candidateId, "");
+                            AddToResultTable("AssessmentResult", $"Grade{i}", defaultGrade, candidateId, "");
+                            AddToResultTable("AssessmentResult", $"Comment{i}", defaultComments, candidateId, "");
                             AddToResultTable("AssessmentResult", $"matrix{i}", matrix, candidateId, "");
                             AddToResultTable("Benchmark", $"benchmarkvalue{i}", benchmarkValue, candidateId, "");
 
-                            i++;
+                            i++; // Increment index after adding the default entry
                         }
+                        else
+                        {
+                            // Update AssessmentResults with the score from the benchmark entry
+                            foreach (var filteredBenchmarkEntry in filteredBenchmarkEntries)
+                            {
+                                var percentage = (decimal)averagePercentage;
+                                var Score = filteredBenchmarkEntry.Score ?? "0"; // Default to 0 if Score is null
+                                var Grade = filteredBenchmarkEntry.Grade ?? "0"; // Default to "0" if Grade is null
+                                var Comments2 = filteredBenchmarkEntry.Comments2 ?? "No comments"; // Default to "No comments" if Comments2 is null
+
+                                if (averagePercentage == 100)
+                                {
+                                    averagePercentage = 95;
+                                }
+                                else if (averagePercentage == 0)
+                                {
+                                    averagePercentage = 5;
+                                }
+
+                                // Add valid benchmark entry data
+                                AddToResultTable("AssessmentResult", $"reportSubAttributeName{i}", reportSubAttribute, candidateId, "");
+                                AddToResultTable("AssessmentResult", $"reportSubAttributeValue{i}", averagePercentage.ToString(), candidateId, "");
+                                AddToResultTable("AssessmentResult", $"Score{i}", Score.ToString(), candidateId, "");
+                                AddToResultTable("AssessmentResult", $"Grade{i}", Grade.ToString(), candidateId, "");
+                                AddToResultTable("AssessmentResult", $"Comment{i}", Comments2.ToString(), candidateId, "");
+                                AddToResultTable("AssessmentResult", $"matrix{i}", matrix, candidateId, "");
+                                AddToResultTable("Benchmark", $"benchmarkvalue{i}", benchmarkValue, candidateId, "");
+
+                                i++; // Increment index after adding each valid entry
+                            }
+                        }
+
                     }
                 }
                 foreach (var kvp in matrixAverages)

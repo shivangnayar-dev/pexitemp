@@ -50,10 +50,10 @@ public class PexiticsscoreEmailService : BackgroundService
         }
     }
 
-    private TimeSpan CalculateDelayUntilNext1124PMIST()
+private TimeSpan CalculateDelayUntilNext1124PMIST()
     {
         DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _indianTimeZone);
-        DateTime next1124PM = now.Date.AddHours(24).AddMinutes(4); // Today's 11:24 PM IST
+        DateTime next1124PM = now.Date.AddHours(6).AddMinutes(02); // Today's 11:24 PM IST
 
         if (now > next1124PM)
         {
@@ -63,7 +63,6 @@ public class PexiticsscoreEmailService : BackgroundService
 
         return next1124PM - now;
     }
-
 
     private async Task<string> GetCombinedDataAsSideBySideCsvAsync()
     {
@@ -96,7 +95,7 @@ public class PexiticsscoreEmailService : BackgroundService
 
     private async Task<string> GetPexiticsscoreDataAsCsvAsync()
     {
-        string connectionString = "Server=178.16.139.40;Database=CandidateDatabase;User=neww;Password=your_password;";
+        string connectionString = "Server=178.16.139.40;Database=CandidateDatabase;User=new_user;Password=password;";
         StringBuilder csvBuilder = new StringBuilder();
 
         try
@@ -145,7 +144,7 @@ public class PexiticsscoreEmailService : BackgroundService
 
     private async Task<string> GetPexiticsTableDataAsCsvAsync()
     {
-        string connectionString = "Server=178.16.139.40;Database=CandidateDatabase;User=neww;Password=your_password;";
+	 string connectionString = "Server=178.16.139.40;Database=CandidateDatabase;User=new_user;Password=password;";
         StringBuilder csvBuilder = new StringBuilder();
 
         try
@@ -227,6 +226,7 @@ public class PexiticsscoreEmailService : BackgroundService
             // Add recipient(s)
             message.To.Add("shivangnayar22@gmail.com");
             message.To.Add("subhashini@pexitics.com");
+  	    message.To.Add("reuben@pexitics.com");
 
             message.Subject = "Pexiticsscore and Pexitics_Table Data CSV";
             message.Body = "Please find the attached CSV file for Pexiticsscore and Pexitics_Table data.";

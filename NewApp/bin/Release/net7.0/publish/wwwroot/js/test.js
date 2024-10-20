@@ -1951,7 +1951,7 @@ function submitQualification() {
                     qualificationSelect.value = "";
 
                     // Check if storedTestCode contains "PEX4ITP" or "HLSHLS"
-                    if (storedTestCode.includes("PEX4ITP") || storedTestCode.includes("PEXHLS")) {
+                    if (storedTestCode.includes("PEX4ITP2312H1003") || storedTestCode.includes("PEXHLS")) {
                         // If true, call askIndustry()
                         askGender();
                         console.log(userData);
@@ -2563,13 +2563,6 @@ function checkboxselectIndustries(optionsData, onNextQuestion) {
 let Indusry = false;
 
 function askIndustry() {
-    const genderSelect = document.getElementById("qualificationSelect");
-    const messageBox = document.getElementById("messageBox");
-
-    // Remove the existing gender select if it exists
-    if (qualificationSelect) {
-        genderSelect.parentNode.removeChild(qualificationSelect);
-    }
 
     const dobInput = document.getElementById("dobInput");
     const interestSelect = document.getElementById("interestSelect");
@@ -2960,10 +2953,7 @@ function verifyTestCode(testCode) {
                 const reportId = response.reportId;  // Assuming the response contains the ReportId
                 console.log(`Test code  is valid. Corresponding Report ID is: ${reportId}`);
 
-                if (testCode === "PEXHLS2312S1004") {
-                    userData.organisation = "Pexitics";
-                    console.log('Organisation set to Pexitics');
-                }
+
                 // Log the entire response for further inspection
                 console.log('Server Response:', response);
 
@@ -2979,7 +2969,14 @@ function verifyTestCode(testCode) {
                 isAskTestCodeCalled = false;
 
                 storedReportId = reportId;
-                askConsent();
+                if (testCode === "PEXHLS2312S1004") {
+                    userData.organisation = "Pexitics";
+                    console.log('Organisation set to Pexitics');
+                    askReferrer();  // Ask for referrer if this specific test code is used
+                } else {
+                    askConsent();  // If the test code is not "PEXHLS2312S1004", ask for consent directly
+                }
+
 
 
                 // Additional actions or redirection can be added here
@@ -2999,6 +2996,39 @@ function verifyTestCode(testCode) {
         }
     });
 }
+function askReferrer() {
+    document.getElementById("dobInput").placeholder = "Who referred you to this test?";
+    createMessageBox("Who referred you to this test ( person or consultant or company name ) ?? ");
+
+    // Remove any previous event listeners
+
+
+    // Attach the event listener for the referrer input
+    document.getElementById("dobInput").addEventListener("change", submitReferrer);
+}
+
+function submitReferrer() {
+    const referrer = document.getElementById("dobInput").value.trim();
+
+    if (referrer) {
+        userData.referrer = referrer;
+        console.log(userData);// Store the referrer in the userData object
+        displaySubmittedInput("Referrer", referrer, true);
+
+        // Remove the event listener after submission
+        document.getElementById("dobInput").removeEventListener("change", submitReferrer);
+        // Proceed to the next step or action (if any)
+        document.getElementById("dobInput").value = "";
+
+        // Proceed to the next step or action (if any)
+      
+        askConsent();
+
+    } else {
+        alert('Please enter the name of the person who referred you to this test.');
+    }
+}
+
 $(document).ready(function () {
     $("#dobInput").intlTelInput({
         initialCountry: "in",
