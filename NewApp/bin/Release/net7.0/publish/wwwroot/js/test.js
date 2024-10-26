@@ -2600,12 +2600,15 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
     const chatContainer = document.querySelector(".chat-container");
     const properCaseValue = toProperCase(value);
 
-    // Create a new message element
+    // Convert type to a usable ID format
+    const typeId = type.toLowerCase().replace(/\s+/g, "-");
+
+    // Create a new message element with a span to hold the value
     const messageElement = document.createElement("div");
     messageElement.classList.add(isUserMessage ? "user-message" : "system-message");
     messageElement.innerHTML = `
-      <p>${properCaseValue}
-        <button id="edit-${type.toLowerCase()}">Edit</button></p>
+      <p><span id="${typeId}-value">${properCaseValue}</span>
+        <button id="edit-${typeId}">Edit</button></p>
     `;
 
     // Create a wrapper to align the message to the right
@@ -2617,24 +2620,15 @@ function displaySubmittedInput(type, value, isUserMessage = true) {
     // Append the wrapper to the chat container
     chatContainer.appendChild(messageWrapper);
 
-    // Style the user message to look like a reply
-    if (isUserMessage) {
-        messageElement.style.backgroundColor = "#f1f1f1"; // Light grey background
-        messageElement.style.border = "1px solid #ccc"; // Light border
-        messageElement.style.borderRadius = "15px"; // Rounded corners
-        messageElement.style.padding = "10px"; // Padding for some space inside
-        messageElement.style.margin = "10px 0"; // Margin between messages
-        messageElement.style.maxWidth = "60%"; // Limit the width
-    }
-
     // Style the edit button
-    const editButton = document.getElementById(`edit-${type.toLowerCase()}`);
+    const editButton = document.getElementById(`edit-${typeId}`);
     styleButton(editButton);
 
     // Attach event listener to the edit button
     editButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
     scrollToBottom();
 }
+
 
 function styleButton(button) {
     button.style.backgroundColor = "#d19cff";
@@ -2651,33 +2645,31 @@ function styleButton(button) {
 }
 
 function editSubmittedInput(type, messageElement) {
-    if (type.toLowerCase() === "core stream") {
-        editCoreStream(messageElement);
-    } else if (type.toLowerCase() === "interest") {
-        editInterest(messageElement);
-    } else if (type.toLowerCase() === "location") {
-        editLocation(messageElement);
-    } else {
-        const currentValue = document.getElementById(`${type.toLowerCase()}-value`).textContent;
+    // Convert type to a usable ID format
+    const typeId = type.toLowerCase().replace(/\s+/g, "-");
 
-        // Create an input field with the current value
-        const inputField = document.createElement("input");
-        inputField.type = "text";
-        inputField.value = currentValue;
-        inputField.id = `edit-${type.toLowerCase()}-input`;
+    const currentValue = document.getElementById(`${typeId}-value`).textContent;
 
-        // Replace the span with the input field
-        const valueSpan = document.getElementById(`${type.toLowerCase()}-value`);
-        valueSpan.parentNode.replaceChild(inputField, valueSpan);
+    // Create an input field with the current value
+    const inputField = document.createElement("input");
+    inputField.type = "text";
+    inputField.value = currentValue;
+    inputField.id = `edit-${typeId}-input`;
 
-        // Change the edit button to a save button
-        const editButton = document.getElementById(`edit-${type.toLowerCase()}`);
-        editButton.textContent = "Save";
-        editButton.id = `save-${type.toLowerCase()}`;
-        styleButton(editButton);
-        editButton.addEventListener("click", () => saveEditedInput(type, messageElement));
-    }
+    // Replace the span with the input field
+    const valueSpan = document.getElementById(`${typeId}-value`);
+    valueSpan.parentNode.replaceChild(inputField, valueSpan);
+
+    // Change the edit button to a save button
+    const editButton = document.getElementById(`edit-${typeId}`);
+    editButton.textContent = "Save";
+    editButton.id = `save-${typeId}`;
+    styleButton(editButton);
+
+    // Attach event listener to save the edited input
+    editButton.addEventListener("click", () => saveEditedInput(type, messageElement));
 }
+
 
 function editCoreStream(messageElement) {
     const currentValue = document.getElementById("core stream-value").textContent;
@@ -2811,68 +2803,54 @@ function editInterest(messageElement) {
 }
 
 function saveEditedInput(type, messageElement) {
-    if (type.toLowerCase() === "core stream") {
-        const coreStreamSelect = document.getElementById("edit-coreStreamSelect");
-        const newValue = coreStreamSelect.options[coreStreamSelect.selectedIndex].text;
+    const typeId = type.toLowerCase().replace(/\s+/g, "-"); // Convert type to a usable ID format
+    let newValue;
+
+    // Determine if we are working with a select element or an input field
+    const selectElement = document.getElementById(`edit-${typeId}Select`);
+    const inputField = document.getElementById(`edit-${typeId}-input`);
+
+    if (selectElement) {
+        // Handle select input (e.g., core stream, interest, location)
+        newValue = selectElement.options[selectElement.selectedIndex].text;
+
         const newElement = document.createElement("span");
-        newElement.id = "core stream-value";
+        newElement.id = `${typeId}-value`;
         newElement.textContent = newValue;
 
-        coreStreamSelect.parentNode.replaceChild(newElement, coreStreamSelect);
+        // Replace the select element with the updated span
+        selectElement.parentNode.replaceChild(newElement, selectElement);
+    } else if (inputField) {
+        // Handle text input (e.g., phone number, email, adhar)
+        newValue = inputField.value.trim();
 
-        // Change the save button back to an edit button
-        const saveButton = document.getElementById("save-core stream");
-        saveButton.textContent = "Edit";
-        saveButton.id = "edit-core stream";
-        styleButton(saveButton);
-        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
-    } else if (type.toLowerCase() === "interest") {
-        const interestSelect = document.getElementById("edit-interestSelect");
-        const newValue = interestSelect.options[interestSelect.selectedIndex].text;
+        if (!newValue) {
+            alert("Please enter a valid value.");
+            return;
+        }
+
         const newElement = document.createElement("span");
-        newElement.id = "interest-value";
+        newElement.id = `${typeId}-value`;
         newElement.textContent = newValue;
 
-        interestSelect.parentNode.replaceChild(newElement, interestSelect);
-
-        // Change the save button back to an edit button
-        const saveButton = document.getElementById("save-interest");
-        saveButton.textContent = "Edit";
-        saveButton.id = "edit-interest";
-        styleButton(saveButton);
-        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
-    } else if (type.toLowerCase() === "location") {
-        const locationSelect = document.getElementById("edit-locationSelect");
-        const newValue = locationSelect.options[locationSelect.selectedIndex].text;
-        const newElement = document.createElement("span");
-        newElement.id = "location-value";
-        newElement.textContent = newValue;
-
-        locationSelect.parentNode.replaceChild(newElement, locationSelect);
-
-        // Change the save button back to an edit button
-        const saveButton = document.getElementById("save-location");
-        saveButton.textContent = "Edit";
-        saveButton.id = "edit-location";
-        styleButton(saveButton);
-        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
-    } else {
-        const inputField = document.getElementById(`edit-${type.toLowerCase()}-input`);
-        const newValue = inputField.value;
-        const newElement = document.createElement("span");
-        newElement.id = `${type.toLowerCase()}-value`;
-        newElement.textContent = newValue;
-
+        // Replace the input field with the updated span
         inputField.parentNode.replaceChild(newElement, inputField);
-
-        // Change the save button back to an edit button
-        const saveButton = document.getElementById(`save-${type.toLowerCase()}`);
-        saveButton.textContent = "Edit";
-        saveButton.id = `edit-${type.toLowerCase()}`;
-        styleButton(saveButton);
-        saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
     }
+
+    // Change the save button back to an edit button
+    const saveButton = document.getElementById(`save-${typeId}`);
+    saveButton.textContent = "Edit";
+    saveButton.id = `edit-${typeId}`;
+    styleButton(saveButton);
+
+    // Re-attach the event listener to allow future edits
+    saveButton.addEventListener("click", () => editSubmittedInput(type, messageElement));
+
+    // Update the userData object
+    userData[type.replace(/\s+/g, "_")] = newValue; // For object keys, use underscores
+    console.log(userData);
 }
+
 function normalizeKey(key) {
     return key.toLowerCase().replace(/ /g, "_");
 }
@@ -3999,401 +3977,11 @@ function askQuestion(question, placeholder) {
     document.getElementById("dobInput").setAttribute("placeholder", placeholder);
     document.querySelector(".astro-button-container").style.display = "none";
 }
-function compareDataWithRashiNakshatraLagna(rashiInfo, nakshatraInfo, lagnaInfo) {
-    console.log("Rashi Info:", rashiInfo);
-    console.log("Rashi Input:", rashiInputValue);
-    console.log("Nakshatra Input:", nakshatraInputValue);
-    console.log("Lagna Input:", lagnaInputValue);
-    // Check if the input parameters are defined
-    if (!rashiInfo || !nakshatraInfo || !lagnaInfo) {
-        console.error("One or more input parameters are undefined.");
-        console.error("rashiInfo:", rashiInfo);
-        console.error("nakshatraInfo:", nakshatraInfo);
-        console.error("lagnaInfo:", lagnaInfo);
-        return;
-    }
-
-    // Check if the expected properties exist in the input objects
-    let rnlJobs = Array.isArray(rashiInfo.Jobs) ? rashiInfo.Jobs : [];
-    let rnlIndustries = Array.isArray(rashiInfo.Industries) ? rashiInfo.Industries : [];
-    let rnlAreasOfStudy = Array.isArray(rashiInfo.AreaOfStudy) ? rashiInfo.AreaOfStudy : [];
-
-    let nakshatraJobs = Array.isArray(nakshatraInfo.Jobs) ? nakshatraInfo.Jobs : [];
-    let nakshatraIndustries = Array.isArray(nakshatraInfo.Industries) ? nakshatraInfo.Industries : [];
-    let nakshatraAreasOfStudy = Array.isArray(nakshatraInfo.AreaOfStudy) ? nakshatraInfo.AreaOfStudy : [];
-
-    let lagnaJobs = Array.isArray(lagnaInfo.Jobs) ? lagnaInfo.Jobs : [];
-    let lagnaIndustries = Array.isArray(lagnaInfo.Industries) ? lagnaInfo.Industries : [];
-    let lagnaAreasOfStudy = Array.isArray(lagnaInfo.AreaOfStudy) ? lagnaInfo.AreaOfStudy : [];
-
-    let combinedJobs = [...rnlJobs, ...nakshatraJobs, ...lagnaJobs];
-    let combinedIndustries = [...rnlIndustries, ...nakshatraIndustries, ...lagnaIndustries];
-    let combinedAreasOfStudy = [...rnlAreasOfStudy, ...nakshatraAreasOfStudy, ...lagnaAreasOfStudy];
-
-    let jobReport = generateReport("Job", combinedJobs, "Jobs");
-    let industryReport = generateReport("Industry", combinedIndustries, "Industries");
-    let areaOfStudyReport = generateReport("Area of Study", combinedAreasOfStudy, "AreaOfStudy");
-
-    createMessageBox("As per your stars, the most suitable jobs are:", jobReport);
-    createMessageBox("As per your stars, the most suitable industries are:", industryReport);
-    createMessageBox("As per your stars, the most suitable areas of study are:", areaOfStudyReport);
-}
-let rashiInputValue = "";
-let nakshatraInputValue = "";
-let lagnaInputValue = "";
-
-function handleRashiSubmit() {
-    // Clear previous message boxes
 
 
-    if (!isRashiSubmit) {
-        rashiInputValue = document.getElementById("dobInput").value;
-        document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>Your rashi is: ${rashiInputValue}</p>
-                <span>08:08</span>
-            </div>
-        `;
-        isRashiSubmit = true;
-        askQuestion("What is your Nakshatra?", "Enter your Nakshatra");
-    } else if (!isNakshatraSubmit) {
-        nakshatraInputValue = document.getElementById("dobInput").value;
-        document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>Your nakshatra is: ${nakshatraInputValue}</p>
-                <span>08:08</span>
-            </div>
-        `;
-        isNakshatraSubmit = true;
-        askQuestion("What is your lagna?", "Enter your Lagna");
-    } else if (!isLagnaSubmit) {
-        lagnaInputValue = document.getElementById("dobInput").value;
-        document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>Your lagna is: ${lagnaInputValue}</p>
-                <span>08:08</span>
-            </div>
-        `;
-        isLagnaSubmit = true;
-        document.querySelector(".astro-button-container").style.display = "none";
-
-        compareDataWithRashiNakshatraLagna(rashiData[rashiInputValue], nakshatraData[nakshatraInputValue], lagnaData[lagnaInputValue]);
-    }
-
-}
 
 
-function handleUserInput() {
-    let userInput = document.getElementById("userInput").value;
-    document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>${userInput}</p>
-                <span>Current Time</span>
-            </div>
-        `
-    document.querySelector(".astro-button-container").style.display = "none";
-    // Add logic to handle user input, you can call other functions as needed
-}
-let sunsign;
-let month; // Declare month globally
-let day; // Declare day globally
-let year; // Declare year globally
-let step = 1; // Keep track of the step in the date input process
 
-function handleDateOfBirthSubmit() {
-    isDobSubmit = true;
-
-    // Check the current step and proceed accordingly
-    if (step === 1) {
-        let yearInput = document.getElementById("dobInput");
-        year = parseInt(yearInput.value, 10);
-
-        // Proceed to the next step
-        step++;
-        document.querySelector(".my-message").innerHTML = `
-            <p>Great! Now, enter the month of your date of birth (1-12):</p>
-        `;
-        yearInput.value = ""; // Clear the input for the next step
-    } else if (step === 2) {
-        let monthInput = document.getElementById("dobInput");
-        month = parseInt(monthInput.value, 10);
-
-        // Proceed to the next step
-        step++;
-        document.querySelector(".my-message").innerHTML = `
-            <p>Almost there! Now, enter the day of your date of birth:</p>
-        `;
-        monthInput.value = ""; // Clear the input for the next step
-    } else if (step === 3) {
-        let dayInput = document.getElementById("dobInput");
-        day = parseInt(dayInput.value, 10);
-
-        // Get the Sunsign based on the date of birth
-        sunsign = getSunsign(month, day);
-
-        // Display the Sunsign
-        document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>Your Sunsign is: ${sunsign}</p>
-                <span>08:08</span>
-            </div>
-        `;
-
-        // Ask for the Ascendant Sign
-        let ascendantOptions = Object.keys(ascendantData).map(sign => `<option value="${sign}">${sign}</option>`).join('');
-
-        document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>What is your Ascendant (Rising) Sign?</p>
-                <select id="ascendantInput">
-                    ${ascendantOptions}
-                    <option value="unknown">I don't know</option>
-                </select>
-                <button class="ascendant-button" onclick="handleAscendantSubmit()">Submit</button>
-                <span>08:08</span>
-            </div>
-        `;
-
-        document.querySelector(".astro-button-container").style.display = "none";
-    }
-}
-function compareDataWithAscendant(ascendantInfo, sunsign) {
-    let ascendantJobs = Array.isArray(ascendantInfo.Jobs) ? ascendantInfo.Jobs : [];
-    let ascendantIndustries = Array.isArray(ascendantInfo.Industries) ? ascendantInfo.Industries : [];
-    let ascendantAreasOfStudy = Array.isArray(ascendantInfo.AreasOfStudy) ? ascendantInfo.AreasOfStudy : [];
-
-    let sunsignJobs = data[sunsign].Jobs;
-    let sunsignIndustries = data[sunsign].Industries;
-    let sunsignAreasOfStudy = data[sunsign].AreasOfStudy;
-
-    let combinedJobs = [...ascendantJobs, ...sunsignJobs];
-    let combinedIndustries = [...ascendantIndustries, ...sunsignIndustries];
-    let combinedAreasOfStudy = [...ascendantAreasOfStudy, ...sunsignAreasOfStudy];
-
-    let jobReport = generateReport("Job", combinedJobs, "Jobs");
-    let industryReport = generateReport("Industry", combinedIndustries, "Industries");
-    let areaOfStudyReport = generateReport("Area of Study", combinedAreasOfStudy, "AreasOfStudy");
-
-    createMessageBox("As per your stars, the most suitable jobs are:");
-    console.log(combinedJobs);
-    createMessageBox("As per your stars, the most suitable industries are:", industryReport);
-
-    createMessageBox("As per your stars, the most suitable areas of study are:", areaOfStudyReport);
-}
-function handleAscendantSubmit() {
-    let ascendantInput = document.getElementById("ascendantInput");
-    let selectedAscendant = ascendantInput.value;
-
-    console.log("Selected Ascendant:", selectedAscendant);
-
-    // Handle the selected Ascendant Sign
-    if (selectedAscendant === "unknown") {
-        // Handle "I don't know" option
-        document.querySelector(".chat-container").innerHTML += `
-            <div class="message-box my-message">
-                <p>That's okay! If you ever find out, feel free to let me know.</p>
-                <span>08:08</span>
-            </div>
-        `;
-    } else {
-        // Handle the selected Ascendant Sign
-        let ascendantInfo = ascendantData[selectedAscendant];
-
-        console.log("Ascendant Info:", ascendantInfo);
-
-        // Check if Jobs is an array, default to an empty array if not
-        let jobList = Array.isArray(ascendantInfo.Jobs) ? ascendantInfo.Jobs : [];
-
-        console.log("Job List:", jobList);
-
-        // Combine jobs from both Western and Vedic astrology
-        let combinedJobs = [...jobList, ...data[sunsign]["Jobs"]];
-
-        // Sort the combined jobs array
-        combinedJobs.sort();
-
-        // Check for duplicates and count frequency
-        let jobFrequencyMap = {};
-        combinedJobs.forEach(item => {
-            jobFrequencyMap[item] = (jobFrequencyMap[item] || 0) + 1;
-        });
-
-        // Create a job report in descending order of frequency
-        let jobReport = Object.keys(jobFrequencyMap)
-            .sort((a, b) => jobFrequencyMap[b] - jobFrequencyMap[a])
-            .map(item => `<li>${item}</li>`);
-
-        // Display the job report in the chat
-        createMessageBox("As per your stars, the most suitable jobs are:", `<ul>${jobReport.join('')}</ul>`);
-
-        // Combine areas of study from both Western and Vedic astrology
-        let combinedAreasOfStudy = [...ascendantInfo.AreasOfStudy, ...data[sunsign]["AreasOfStudy"]];
-
-        // Sort the combined areas of study array
-        combinedAreasOfStudy.sort();
-
-        // Check for duplicates and count frequency
-        let areaOfStudyFrequencyMap = {};
-        combinedAreasOfStudy.forEach(item => {
-            areaOfStudyFrequencyMap[item] = (areaOfStudyFrequencyMap[item] || 0) + 1;
-        });
-
-        // Create an area of study report in descending order of frequency
-        let areaOfStudyReport = Object.keys(areaOfStudyFrequencyMap)
-            .sort((a, b) => areaOfStudyFrequencyMap[b] - areaOfStudyFrequencyMap[a])
-            .map(item => `<li>${item}</li>`);
-
-        // Display the area of study report in the chat
-        createMessageBox("As per your stars, the most suitable areas of study are:", `<ul>${areaOfStudyReport.join('')}</ul>`);
-
-        // Combine industries from both Western and Vedic astrology
-        let combinedIndustries = [...ascendantInfo.Industries, ...data[sunsign]["Industries"]];
-
-        // Sort the combined industries array
-        combinedIndustries.sort();
-
-        // Check for duplicates and count frequency
-        let industryFrequencyMap = {};
-        combinedIndustries.forEach(item => {
-            industryFrequencyMap[item] = (industryFrequencyMap[item] || 0) + 1;
-        });
-
-        // Create an industry report in descending order of frequency
-        let industryReport = Object.keys(industryFrequencyMap)
-            .sort((a, b) => industryFrequencyMap[b] - industryFrequencyMap[a])
-            .map(item => `<li>${item}</li>`); 1
-
-        // Display the industry report in the chat
-        createMessageBox("As per your stars, the most suitable industries are:", `<ul>${industryReport.join('')}</ul>`);
-        createMessageBox("Would you like to know more about your career path?", '<button class="ascendantsub-button" onclick="handleGetMoreInfoClick()">Take a Test</button>');
-        createMessageBox("Generate PDF", '<button class="generate-pdf-button" onclick="generatePDF()">Generate PDF</button>');
-
-    }
-}
-
-
-// The rest of your existing code...
-
-// Add the generateReport function if it's not already present
-function generateReport(title, list, category) {
-    // Check if the category exists in the list objects
-    if (!list[0].hasOwnProperty(category)) {
-        return `<p>No data available for ${title.toLowerCase()}.</p>`;
-    }
-
-    // Extract the category list from the combined list
-    let categoryList = list.map(item => item[category]).flat();
-
-    // Count the frequency of each item
-    let frequencyMap = {};
-    categoryList.forEach(item => {
-        frequencyMap[item] = (frequencyMap[item] || 0) + 1;
-    });
-
-    // Sort the list in descending order of frequency
-    let sortedList = Object.keys(frequencyMap)
-        .sort((a, b) => frequencyMap[b] - frequencyMap[a])
-        .map(item => ({ name: item, count: frequencyMap[item] }));
-
-    // Create a report in the desired format
-    let report = sortedList.map(item => `<li>${item.name} (${item.count} times)</li>`);
-
-    return `<ul>${report.join('')}</ul>`;
-}
-
-
-function getSunsign(month, day) {
-    // This is a sample implementation, replace it with your logic
-    // using the actual zodiac sign calculation
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
-        return "Aquarius";
-    } else if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) {
-        return "Pisces";
-    } else if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {
-        return "Aries";
-    } else if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) {
-        return "Taurus";
-    } else if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) {
-        return "Gemini";
-    } else if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) {
-        return "Cancer";
-    } else if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) {
-        return "Leo";
-    } else if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) {
-        return "Virgo";
-    } else if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) {
-        return "Libra";
-    } else if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) {
-        return "Scorpio";
-    } else if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {
-        return "Sagittarius";
-    } else {
-        return "Capricorn";
-    }
-}
-
-let data = {
-    "Aries": {
-        "Jobs": ["Sales", "Athlete", "Lawyer", "Manager", "Engineer"],
-        "Industries": ["Sports", "Technology", "Legal", "Business", "Marketing"],
-        "AreasOfStudy": ["Psychology", "Engineering", "Sports Science", "Entrepreneurship", "Law"]
-    },
-    "Taurus": {
-        "Jobs": ["Banking", "Chef", "Gardener", "Accountant", "Designer"],
-        "Industries": ["Finance", "Food", "Agriculture", "Fashion", "Retail"],
-        "AreasOfStudy": ["Finance", "Culinary Arts", "Horticulture", "Banking", "Fashion Design"]
-    },
-    "Gemini": {
-        "Jobs": ["Writer", "Journalist", "Programmer", "Marketer", "Sales"],
-        "Industries": ["Media", "Technology", "Education", "Advertising", "PR"],
-        "AreasOfStudy": ["Communication", "Journalism", "Information Technology", "Marketing", "Social Media"]
-    },
-    "Cancer": {
-        "Jobs": ["Nurse", "Teacher", "Counselor", "Chef", "Real Estate"],
-        "Industries": ["Healthcare", "Education", "Real Estate", "Food", "Social Services"],
-        "AreasOfStudy": ["Psychology", "Nursing", "Counseling", "Education", "Social Work"]
-    },
-    "Leo": {
-        "Jobs": ["Actor", "Director", "CEO", "Sales", "Entrepreneur"],
-        "Industries": ["Entertainment", "Business", "Marketing", "Retail"],
-        "AreasOfStudy": ["Theater Arts", "Film Production", "Management", "Entrepreneurship", "Sales"]
-    },
-    "Virgo": {
-        "Jobs": ["Doctor", "Nutritionist", "Editor", "Accountant", "Analyst"],
-        "Industries": ["Healthcare", "Publishing", "Finance", "Technology", "Consulting"],
-        "AreasOfStudy": ["Medicine", "Nutrition", "Editing", "Accounting", "Data Analysis"]
-    },
-    "Libra": {
-        "Jobs": ["Lawyer", "Psychologist", "Counselor", "Mediator", "PR"],
-        "Industries": ["Legal", "Healthcare", "Social Services", "Legal", "Marketing"],
-        "AreasOfStudy": ["Law", "Psychology", "Social Work", "Mediation", "Public Relations"]
-    },
-    "Scorpio": {
-        "Jobs": ["Detective", "Psychologist", "Researcher", "Investigator", "Surgeon"],
-        "Industries": ["Law Enforcement", "Science", "Security", "Healthcare", "Finance"],
-        "AreasOfStudy": ["Criminology", "Psychology", "Research", "Detective", "Forensics"]
-    },
-    "Sagittarius": {
-        "Jobs": ["Philosopher", "Travel Agent", "Teacher", "Outdoor Guide", "Writer"],
-        "Industries": ["Philosophy", "Tourism", "Education", "Adventure", "Media"],
-        "AreasOfStudy": ["Philosophy", "Travel & Tourism", "Education", "Outdoor Adventure", "Writing"]
-    },
-    "Capricorn": {
-        "Jobs": ["CEO", "Economist", "Engineer", "Manager", "Accountant"],
-        "Industries": ["Business", "Technology", "Construction", "Finance", "Government"],
-        "AreasOfStudy": ["Business", "Economics", "Engineering", "Management", "Finance"]
-    },
-    "Aquarius": {
-        "Jobs": ["Scientist", "Technologist", "Psychologist", "Activist", "Researcher"],
-        "Industries": ["Science", "Technology", "Social Services", "Nonprofit", "Environmental"],
-        "AreasOfStudy": ["Science", "Technology", "Psychology", "Social Work", "Environmental Studies"]
-    },
-    "Pisces": {
-        "Jobs": ["Artist", "Psychologist", "Musician", "Nurse", "Marine Biologist"],
-        "Industries": ["Arts", "Healthcare", "Entertainment", "Environment", "Nonprofit"],
-        "AreasOfStudy": ["Art", "Psychology", "Music", "Healing", "Oceanography"]
-    }
-};
 function handleYouTubeChatClick() {
     // Update the right container with the astrology question
     document.querySelector(".right-container .chat-container").innerHTML = `
@@ -4408,55 +3996,6 @@ function handleYouTubeChatClick() {
         </div>
     `;
 }
-document.querySelector(".chat-box.Talk to Career").addEventListener("click", handleCreerChatClick);
-
-function handleCareerExpertClick() {
-    // Update the right container with the contact information
-    var baseUrl = '';
-
-    // Check if running on localhost
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        baseUrl = 'https://localhost:7252'; // Replace PORT with your local port number
-    } else {
-        // Set the base URL for production
-        baseUrl = 'https://careertests.in';
-    }
-
-    // Open a new tab and navigate to the specified URL
-    window.open(baseUrl + '/Councellor', '_blank');
-}
-function resetRightContainer() {
-    // Replace the content with the original right container content
-    document.querySelector(".right-container .chat-container").innerHTML = `
-            <div class="message-box my-message">
-                <p>Which Astrology line do you believe in?</p>
-                <span>08:00</span>
-            </div>
-            <div class="message-box my-message astro-button-container">
-                <button class="western-button" onclick="askWestern()">Western</button>
-                <button class="vedic-button" onclick="startVedicProcess()">Vedic</button>
-                <span>08:01</span>
-            </div>
-        `;
-}
-
-function handleAstroChatClick() {
-    // Reset the right container to its original state
-
-    // Define the base URL
-    var baseUrl = '';
-
-    // Check if running on localhost
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        baseUrl = 'https://localhost:7252'; // Replace PORT with your local port number
-    } else {
-        // Set the base URL for production
-        baseUrl = 'https://careertests.in';
-    }
-
-    // Open a new tab and navigate to the specified URL
-    window.open(baseUrl + '/Astro', '_blank');
-}
 
 
 function googleTranslateElementInit() {
@@ -4464,17 +4003,7 @@ function googleTranslateElementInit() {
 }
 
 // Make sure to include the correct source URL for the Google Translate script
-var script = document.createElement('script');
-script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-document.head.appendChild(script);
 
-function handleGetMoreInfoClick() {
-    // Open the Google Form in a new tab or window
-    window.open('https://docs.google.com/forms/d/e/1FAIpQLSeqW3FXr6PaYY_9Bcxqe-FzeSy411-3-3GtYMYGfgv-oSD24g/viewform?usp=sf_link', '_blank');
-
-    // You can also continue the conversation or perform other actions as needed
-
-}
 function toggleLeftContainer() {
     var leftContainer = document.querySelector('.left-container');
     var slideButton = document.querySelector('.slide-button');
@@ -4484,124 +4013,9 @@ function toggleLeftContainer() {
     slideButton.classList.toggle('slide-button-closed');
     slideButton.classList.toggle('slide-button-opened'); // Add this line
 }
-function compareDataWithAscendant(rashi, nakshatra) {
-    // Retrieve data based on Rashi and Nakshatra
-    let rashiInfo = rashiData[rashi];
-    let nakshatraInfo = nakshatraData[nakshatra];
-
-    // Check if data is available for the given Rashi and Nakshatra
-    if (rashiInfo && nakshatraInfo) {
-        // Perform comparison and display results (modify as needed)
-        let combinedJobs = [...rashiInfo.Jobs, ...nakshatraInfo.Jobs];
-        let combinedIndustries = [...rashiInfo.Industries, ...nakshatraInfo.Industries];
-        let combinedAreasOfStudy = [...rashiInfo.AreasOfStudy, ...nakshatraInfo.AreasOfStudy];
-
-        let jobReport = generateReport("Job", combinedJobs, "Jobs");
-        let industryReport = generateReport("Industry", combinedIndustries, "Industries");
-        let areaOfStudyReport = generateReport("Area of Study", combinedAreasOfStudy, "AreasOfStudy");
-
-        createMessageBox("As per your stars, the most suitable jobs are:", jobReport);
-        createMessageBox("As per your stars, the most suitable industries are:", industryReport);
-        createMessageBox("As per your stars, the most suitable areas of study are:", areaOfStudyReport);
-    } else {
-        // Handle case when data is not available
-        createMessageBox("Sorry, data not available for the selected Rashi and Nakshatra.");
-    }
-}
-
-function toggleAboutUsDropdown() {
-    var dropdown = document.getElementById("aboutUsDropdown");
-    dropdown.classList.toggle("show");
-
-    // Additional logic for About Us content
-    AboutUsClick();
-}
-function AboutUsClick() {
-    // Reset the right container to its original state
-    // Change the background color of the chat container
 
 
-    // Update the chat container content with HTML and CSS
-    document.querySelector(".right-container .chat-container").innerHTML = `
-    <div class="container" style="background-color: white; padding: 20px; border-radius: 8px; text-align: center;">
 
-        <h1 style="color: #6f42c1; font-weight: bold;">Career Planning - Unlock the Future</h1>
-
-        <p style="font-size: 16px;color: red">For success and happiness :)</p>
-
-        <p style="color: red;">
-
-            We are there - for all your Career Decisions - from class 8 to Career professionals
-        </p>
-
-       <div style="font-size: 10px;">
-            <span>Which Jobs to focus on? <a href="#">Click here</a>.</span>
-            <span>Which Stream to study? <a href="#">Click here</a>.</span>
-            <span>What are my Strengths? What Jobs will guarantee success? <a href="#">CLICK here</a>.</span>
-        </div>
-
-        <p style="color: black;">
-
-            Take a test (for us to understand you better) + Talk to our Experienced Career Counsellor.
-        </p>
-          <h4 style="color: #6f42c1; font-weight: bold;text-align: left;">Step 1: the TEST <a href="/Log-In">CLICK HERE</a></h4>
-      <p style="text-align: left;">It has 4 main parts:</p>
-        <ol style="text-align: left;">
-            <li>What are your Interests?</li>
-            <li>What is your current aspiration?</li>
-            <li>What is your Aptitude and Behaviour Strengths?</li>
-            <li>How do you compare to other peers your age? (AI task)</li>
-        </ol>
-        <p style="text-align: left;">Note: Take the test in ANY language</p>
-         <h4 style="color: #6f42c1; font-weight: bold;text-align: left;">Step 2: The Career Guidance Counsellor</h4>
-
-        
-        <p style="text-align: left;">Each Counsellor is an EXPERT:</p>
-        <ol style="text-align: left;">
-            <li>10+ years of experience</li>
-            <li>Detailed report to share with you</li>
-        </ol>
-               <h3 style="color: #6f42c1; font-weight: bold;text-align: center;">Why us?</h3>
-
-        <p style="text-align: left;">We focus on FITMENT and longtime SUCCESS in careers.</p>
-        <ol style="text-align: left;">
-            <li>The power of AI - will map you against 2000+ jobs - LATEST jobs (yes, including Entrepreneur, YouTuber, AI specialist, and other Jobs as per World Economic Forum)</li>
-            <li>The Experienced Career Counsellor team</li>
-            <li>More than 50,000 tests (check the Testimonials)</li>
-            <li>We have worked with 40+ institutions - schools, colleges, NGOs, and Companies</li>
-        </ol>
-        <p style="text-align: left;">Note: Take the test in ANY language</p>
-
-        <blockquote>
-            We are there - for all your Career Decisions - from class 8 to PG
-        </blockquote>
-                <h3 style="color: #6f42c1; font-weight: bold;text-align: center;">CONTACT US</h3>
-
-        <p style="text-align: left;">We are a global, multilingual platform utilizing AI and data benchmarks to offer expert career guidance. Focused on fitment and long-term success, we recognize that your interests evolve, providing support from class 8 to professional decisions. Our counseling community, both online and offline, ensures each individual receives tailored advice and guidance. With a commitment to understanding your aspirations, we empower you to make informed choices that align with your unique journey, fostering a successful and fulfilling career path.</p>
-        <p style="text-align: left;">Reach us : 				
-subhashini@pexitics.com / score@pexitics.com 				
-Phone  /Whatsapp : +91 734966 2320 / 21/ 22				</p>
-   <div class="whatsapp-logo-container" style="text-align: center; margin-top: 20px;">
-    <a href="https://wa.me/917349662320" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png" alt="WhatsApp" class="nav-icon whatsapp-icon">
-    </a>
-            <h3 style="color: #6f42c1; font-weight: bold;text-align: center;">PRICING</h3>
-            <p style="text-align: left;">Choose a Package 	For 1 person: 	Test (Free) + Online counseling (no time limit) - INR 3000/- 						
-	For 2 person: 	Test (Free) + Online counseling (no time limit) - INR 5500/- (discount 8.5%)						
-								
-	For customised schemes and in person counseling : contact us 							</p>
-            <p style="text-align: left;">Reach us : 				
-subhashini@pexitics.com / score@pexitics.com 				
-Phone  /Whatsapp : +91 734966 2320 / 21/ 22				</p>
-   <div class="whatsapp-logo-container" style="text-align: center; margin-top: 20px;">
-</div>
-
-    </div>
- 
-`;
-
-    // Optionally, you can add more logic specific to the Astro chat box here
-}
 const input = document.getElementById('dobInput');
 input.addEventListener('keypress', function (event) {
     if (event.keyCode === 13 || event.which === 13) {
