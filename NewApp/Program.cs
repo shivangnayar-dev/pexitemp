@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using NewApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddHostedService<PexiticsscoreEmailService>();
 
 builder.Configuration.AddJsonFile("appsettings.json");
 var configuration = builder.Configuration;
