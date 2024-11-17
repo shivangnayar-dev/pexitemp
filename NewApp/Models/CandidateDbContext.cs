@@ -29,6 +29,7 @@ namespace NewApp.Models
  	public DbSet<pexiticsscore> pexiticsscore { get; set; }       
 
         public DbSet<IIAIndustriessub> IIAIndustriessub { get; set; }
+        public DbSet<Validationtable> Validationtable { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,6 +51,8 @@ namespace NewApp.Models
             modelBuilder.Entity<Core>().HasKey(qt => qt.Id);
             modelBuilder.Entity<AssessmentResults>().ToTable("AssessmentResults");
             modelBuilder.Entity<AssessmentResults>().HasKey(qd => qd.Id);
+            modelBuilder.Entity<Validationtable>().ToTable("validation_table");
+            modelBuilder.Entity<Validationtable>().HasKey(qd => qd.id);
 
             modelBuilder.Entity<Result>().ToTable("Result");
             modelBuilder.Entity<Result>().HasKey(qd => qd.Id);

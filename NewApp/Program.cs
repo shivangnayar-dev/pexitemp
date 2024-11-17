@@ -9,6 +9,9 @@ builder.Configuration.AddJsonFile("appsettings.json");
 var configuration = builder.Configuration;
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
+
+
+
 builder.Services.AddDbContext<CandidateDbContext>(options =>
 {
     var connectionString = configuration.GetConnectionString("DefaultConnection");

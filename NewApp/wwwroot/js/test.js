@@ -490,33 +490,92 @@ function submitAmountPaid() {
     // For example:
     // submitDataToServer();
 }
-
+function updateCandidateInfoPage(candidateId) {
+    return fetch('/api/ValidationApi/GetAndUpdateCandidateInfoPage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            candidateid: candidateId
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Candidate info updated successfully.');
+                return true;  // Indicate success
+            } else {
+                console.log('Failed to update candidate info.');
+                return false;  // Indicate failure
+            }
+        })
+        .catch(error => {
+            console.error('Error calling GetAndUpdateCandidateInfoPage API:', error);
+            alert('There was an error communicating with the server. Please try again later.');
+            return false;  // Indicate failure
+        });
+}
+function updateTestStatus(candidateId) {
+    return fetch('/api/ValidationApi/UpdateTestStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            candidateid: candidateId
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Candidate info updated successfully.');
+                return true;  // Indicate success
+            } else {
+                console.log('Failed to update candidate info.');
+                return false;  // Indicate failure
+            }
+        })
+        .catch(error => {
+            console.error('Error calling GetAndUpdateCandidateInfoPage API:', error);
+            alert('There was an error communicating with the server. Please try again later.');
+            return false;  // Indicate failure
+        });
+}
 function asktesttt() {
-
     setTimeout(() => {
         const genderSelect = document.getElementById("genderSelect");
         if (genderSelect) {
             genderSelect.parentNode.removeChild(genderSelect);
         }
-        // Ask the user for consent using a confirm dialog
-        const hasTest = confirm('Do you want to start the test? Click OK for Yes, Cancel for No.');
 
-        if (hasTest) {
-            // User has provided consent, proceed with further actions
-            // Call the function or perform the actions you need after consent
-            // ...
-            const reportId = storedReportId;
-            callApiToStartTest(reportId);
-            // Clear the message box after proceeding
+        // Get the candidateId from the stored data (assuming it's available)
+   const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No); // Assuming storedCandidateId is available
 
-        } else {
-            // User has not provided consent, inform them and prevent further actions
-            alert('We cannot proceed without your consent. Please check the consent box.');
-            askDobAfterGender();
-            // Optionally, you can reset the form or take other actions
-        }
+        // Call the function to update candidate info page
+        updateCandidateInfoPage(candidateId)
+            .then(success => {
+                if (success) {
+                    // After successfully updating the candidate info, ask for consent
+                    const hasTest = confirm('Do you want to start the test? Click OK for Yes, Cancel for No.');
+
+                    if (hasTest) {
+                        // User has provided consent, proceed with further actions
+                        const reportId = storedReportId;  // Assuming storedReportId is available
+                        callApiToStartTest(reportId);
+                    } else {
+                        // User has not provided consent
+                        alert('We cannot proceed without your consent. Please check the consent box.');
+                        askDobAfterGender();
+                    }
+                } else {
+                    // If the API call failed, show an error message
+                    alert('There was an error updating candidate information. Please try again.');
+                }
+            });
     }, 0); // Ensure the confirm dialog is shown after the clearMessageBoxes function is done
 }
+
 let userData = {};
 function askDobAfterGender() {
 
@@ -823,7 +882,7 @@ function callApiToStartTest(reportId) {
             }
         }
     };
-
+ 
     userData.testProgress = testProgress;
 
     $.ajax({
@@ -850,7 +909,7 @@ function callApiToStartTest(reportId) {
                 questionOptionsAndAnswerss = response.questionOptionsAndAnswerss;
                 const sections = Object.keys(questionOptionsAndAnswerss);
 
-                const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+                 const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
 
                 console.log(`Current Section Index: ${currentSectionIndex}, Total Sections: ${filteredSections.length}`);
 
@@ -1190,6 +1249,8 @@ function gfg(n) {
 }
 
 function submitRating(rating) {
+    const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+    updateTestStatus(candidateId);
     let preventLeave = false;
 
     userData.timestamp_end = new Date().toISOString();
@@ -1246,18 +1307,38 @@ function submitUserDataToDatabase(userData) {
         }
     });
 }
+function updateCandidateLoginStatus(candidateId) {
+    console.log(candidateId);
+    // Assuming you have an endpoint that updates the login column
+    fetch('/api/ValidationApi/UpdateLoginStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            candidateId: candidateId,
+            loginStatus: 1  // Set login column to 1
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Login status updated successfully');
+            } else {
+                console.error('Failed to update login status');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
 
 function askName() {
     highlightSignUpChatBox();
-    if (userData.name !== undefined && userData.name !== null && userData.name !== "0") {
-        // Skip asking for input, directly move to the next step
-        displaySubmittedInput("Name", userData.name, false);
-        askCountry();
-        document.getElementById("dobInput").value = "";
-        console.log(userData);
-        return;
-    }
 
+    const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+    console.log(candidateId);
+    updateCandidateLoginStatus(candidateId);
     document.getElementById("dobInput").placeholder = "Enter your first and last name";
     createMessageBox("Great! Please enter your first and last name:");
 
@@ -2864,33 +2945,48 @@ let istextcodeInvalid = false;
 function askTestCode() {
     isAskTestCodeCalled = true;
 
-    // Ask the user if they have a test code
-    const hasTestCode = confirm('Do you have a test code? Click OK for Yes, Cancel for No.');
+    // Check if the URL contains a testcode parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const testCodeFromUrl = urlParams.get('testcode');
 
-    if (hasTestCode) {
+    if (testCodeFromUrl) {
+        // If testcode is present in the URL, automatically fill in the input
+        const input = document.getElementById("dobInput");
+        input.value = testCodeFromUrl;  // Set the test code directly from the URL
+        console.log('Test code from URL:', testCodeFromUrl);
+
+        // Skip the prompt and call submitTestCode directly
+        submitTestCode(); // Call the function to handle the test code submission
 
         console.log(userData);
 
-        const input = document.getElementById("dobInput");
-        input.placeholder = "Enter the test code";
-        createMessageBox("You're almost there! Please enter the test code:");
 
         document.querySelector(".astro-button-container").style.display = "none";
-
-        // Remove the event listener for submitPassword if it exists
-        input.removeEventListener("change", submitPassword);
-
-        // Attach the event listener for submitTestCode
-        input.addEventListener("change", submitTestCode);
-
-        // Log the current value of the input
-        console.log('askTestCode - Current input value:', input.value);
+        input.removeEventListener("change", submitPassword);  // Ensure previous listeners are removed
     } else {
-        istextcodeInvalid = true;
-        askConsent();        // If the user doesn't have a test code, display a message to connect on WhatsApp and email
+        // Ask the user if they have a test code
+        const hasTestCode = confirm('Do you have a test code? Click OK for Yes, Cancel for No.');
 
+        if (hasTestCode) {
+            console.log(userData);
+
+            const input = document.getElementById("dobInput");
+            input.placeholder = "Enter the test code";
+            createMessageBox("You're almost there! Please enter the test code:");
+
+            document.querySelector(".astro-button-container").style.display = "none";
+            input.removeEventListener("change", submitPassword);  // Ensure previous listeners are removed
+            input.addEventListener("change", submitTestCode);  // Attach the submitTestCode listener
+
+            console.log('askTestCode - Current input value:', input.value);
+        } else {
+            istextcodeInvalid = true;
+            askConsent(); // If the user doesn't have a test code, display a message to connect on WhatsApp and email
+        }
     }
 }
+
+
 let storedTestCode = "";
 
 function submitTestCode() {
@@ -2914,12 +3010,41 @@ function submitTestCode() {
         alert('Please enter the test code.');
     }
 }
+function getCandidateStatus(candidateId) {
+    // Construct the API URL with candidateid as a query parameter
+    const apiUrl = `/api/ValidationApi/GetCandidateStatus?candidateid=${candidateId}`;
+
+    // Make the GET request to the API
+    return fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => response.json()) // Parse the response to JSON
+        .then(data => {
+            // Check if the request was successful
+            if (data.success) {
+                console.log('Candidate status fetched successfully:', data);
+                // You can access the candidate status fields here and use them in your application
+                return data;  // Return the fetched status data
+            } else {
+                // If the request failed
+                console.log('Failed to fetch candidate status');
+                return null;  // Indicate failure
+            }
+        })
+        .catch(error => {
+            // Handle network or other errors
+            console.error('Error calling GetCandidateStatus API:', error);
+            alert('There was an error communicating with the server. Please try again later.');
+            return null;  // Indicate failure
+        });
+}
 function verifyTestCode(testCode) {
     isAskTestCodeCalled = false;
-    // Log the test code being sent in the AJAX call
     console.log('verifyTestCode - Test code being sent in AJAX:', testCode);
 
-    // Replace this with your actual logic to check the test code against the database
     $.ajax({
         type: 'POST',
         url: '/api/TestCode/CheckTestCodeValidity',
@@ -2927,15 +3052,11 @@ function verifyTestCode(testCode) {
         data: JSON.stringify({ Code: testCode }),
         success: function (response) {
             if (response.isValid) {
-
                 const reportId = response.reportId;  // Assuming the response contains the ReportId
-                console.log(`Test code  is valid. Corresponding Report ID is: ${reportId}`);
+                console.log(`Test code is valid. Corresponding Report ID is: ${reportId}`);
 
-
-                // Log the entire response for further inspection
                 console.log('Server Response:', response);
 
-                // Test code is valid, proceed with further actions
                 alert('Test code is valid. Account creation successful!');
                 submitUserDataToDatabase(userData);
 
@@ -2947,26 +3068,43 @@ function verifyTestCode(testCode) {
                 isAskTestCodeCalled = false;
 
                 storedReportId = reportId;
+
                 if (testCode === "PEXHLS2312S1004") {
                     userData.organisation = "Pexitics";
                     console.log('Organisation set to Pexitics');
                     askReferrer();  // Ask for referrer if this specific test code is used
                 } else {
-                    askConsent();  // If the test code is not "PEXHLS2312S1004", ask for consent directly
+                    // Fetch candidate ID based on available user data
+                    const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+
+                    // Call GetCandidateStatus API to fetch candidate's status
+                    getCandidateStatus(candidateId)
+                        .then(status => {
+                            if (status) {
+                                console.log('Candidate Status:', status);
+
+                                // Check if only login_page is true
+                                if (status.login_page && !status.candidateinfo_page && !status.info_page) {
+                                    // If only login_page is true, call askname
+                                    askConsent(); // Call askname function if only login_page is true
+                                }
+                                // Check if all pages are true, then call asktesttt
+                                else if (status.candidateinfo_page && status.info_page && status.login_page) {
+                                    asktesttt();  // Call asktesttt if all conditions are true
+                                } else {
+                                    alert('Some pages are not validated yet. Please complete the required steps.');
+                                }
+                            } else {
+                                alert('Failed to fetch candidate status.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching candidate status:', error);
+                        });
                 }
-
-
-
-                // Additional actions or redirection can be added here
-
-                // Now, take input for further steps (if needed)
             } else {
-
-
                 alert('Test code is Invalid');
-                askTestCode();
-
-                // Optionally, you can ask the user to re-enter the test code or take other actions
+                askTestCode();  // Prompt the user to re-enter the test code
             }
         },
         error: function (error) {
@@ -2974,6 +3112,9 @@ function verifyTestCode(testCode) {
         }
     });
 }
+
+
+
 function askReferrer() {
     document.getElementById("dobInput").placeholder = "Who referred you to this test?";
     createMessageBox("Who referred you to this test ( person or consultant or company name ) ?? ");
