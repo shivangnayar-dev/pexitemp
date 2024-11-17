@@ -2998,9 +2998,7 @@ function submitTestCode() {
 
         storedTestCode = testCode;
         userData.storedTestCode = storedTestCode;
-        const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
-        console.log(candidateId);
-        updateCandidateLoginStatus(candidateId);
+       
         // Verify the test code against the database
         verifyTestCode(testCode);
 
@@ -3062,6 +3060,9 @@ function verifyTestCode(testCode) {
 
                 displaySubmittedInput("Test Code", testCode, true);
                 clearMessageBoxes();
+                const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+                console.log(candidateId);
+                updateCandidateLoginStatus(candidateId);
 
                 document.getElementById("dobInput").removeEventListener("change", submitTestCode);
                 document.getElementById("dobInput").value = "";
