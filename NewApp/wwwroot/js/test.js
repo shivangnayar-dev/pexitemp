@@ -1336,9 +1336,7 @@ function updateCandidateLoginStatus(candidateId) {
 function askName() {
     highlightSignUpChatBox();
 
-    const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
-    console.log(candidateId);
-    updateCandidateLoginStatus(candidateId);
+
     document.getElementById("dobInput").placeholder = "Enter your first and last name";
     createMessageBox("Great! Please enter your first and last name:");
 
@@ -3000,7 +2998,9 @@ function submitTestCode() {
 
         storedTestCode = testCode;
         userData.storedTestCode = storedTestCode;
-
+        const candidateId = FetchCandidateId(userData.Email_Address, userData.Adhar_No, userData.Mobile_No);
+        console.log(candidateId);
+        updateCandidateLoginStatus(candidateId);
         // Verify the test code against the database
         verifyTestCode(testCode);
 
